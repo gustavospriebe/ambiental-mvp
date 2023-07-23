@@ -16,7 +16,6 @@ enum STATUS {
   COMPLETED
 }
 
-
 model Company {
   id             String          @id @default(uuid())
   createdAt      DateTime        @default(now())
