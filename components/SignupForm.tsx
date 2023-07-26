@@ -48,24 +48,28 @@ const SignupForm = () => {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values);
+        console.log(values.email);
     }
 
     return (
-        <div className="mx-auto w-2/3 lg:w-full px-4 py-12 lg:py-4 lg:px-20 xl:px-24 sm:px-6">
+        <div className="m-auto w-3/4 sm:w-2/3 lg:w-full px-4 py-10 lg:py-5 lg:px-20 xl:px-24 sm:px-6">
+            <p className="lg:hidden mb-2">Logo</p>
             <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
                 Crie uma Conta
             </h2>
             <p className="mt-2 text-sm mb-8">
                 Ou{" "}
-                <LinkComp className="text-red-600 hover:text-red-900" href="#">
+                <LinkComp
+                    className="text-red-600 hover:text-red-900"
+                    href="/login"
+                >
                     acesse sua conta
                 </LinkComp>
             </p>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-6"
+                    className="space-y-4"
                 >
                     <FormField
                         control={form.control}
@@ -129,7 +133,6 @@ const SignupForm = () => {
                     <Button
                         variant="secondary"
                         className="w-full flex items-center gap-2"
-                        onClick={() => console.log("oi")}
                         type="submit"
                     >
                         <GoogleOutlined style={{ fontSize: "20px" }} />
