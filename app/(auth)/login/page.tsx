@@ -8,6 +8,7 @@ const Login = () => {
             <LoginForm />
             <Image
                 src={hero}
+                priority
                 alt="hero"
                 className="h-screen object-cover aspect-square w-full hidden lg:block"
             />

@@ -10,8 +10,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ForwardOutlined, GoogleOutlined } from "@ant-design/icons";
+import { signin } from "@/lib/api";
+import {
+    ForwardOutlined,
+    GoogleOutlined,
+    LoadingOutlined,
+} from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -22,7 +28,7 @@ const formSchema = z.object({
     password: z.string().min(5, { message: "Deve ter 5 ou mais caracteres." }),
 });
 
-const SignupForm = () => {
+const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -33,12 +39,20 @@ const SignupForm = () => {
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // setIsLoading(loading => !loading)
+    const router = useRouter();
 
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            setIsLoading(!isLoading);
+            await signin(values);
+            setTimeout(async () => {
+                await router.replace("/home");
+            }, 3000);
+        } catch (e) {
+            throw new Error("Erro no envio da requisição.");
+        } finally {
+            setIsLoading(!isLoading);
+        }
     }
 
     return (
@@ -97,25 +111,48 @@ const SignupForm = () => {
                         )}
                     />
 
-                    <Button
-                        className="w-full"
-                        onClick={() => console.log("oi")}
-                        type="submit"
-                    >
-                        Entrar
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        className="w-full flex items-center gap-2"
-                        type="submit"
-                    >
-                        <GoogleOutlined style={{ fontSize: "20px" }} />
-                        Entrar com Google
-                    </Button>
+                    {isLoading ? (
+                        <Button
+                            className="w-full"
+                            onClick={() => console.log("oi")}
+                            type="submit"
+                        >
+                            <LoadingOutlined style={{ fontSize: "20px" }} />
+                        </Button>
+                    ) : (
+                        <>
+                            {" "}
+                            <Button
+                                className="w-full"
+                                onClick={() => console.log("oi")}
+                                type="submit"
+                            >
+                                Entrar
+                            </Button>
+                        </>
+                    )}
                 </form>
             </Form>
+            {isLoading ? (
+                <Button
+                    variant="secondary"
+                    className="w-full flex items-center gap-2 mt-4"
+                    type="submit"
+                >
+                    <LoadingOutlined style={{ fontSize: "20px" }} />
+                </Button>
+            ) : (
+                <Button
+                    variant="secondary"
+                    className="w-full flex items-center gap-2 mt-4"
+                    type="submit"
+                >
+                    <GoogleOutlined style={{ fontSize: "20px" }} />
+                    Entrar com Google
+                </Button>
+            )}
         </div>
     );
 };
 
-export default SignupForm;
+export default LoginForm;

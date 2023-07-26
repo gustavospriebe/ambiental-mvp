@@ -9,6 +9,7 @@ const Register = () => {
             <Image
                 src={hero}
                 alt="hero"
+                priority
                 className="h-screen object-cover aspect-square w-full hidden lg:block"
             />
         </div>

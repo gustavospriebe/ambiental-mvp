@@ -1,44 +1,54 @@
-// interface fetcherProps {
-//     url: string;
-//     method?: string;
-//     body?: string;
-//     json: boolean;
-// }
+interface fetcherProps {
+    url: string;
+    method: string;
+    body: {};
+    json: boolean;
+}
 
-// const fetcher = async ({ url, method, body, json = true }: fetcherProps) => {
-//     const res = await fetch(url, {
-//         method,
-//         body: body && JSON.stringify(body),
-//         headers: {
-//             Accept: "application/json",
-//             "Content-Type": "application/json",
-//         },
-//     });
+interface userProps {
+    companyName?: string;
+    email: string;
+    password: string;
+}
 
-//     if (!res.ok) {
-//         throw new Error("API Error");
-//     }
+const fetcher = async ({ url, method, body, json = true }: fetcherProps) => {
+    const res = await fetch(url, {
+        method,
+        body: body && JSON.stringify(body),
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    });
 
-//     if (json) {
-//         const data = await res.json();
-//         return data;
-//     }
-// };
+    if (!res.ok) {
+        throw new Error("API Error");
+    }
 
-// export const register = async (user) => {
-//     return fetcher({
-//         url: "/api/register",
-//         method: "POST",
-//         body: user,
-//         json: false,
-//     });
-// };
+    if (json) {
+        const data = await res.json();
+        return data;
+    }
+};
 
-// export const signin = async (user) => {
-//     return fetcher({
-//         url: "/api/signin",
-//         method: "POST",
-//         body: user,
-//         json: false,
-//     });
-// };
+export const register = async (user: userProps) => {
+    console.log(user);
+
+    // return fetcher({
+    //     url: "/api/register",
+    //     method: "POST",
+    //     body: user,
+    //     json: false,
+    // });
+};
+
+export const signin = async (user: userProps) => {
+    console.log(user);
+
+    // return fetcher({
+    //     url: "/api/signin",
+    //     method: "POST",
+    //     body: user,
+    //     json: false,
+    // });
+};
