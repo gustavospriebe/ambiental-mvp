@@ -12,10 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { ForwardOutlined, GoogleOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import LinkComp from "./Link";
-import { useState } from "react";
 
 const formSchema = z.object({
     email: z.string().email({ message: "Email inválido" }),
@@ -23,7 +23,7 @@ const formSchema = z.object({
 });
 
 const SignupForm = () => {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -43,7 +43,7 @@ const SignupForm = () => {
 
     return (
         <div className="m-auto w-3/4 sm:w-2/3 lg:w-full px-4 py-10 lg:py-5 lg:px-20 xl:px-24 sm:px-6">
-            <ForwardOutlined rotate={270} style={{ fontSize: "40px" }}/>
+            <ForwardOutlined rotate={270} style={{ fontSize: "40px" }} />
             <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
                 Acesse sua conta
             </h2>
@@ -79,10 +79,19 @@ const SignupForm = () => {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Senha</FormLabel>
+                                <div className="flex items-center justify-between">
+                                    <FormLabel>Senha</FormLabel>
+                                    <LinkComp
+                                        className="text-red-600 text-sm hover:text-red-900"
+                                        href="register"
+                                    >
+                                        Esqueceu a senha?
+                                    </LinkComp>
+                                </div>
                                 <FormControl>
                                     <Input type="password" {...field} />
                                 </FormControl>
+
                                 <FormMessage />
                             </FormItem>
                         )}
