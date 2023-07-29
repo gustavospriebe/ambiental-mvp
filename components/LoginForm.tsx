@@ -43,15 +43,15 @@ const LoginForm = () => {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setIsLoading(!isLoading);
+            setIsLoading(true);
             await signin(values);
             setTimeout(async () => {
                 await router.replace("/home");
             }, 3000);
-        } catch (e) {
-            throw new Error("Erro no envio da requisição.");
+        } catch (error) {
+            console.error("Error during form submission:", error);
         } finally {
-            setIsLoading(!isLoading);
+            setIsLoading(false);
         }
     }
 
@@ -112,21 +112,13 @@ const LoginForm = () => {
                     />
 
                     {isLoading ? (
-                        <Button
-                            className="w-full"
-                            onClick={() => console.log("oi")}
-                            type="submit"
-                        >
+                        <Button className="w-full" type="submit">
                             <LoadingOutlined style={{ fontSize: "20px" }} />
                         </Button>
                     ) : (
                         <>
                             {" "}
-                            <Button
-                                className="w-full"
-                                onClick={() => console.log("oi")}
-                                type="submit"
-                            >
+                            <Button className="w-full" type="submit">
                                 Entrar
                             </Button>
                         </>

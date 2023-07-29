@@ -1,16 +1,20 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    experimental: {
+        serverComponentsExternalPackages: ["bcrypt"],
+    },
+};
 
 module.exports = nextConfig;
 
 module.exports = {
     async redirects() {
-      return [
-        {
-          source: '/',
-          destination: '/login',
-          permanent: true,
-        },
-      ]
+        return [
+            {
+                source: "/",
+                destination: "/login",
+                permanent: true,
+            },
+        ];
     },
-  }
+};
