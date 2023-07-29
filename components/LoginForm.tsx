@@ -44,6 +44,7 @@ const LoginForm = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(true);
+            console.log(values)
             await signin(values);
             setTimeout(async () => {
                 await router.replace("/home");
