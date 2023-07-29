@@ -3,12 +3,7 @@ import { db } from "@/lib/db";
 import { serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function POST(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    console.log('gjhdfgkjlshdfl')
-
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         let user = await db.company.findUnique({
             where: {

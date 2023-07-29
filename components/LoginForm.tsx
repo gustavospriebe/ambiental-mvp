@@ -45,15 +45,14 @@ const LoginForm = () => {
         try {
             setIsLoading(true);
             console.log(values);
-            await signIn("credentials", {
+            const res = await signIn("credentials", {
                 email: values.email,
                 password: values.password,
-                redirect: false
+                redirect: false,
             });
-            console.log("logado");
-            setTimeout(async () => {
-                await router.replace("/home");
-            }, 3000);
+
+            console.log(res);
+            if (res?.error === null) router.replace("/home");
         } catch (error) {
             console.error("Error during form submission:", error);
         } finally {

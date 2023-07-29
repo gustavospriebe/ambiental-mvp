@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
 import { SignJWT, jwtVerify } from "jose";
 import { db } from "./db";
-import { Prisma } from "@prisma/client";
-import { GetResult } from "@prisma/client/runtime/library";
 
 export const hashPassword = (password: string) => bcrypt.hash(password, 10);
 
@@ -11,6 +9,7 @@ export const comparePasswords = (
     hashedPassword: string
 ) => bcrypt.compare(plainTextPassword, hashedPassword);
 
+// deletar as seguintes funcoes depois de refatorar
 export const createJWT = (user: any) => {
     // return jwt.sign({ id: user.id }, 'cookies')
     console.log(`user: ${user}`);

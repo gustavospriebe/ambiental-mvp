@@ -19,40 +19,34 @@ export const authOptions: NextAuthOptions = {
                     password: string;
                 };
 
-                if (!email || !password) return null;
-
                 const user = await db.company.findUnique({
                     where: {
                         email: email,
                     },
                 });
 
-                if (!user) return null;
+                if (!user) throw new Error("Invalid credentials");
 
                 const isPasswordValid = await comparePasswords(
                     password,
                     user.password
                 );
 
-                if (!isPasswordValid) return null;
+                if (!isPasswordValid) throw new Error("Invalid password");
 
                 return {
                     id: user.id + "",
                     email: user.email,
                     name: user.name,
                 };
-
-                // const res = await fetch("/api/signin", {
-                //     method: "POST",
-                //     body: credentials && JSON.stringify(credentials),
-                //     headers: { "Content-Type": "application/json" },
-                // });
-                // const user = await res.json();
             },
         }),
     ],
     pages: {
         signIn: "/login",
+    },
+    jwt: {
+        maxAge: 60 * 60 * 24 * 7,
     },
 };
 
