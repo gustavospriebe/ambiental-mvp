@@ -1,3 +1,5 @@
+import { comparePasswords } from "@/lib/auth";
+import { db } from "@/lib/db";
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -9,33 +11,51 @@ export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Sign in",
-            credentials: {
-                email: {
-                    label: "email",
-                    type: "email",
-                    placeholder: "hello@example.com",
-                },
-                password: { label: "Password", type: "password" },
-            },
-            async authorize(credentials, req) {
-                const res = await fetch("/api/signin", {
-                    method: "POST",
-                    body: credentials && JSON.stringify(credentials),
-                    headers: { "Content-Type": "application/json" },
+            type: "credentials",
+            credentials: {},
+            async authorize(credentials) {
+                const { email, password } = credentials as {
+                    email: string;
+                    password: string;
+                };
+
+                if (!email || !password) return null;
+
+                const user = await db.company.findUnique({
+                    where: {
+                        email: email,
+                    },
                 });
-                const user = await res.json();
 
-                if (res.ok && user) {
-                    return user;
-                }
+                if (!user) return null;
 
-                return null;
+                const isPasswordValid = await comparePasswords(
+                    password,
+                    user.password
+                );
+
+                if (!isPasswordValid) return null;
+
+                return {
+                    id: user.id + "",
+                    email: user.email,
+                    name: user.name,
+                };
+
+                // const res = await fetch("/api/signin", {
+                //     method: "POST",
+                //     body: credentials && JSON.stringify(credentials),
+                //     headers: { "Content-Type": "application/json" },
+                // });
+                // const user = await res.json();
             },
         }),
     ],
+    pages: {
+        signIn: "/login",
+    },
 };
 
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
