@@ -9,6 +9,7 @@ export default async function Page() {
     const session = await getServerSession(authOptions);
 
     console.log(session);
+    console.log(!!session);
 
     return (
         <div className="h-full overflow-y-auto pr-6 w-1/1">

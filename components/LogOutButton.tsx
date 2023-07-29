@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React from "react";
 import { Button } from "./ui/button";
@@ -9,3 +9,6 @@ export default function LogOutButton() {
         <Button onClick={() => signOut({ callbackUrl: "/login" })}>Sair</Button>
     );
 }
+
+
+// refatorar design

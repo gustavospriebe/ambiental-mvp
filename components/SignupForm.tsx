@@ -10,7 +10,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { register } from "@/lib/api";
 import {
     ForwardOutlined,
     GoogleOutlined,
@@ -59,7 +58,7 @@ const SignupForm = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(!isLoading);
-            await register(values);
+            // await register(values);
             setTimeout(async () => {
                 await router.replace("/home");
             }, 3000);
