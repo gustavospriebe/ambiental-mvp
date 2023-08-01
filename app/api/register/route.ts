@@ -1,46 +1,33 @@
-import { createJWT, hashPassword } from "@/lib/auth";
+import { hashPassword } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { serialize } from "cookie";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
-        let user = await db.company.findUnique({
-            where: {
-                email: req.body.email,
-            },
-        });
+interface RequestBody {
+    name: string;
+    email: string;
+    password: string;
+}
 
-        if (user) {
-            res.status(403);
-            res.json({ error: "Account already exists" });
-            return;
-        }
+export async function POST(req: Request, res: Response) {
+    const body: RequestBody = await req.json();
 
-        user = await db.company.create({
-            data: {
-                name: req.body.name,
-                email: req.body.email,
-                sector: "Agro",
-                password: await hashPassword(req.body.password),
-            },
-        });
+    let user = await db.company.findUnique({
+        where: { email: body.email },
+    });
 
-        const jwt = await createJWT(user);
-
-        res.setHeader(
-            "Set-Cookie",
-            serialize(process.env.COOKIE_NAME!, jwt, {
-                httpOnly: true,
-                path: "/",
-                maxAge: 60 * 60 * 24 * 7,
-            })
-        );
-
-        res.status(201);
-        res.end();
-    } else {
-        res.status(402);
-        res.end();
+    if (user) {
+        throw new Error("Conta já existe.");
     }
+
+    user = await db.company.create({
+        data: {
+            name: body.name,
+            email: body.email,
+            sector: "Agro",
+            password: await hashPassword(body.password),
+        },
+    });
+
+    const { password, ...result } = user;
+    return NextResponse.json(result);
 }

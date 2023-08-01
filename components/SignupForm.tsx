@@ -16,6 +16,7 @@ import {
     LoadingOutlined,
 } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -58,14 +59,18 @@ const SignupForm = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(!isLoading);
-            // await register(values);
-            setTimeout(async () => {
-                await router.replace("/home");
-            }, 3000);
-        } catch (e) {
-            throw new Error("Erro no envio da requisição.");
+            const res = await axios.post("/api/register", {
+                name: values.companyName,
+                email: values.email,
+                password: values.password,
+            });
+
+            console.log(res);
+            if (res?.status === 200) router.replace("/login");
+        } catch (error) {
+            console.error("Erro no envio da requisição:", error);
         } finally {
-            setIsLoading(!isLoading);
+            setIsLoading(false);
         }
     }
 

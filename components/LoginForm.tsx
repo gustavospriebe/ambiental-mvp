@@ -51,7 +51,7 @@ const LoginForm = () => {
                 password: values.password,
                 redirect: false,
             });
-            if (res?.error === "Invalid credentials") {
+            if (res?.error) {
                 setIsError(res.error);
             }
 
@@ -61,7 +61,6 @@ const LoginForm = () => {
             console.error("Error during form submission:", error);
         } finally {
             setIsLoading(false);
-            setIsError("");
         }
     }
 
@@ -137,7 +136,7 @@ const LoginForm = () => {
                     )}
                 </form>
             </Form>
-            {isError && <h1>{isError}</h1>}
+            {isError && <h1 className="mt-2">{isError}</h1>}
             {isLoading ? (
                 <Button
                     variant="secondary"
