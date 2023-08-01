@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LogOutButton from "./LogOutButton";
 
 const Sidebar = () => {
     return (
@@ -152,95 +152,9 @@ const Sidebar = () => {
                                 </ul>
                             </nav>
                         </div>
-                        <div className="flex flex-shrink-0 p-4 px-4 bg-gray-50">
-                            <div className="relative inline-flex items-center w-full">
-                                <button className="inline-flex items-center justify-between w-full px-4 py-3 text-lg font-medium text-center text-white transition duration-500 ease-in-out transform rounded-xl hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    <span>
-                                        <span className="flex-shrink-0 block group">
-                                            <div className="flex items-center">
-                                                <div>
-                                                    <Image
-                                                        className="inline-block object-cover rounded-full h-9 w-9"
-                                                        src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=2070&amp;q=80"
-                                                        alt=""
-                                                    />
-                                                </div>
-                                                <div className="ml-3 text-left">
-                                                    <p className="text-sm font-medium text-gray-500 group-hover:text-blue-500">
-                                                        Mike Vega
-                                                    </p>
-                                                    <p className="text-xs font-medium text-gray-500 group-hover:text-blue-500">
-                                                        Pro user
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </span>
-                                    </span>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="inline w-5 h-5 ml-4 text-black transition-transform duration-200 transform rotate-0"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                                            clip-rule="evenodd"
-                                        ></path>
-                                    </svg>
-                                </button>
-                                <div
-                                    x-show="open"
-                                    x-transition:enter="transition ease-out duration-100"
-                                    x-transition:enter-start="transform opacity-0 scale-95"
-                                    x-transition:enter-end="transform opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-75"
-                                    x-transition:leave-start="transform opacity-100 scale-100"
-                                    x-transition:leave-end="transform opacity-0 scale-95"
-                                    className="absolute bottom-0 z-50 w-full mx-auto mt-2 origin-bottom-right bg-white rounded-xl"
-                                >
-                                    <div className="px-2 py-2 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                                        <ul>
-                                            <li>
-                                                <a
-                                                    className="inline-flex items-center w-full px-4 py-2 mt-1 text-sm text-gray-500 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-blue-500"
-                                                    href="#"
-                                                >
-                                                    icon
-                                                    <span className="ml-4">
-                                                        Account
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    className="inline-flex items-center w-full px-4 py-2 mt-1 text-sm text-gray-500 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-blue-500"
-                                                    href="#"
-                                                >
-                                                    icon
-                                                    <span className="ml-4">
-                                                        Profile
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <LogOutButton />
                     </div>
                 </div>
-            </div>
-            <div className="flex flex-col flex-1 w-0 overflow-hidden">
-                <main className="relative flex-1 overflow-y-auto focus:outline-none">
-                    <div className="py-6">
-                        <div className="px-4 mx-auto 2xl:max-w-7xl sm:px-6 md:px-8">
-                            <div className="py-4">
-                                <div className="h-screen border border-gray-200 border-dashed rounded-lg"></div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
             </div>
         </div>
     );
