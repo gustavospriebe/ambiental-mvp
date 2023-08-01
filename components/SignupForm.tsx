@@ -163,6 +163,7 @@ const SignupForm = () => {
             ) : (
                 <Button
                     variant="secondary"
+                    disabled
                     className="w-full flex items-center gap-2 mt-4"
                     type="submit"
                 >

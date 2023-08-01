@@ -30,6 +30,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState("");
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -50,6 +51,9 @@ const LoginForm = () => {
                 password: values.password,
                 redirect: false,
             });
+            if (res?.error === "Invalid credentials") {
+                setIsError(res.error);
+            }
 
             console.log(res);
             if (res?.error === null) router.replace("/home");
@@ -75,6 +79,8 @@ const LoginForm = () => {
                     crie uma nova conta
                 </LinkComp>
             </p>
+
+            {/* componentizar o form de forma a passar a prop pra dizer se é LOGIN ou REGISTRO */}
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -130,6 +136,7 @@ const LoginForm = () => {
                     )}
                 </form>
             </Form>
+            {isError && <h1>{isError}</h1>}
             {isLoading ? (
                 <Button
                     variant="secondary"
@@ -141,6 +148,7 @@ const LoginForm = () => {
             ) : (
                 <Button
                     variant="secondary"
+                    disabled
                     className="w-full flex items-center gap-2 mt-4"
                     type="submit"
                 >

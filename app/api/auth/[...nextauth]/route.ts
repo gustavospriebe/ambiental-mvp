@@ -25,14 +25,16 @@ export const authOptions: NextAuthOptions = {
                     },
                 });
 
-                if (!user) throw new Error("Invalid credentials");
+                if (!user)
+                    throw new Error("E-mail inválido, digite novamente.");
 
                 const isPasswordValid = await comparePasswords(
                     password,
                     user.password
                 );
 
-                if (!isPasswordValid) throw new Error("Invalid password");
+                if (!isPasswordValid)
+                    throw new Error("Senha inválida, digite novamente.");
 
                 return {
                     id: user.id + "",
@@ -76,3 +78,4 @@ export const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
