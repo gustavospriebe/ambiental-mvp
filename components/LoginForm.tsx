@@ -61,6 +61,7 @@ const LoginForm = () => {
             console.error("Error during form submission:", error);
         } finally {
             setIsLoading(false);
+            setIsError("");
         }
     }
 

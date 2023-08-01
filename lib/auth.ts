@@ -9,6 +9,9 @@ export const comparePasswords = (
     hashedPassword: string
 ) => bcrypt.compare(plainTextPassword, hashedPassword);
 
+
+
+
 // deletar as seguintes funcoes depois de refatorar
 export const createJWT = (user: any) => {
     // return jwt.sign({ id: user.id }, 'cookies')

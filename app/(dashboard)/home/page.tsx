@@ -8,15 +8,17 @@ import { Suspense } from "react";
 export default async function Page() {
     const session = await getServerSession(authOptions);
 
-    console.log(session);
-    console.log(!!session);
+
+    // @ts-expect-error
+    console.log(session!.user!.id);
+    console.log(!!!session);
 
     return (
         <div className="flex h-screen bg-white">
             <Sidebar />
             <div className="m-10">
                 <Suspense fallback={<GreetingsSkeleton />}>
-                    <Greetings info={session?.user} />
+                    <Greetings name={session!.user!.name} />
                 </Suspense>
             </div>
         </div>
