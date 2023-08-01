@@ -1,6 +1,6 @@
 interface GreetingsProps {
-    name: string;
-    email: string;
+    name?: string;
+    email?: string;
 }
 
 const Greetings = async ({ info }: any) => {
@@ -8,7 +8,7 @@ const Greetings = async ({ info }: any) => {
         <div className="w-full py-4 relative">
             <div className="mb-4">
                 <h1 className="text-3xl text-gray-700 font-bold mb-4">
-                    Hello {info.name}
+                    Hello {info?.name}
                 </h1>
                 <h4 className="text-xl text-gray-400">
                     Check your daily tasks and schedule
@@ -16,7 +16,7 @@ const Greetings = async ({ info }: any) => {
             </div>
             <div>
                 <div>Todays Schedule</div>
-                <div>{info.email}</div>
+                <div>{info?.email}</div>
             </div>
         </div>
     );
