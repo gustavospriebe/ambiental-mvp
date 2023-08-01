@@ -2,6 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Greetings from "@/components/Greetings";
 import GreetingsSkeleton from "@/components/GreetingsSkeleton";
 import LogOutButton from "@/components/LogOutButton";
+import Sidebar from "@/components/Sidebar";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 
@@ -15,6 +16,8 @@ export default async function Page() {
         <div className="h-full overflow-y-auto pr-6 w-1/1">
             <div className=" h-full  items-stretch justify-center min-h-[content]">
                 <div className="flex-1 grow flex">
+                    <Sidebar />
+
                     <Suspense fallback={<GreetingsSkeleton />}>
                         <Greetings info={session?.user} />
                     </Suspense>
