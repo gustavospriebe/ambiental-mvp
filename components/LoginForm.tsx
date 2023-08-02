@@ -45,7 +45,6 @@ const LoginForm = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(true);
-            console.log(values);
             const res = await signIn("credentials", {
                 email: values.email,
                 password: values.password,
@@ -59,7 +58,7 @@ const LoginForm = () => {
             console.log(res);
             if (res?.error === null) router.replace("/home");
         } catch (error) {
-            console.error("Error during form submission:", error);
+            console.error("Erro no envio da requisição:", error);
         } finally {
             setIsLoading(false);
         }

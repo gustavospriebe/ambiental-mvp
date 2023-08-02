@@ -16,13 +16,12 @@ import {
     LoadingOutlined,
 } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import LinkComp from "./Link";
-import { signIn } from "next-auth/react";
 
 const formSchema = z
     .object({
@@ -68,7 +67,7 @@ const SignupForm = () => {
             });
 
             console.log(res);
-            if (res?.status === 200) router.replace("/login");
+            if (res?.error === null) router.replace("/login");
         } catch (error) {
             console.error("Erro no envio da requisição:", error);
         } finally {
