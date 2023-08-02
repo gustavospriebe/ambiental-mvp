@@ -1,4 +1,4 @@
-import { comparePasswords } from "@/lib/auth";
+import { comparePasswords, hashPassword } from "@/lib/auth";
 import { db } from "@/lib/db";
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -14,9 +14,10 @@ export const authOptions: NextAuthOptions = {
             type: "credentials",
             credentials: {},
             async authorize(credentials) {
-                const { email, password } = credentials as {
+                const { email, password, name } = credentials as {
                     email: string;
                     password: string;
+                    name: string;
                 };
 
                 const user = await db.company.findUnique({
@@ -25,22 +26,37 @@ export const authOptions: NextAuthOptions = {
                     },
                 });
 
-                if (!user)
-                    throw new Error("E-mail inválido, digite novamente.");
+                if (user) {
+                    const isPasswordValid = await comparePasswords(
+                        password,
+                        user.password
+                    );
 
-                const isPasswordValid = await comparePasswords(
-                    password,
-                    user.password
-                );
+                    if (!isPasswordValid)
+                        throw new Error("Senha inválida, digite novamente.");
 
-                if (!isPasswordValid)
-                    throw new Error("Senha inválida, digite novamente.");
+                    return {
+                        id: user.id + "",
+                        email: user.email,
+                        name: user.name,
+                    };
+                } else {
+                    if (!!!name) throw new Error("Conta inexistente.");
 
-                return {
-                    id: user.id + "",
-                    email: user.email,
-                    name: user.name,
-                };
+                    const newUser = await db.company.create({
+                        data: {
+                            name: name,
+                            sector: "Agro",
+                            email: email,
+                            password: await hashPassword(password),
+                        },
+                    });
+                    return {
+                        id: newUser.id + "",
+                        email: newUser.email,
+                        name: newUser.name,
+                    };
+                }
             },
         }),
     ],
@@ -78,3 +94,4 @@ export const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+

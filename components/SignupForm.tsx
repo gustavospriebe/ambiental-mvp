@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import LinkComp from "./Link";
+import { signIn } from "next-auth/react";
 
 const formSchema = z
     .object({
@@ -59,10 +60,11 @@ const SignupForm = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(!isLoading);
-            const res = await axios.post("/api/register", {
+            const res = await signIn("credentials", {
                 name: values.companyName,
                 email: values.email,
                 password: values.password,
+                redirect: false,
             });
 
             console.log(res);

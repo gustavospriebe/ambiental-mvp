@@ -53,6 +53,7 @@ const LoginForm = () => {
             });
             if (res?.error) {
                 setIsError(res.error);
+                form.reset();
             }
 
             console.log(res);
