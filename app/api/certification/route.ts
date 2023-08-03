@@ -1,7 +1,5 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
-import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { NextResponse } from "next/server";
 
 // Puxar todas certificações
 export async function GET(req: Request, res: NextResponse) {
@@ -13,11 +11,9 @@ export async function GET(req: Request, res: NextResponse) {
         });
     }
 
-    const data = await db.certification.findMany({
+    const data = await db.task.findMany({
         where: { companyId: sessionId },
     });
-
-    console.log(req);
 
     return NextResponse.json({ data });
 }

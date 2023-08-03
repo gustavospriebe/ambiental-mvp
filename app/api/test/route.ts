@@ -1,7 +1,5 @@
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
 import { db } from "@/lib/db";
+import { NextResponse } from "next/server";
 
 // Testar se usuário está autenticado ou não
 export async function GET(req: Request, res: Response) {
