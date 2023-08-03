@@ -2,6 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Greetings from "@/components/Greetings";
 import GreetingsSkeleton from "@/components/GreetingsSkeleton";
 import Sidebar from "@/components/Sidebar";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Certification } from "@prisma/client";
 import axios from "axios";
 import { getServerSession } from "next-auth";
@@ -736,16 +737,43 @@ export default async function Page() {
         (data) => data.status === "COMPLETED"
     ).length;
 
+    const teste = mockTaskData.map((data) => [
+        data.status,
+        data.certificationId,
+    ]);
+
+    console.log(teste.sort());
+
     return (
         <div className="flex h-screen bg-white">
             <Sidebar />
-            <div className="m-10">
+            <div className="m-10 w-fullgit">
                 <Suspense fallback={<GreetingsSkeleton />}>
                     {/* <Greetings name={session!.user!.name} /> */}
                     <Greetings name="Gustavo" />
                 </Suspense>
 
-                <div>{numCertifications} certificações</div>
+                {/* Componentizar Card */}
+                <div className="flex gap-2 w-full">
+
+                <Card className="flex-1">
+                    <CardHeader>Total de Certificações</CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">
+                            {numCertifications}
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card className="flex-1">
+                    <CardHeader>Total de Tasks</CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">
+                            {numCertifications}
+                        </div>
+                    </CardContent>
+                </Card>
+                </div>
+
                 <div>{numTasks} tasks</div>
                 <div>{numTasksCompleted} tasks</div>
             </div>

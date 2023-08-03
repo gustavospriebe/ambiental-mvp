@@ -22,7 +22,6 @@
     "clsx": "^2.0.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
-    "lucide-react": "^0.263.1",
     "next": "13.4.12",
     "next-auth": "^4.22.3",
     "postcss": "8.4.27",
@@ -39,7 +38,6 @@
     "@types/cookie": "^0.5.1",
     "@types/node": "^20.4.5",
     "bcrypt": "^5.1.0",
-    "jose": "^4.14.4",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
     "prisma": "^5.0.0",
@@ -47,6 +45,6 @@
     "typescript": "^5.1.6"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts" 
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
