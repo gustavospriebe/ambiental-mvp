@@ -5,40 +5,19 @@ import { db } from "@/lib/db";
 
 // Testar se usuário está autenticado ou não
 export async function GET(req: Request, res: Response) {
-    const session = await getServerSession(authOptions);
+    const sessionId = req.headers.get("session-id");
 
-    if (!session) {
+    if (!sessionId) {
         return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
         });
     }
 
-    // @ts-expect-error
-    const sessionId = session.user?.id;
-
     // RETORNA DADOS
 
-    // const data = await db.certification.findMany({
-    //     where: { companyId: sessionId },
-    // });
+    const data = await db.certification.count({
+        where: { companyId: sessionId },
+    });
 
-    // CRIA DADOS
-
-    // const newData = await db.certification.create({
-    //     data: {
-    //         name: "teste2",
-    //         companyId: sessionId,
-    //         description: "teste231sdf3123",
-    //         tasks: {
-    //             create: {
-    //                 name: "testamdp",
-    //                 companyId: sessionId,
-    //             },
-    //         },
-    //     },
-    // });
-
-    // console.log(newData);
-
-    return NextResponse.json({ authenticated: !!session });
+    return NextResponse.json({ data });
 }
