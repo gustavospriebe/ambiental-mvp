@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-// Puxar as infos da certificação e suas tasks
+// Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
     const sessionId = req.headers.get("session-id");
 
@@ -12,24 +12,23 @@ export async function GET(req: Request, res: NextResponse) {
     }
 
     const certificationData = await db.certification.findMany({
-        where: { id: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3" },
+        where: { companyId: sessionId },
         select: {
             name: true,
             status: true,
-            description: true,
-            due: true,
-            tasks: true,
         },
     });
 
     const taskData = await db.task.findMany({
-        where: { certificationId: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3" },
+        where: { companyId: sessionId },
+        take: 5,
+        orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json({ certificationData, taskData });
 }
 
-// Criar nova task
+// Criar nova certificação
 export async function POST(req: Request, res: Response) {
     const sessionId = req.headers.get("session-id");
 
@@ -56,7 +55,7 @@ export async function POST(req: Request, res: Response) {
     }
 }
 
-// Atualiza task
+// Atualiza certificação
 
 
-// Deleta task
+// Deleta certificação

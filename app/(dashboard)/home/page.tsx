@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Certification } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
+import axios from "axios";
 
 const mockCertificationData = [
     {
@@ -712,34 +713,36 @@ const mockTaskData = [
 ];
 
 export default async function Page() {
-    // const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
-    // const req = await axios.get("http://localhost:3000/api/certification", {
-    //     headers: { "session-id": session?.user.id },
-    // });
+    const req = await axios.get("http://localhost:3000/api/certifications", {
+        headers: { "session-id": session?.user.id },
+    });
 
-    // const data: Certification[] = req.data.data;
+    const data: Certification[] = req.data.data;
 
     // console.log(data);
     // console.log(data.length);
 
     // const createdData = data.map((data) => data.createdAt);
+    // const certificationData = data.map((data) => data.createdAt);
 
-    const numCertifications = mockCertificationData.length;
+    console.log(req.data.certificationData);
 
-    const numTasks = mockTaskData.length;
+    // const numCertifications = mockCertificationData.length;
 
-    const numTasksCompleted = mockTaskData.filter(
-        (data) => data.status === "COMPLETED"
-    ).length;
+    // const numTasks = mockTaskData.length;
 
-    const teste = mockTaskData.map((data) => [
-        data.status,
-        data.certificationId,
-    ]);
+    // const numTasksCompleted = mockTaskData.filter(
+    //     (data) => data.status === "COMPLETED"
+    // ).length;
+
+    // const teste = mockTaskData.map((data) => [
+    //     data.status,
+    //     data.certificationId,
+    // ]);
 
     // console.log(teste);
-
 
     return (
         <div className="flex h-screen w-full bg-red-50">
@@ -755,7 +758,7 @@ export default async function Page() {
                         <CardHeader>Total de Certificações</CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">
-                                {numCertifications}
+                                {/* {numCertifications} */}
                             </div>
                         </CardContent>
                     </Card>
@@ -763,14 +766,14 @@ export default async function Page() {
                         <CardHeader>Total de Tasks</CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">
-                                {numCertifications}
+                                {/* {numCertifications} */}
                             </div>
                         </CardContent>
                     </Card>
                 </div>
 
-                <div>{numTasks} tasks</div>
-                <div>{numTasksCompleted} tasks</div>
+                {/* <div>{numTasks} tasks</div>
+                <div>{numTasksCompleted} tasks</div> */}
             </div>
         </div>
     );
