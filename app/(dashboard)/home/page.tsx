@@ -6,6 +6,7 @@ import { Certification } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import axios from "axios";
+import BarChart from "@/components/BarChart";
 
 const mockCertificationData = [
     {
@@ -712,22 +713,191 @@ const mockTaskData = [
     },
 ];
 
+const taskCountData = [
+    {
+        _count: { name: 4 },
+        status: "COMPLETED",
+        certificationId: "e7b8a1cd-678d-450f-b5eb-2297ca4b0c49",
+    },
+    {
+        _count: { name: 3 },
+        status: "STARTED",
+        certificationId: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3",
+    },
+    {
+        _count: { name: 3 },
+        status: "NOT_STARTED",
+        certificationId: "f4348674-6fcc-479b-b374-bdd3cd94ddad",
+    },
+    {
+        _count: { name: 3 },
+        status: "STARTED",
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+    },
+    {
+        _count: { name: 5 },
+        status: "COMPLETED",
+        certificationId: "f4348674-6fcc-479b-b374-bdd3cd94ddad",
+    },
+    {
+        _count: { name: 3 },
+        status: "NOT_STARTED",
+        certificationId: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3",
+    },
+    {
+        _count: { name: 3 },
+        status: "NOT_STARTED",
+        certificationId: "e7b8a1cd-678d-450f-b5eb-2297ca4b0c49",
+    },
+    {
+        _count: { name: 3 },
+        status: "COMPLETED",
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+    },
+    {
+        _count: { name: 2 },
+        status: "STARTED",
+        certificationId: "f4348674-6fcc-479b-b374-bdd3cd94ddad",
+    },
+    {
+        _count: { name: 6 },
+        status: "NOT_STARTED",
+        certificationId: "1b919aea-823e-42b2-ace1-3360b41f2d52",
+    },
+    {
+        _count: { name: 1 },
+        status: "NOT_STARTED",
+        certificationId: "a4e67efe-d62b-41cf-b441-cbdc0de92c38",
+    },
+    {
+        _count: { name: 4 },
+        status: "COMPLETED",
+        certificationId: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3",
+    },
+    {
+        _count: { name: 3 },
+        status: "STARTED",
+        certificationId: "e7b8a1cd-678d-450f-b5eb-2297ca4b0c49",
+    },
+    {
+        _count: { name: 4 },
+        status: "NOT_STARTED",
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+    },
+    {
+        _count: { name: 2 },
+        status: "STARTED",
+        certificationId: "1b919aea-823e-42b2-ace1-3360b41f2d52",
+    },
+    {
+        _count: { name: 2 },
+        status: "COMPLETED",
+        certificationId: "1b919aea-823e-42b2-ace1-3360b41f2d52",
+    },
+];
+
+const lastTasksData = [
+    {
+        id: "60bac779-2105-4a9b-8e8e-ba057b0b88f4",
+        createdAt: "2023-08-02T05:56:28.464Z",
+        updatedAt: "2023-08-02T05:56:28.464Z",
+        status: "NOT_STARTED",
+        name: "testamdp",
+        description: null,
+        due: null,
+        deleted: false,
+        certificationId: "a4e67efe-d62b-41cf-b441-cbdc0de92c38",
+        companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
+    },
+    {
+        id: "412df129-1b66-42fb-852f-b9840fd252d9",
+        createdAt: "2023-07-29T03:08:32.855Z",
+        updatedAt: "2023-07-29T03:08:32.855Z",
+        status: "COMPLETED",
+        name: "Task 3",
+        description: "Descrição da Task 3",
+        due: null,
+        deleted: false,
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+        companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
+    },
+    {
+        id: "c18ce7d1-053c-4354-8c55-26de054051a4",
+        createdAt: "2023-07-29T03:08:32.855Z",
+        updatedAt: "2023-07-29T03:08:32.855Z",
+        status: "NOT_STARTED",
+        name: "Task 0",
+        description: "Descrição da Task 0",
+        due: null,
+        deleted: false,
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+        companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
+    },
+    {
+        id: "b800d0e9-34a8-46fa-b627-dbfc520aac44",
+        createdAt: "2023-07-29T03:08:32.855Z",
+        updatedAt: "2023-07-29T03:08:32.855Z",
+        status: "STARTED",
+        name: "Task 1",
+        description: "Descrição da Task 1",
+        due: null,
+        deleted: false,
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+        companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
+    },
+    {
+        id: "3f63eb92-b2e4-433e-8e19-c39c604e3563",
+        createdAt: "2023-07-29T03:08:32.855Z",
+        updatedAt: "2023-07-29T03:08:32.855Z",
+        status: "NOT_STARTED",
+        name: "Task 2",
+        description: "Descrição da Task 2",
+        due: null,
+        deleted: false,
+        certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
+        companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
+    },
+];
+
+const certificationCountData = 5;
+
 export default async function Page() {
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
 
-    const req = await axios.get("http://localhost:3000/api/certifications", {
-        headers: { "session-id": session?.user.id },
-    });
+    // const req = await axios.get("http://localhost:3000/api/home", {
+    //     headers: { "session-id": session?.user.id },
+    // });
 
-    const data: Certification[] = req.data.data;
+    // const data: Certification[] = req.data.data;
 
-    // console.log(data);
-    // console.log(data.length);
+    // const { taskCountData, certificationCountData, lastTasksData } = req.data;
+
+    const taskCount = taskCountData.map((data) => ({
+        ...data,
+        _count: data._count.name,
+    }));
+
+    const allTaskCount = taskCount.reduce(
+        (acc, task) => (acc += task._count),
+        0
+    );
+
+    // Deletar dps, nao precisa dessa variavel se ja tem
+    // const allCertificationCount = certificationCountData
+
+    // console.log(taskCount);
+    // console.log(allTaskCount);
+    // console.log(lastTasksData);
+
+    // card total de certificações
+    // card total de tasks
+    // card
+    // grafico de barra agregado de tasks por status e certificação
+    // um grafico de pizza das certificações por status
+    // tabela com ultimas 5 tasks e suas infos
 
     // const createdData = data.map((data) => data.createdAt);
     // const certificationData = data.map((data) => data.createdAt);
-
-    console.log(req.data.certificationData);
 
     // const numCertifications = mockCertificationData.length;
 
@@ -752,26 +922,39 @@ export default async function Page() {
                     <Greetings name="Gustavo" />
                 </Suspense>
 
-                {/* Componentizar Card */}
-                <div className="flex gap-2 w-full">
-                    <Card className="flex-1">
-                        <CardHeader>Total de Certificações</CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">
-                                {/* {numCertifications} */}
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card className="flex-1">
-                        <CardHeader>Total de Tasks</CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">
-                                {/* {numCertifications} */}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                <div className="space-y-4">
+                    <div className="flex gap-2">
+                        {/* Componentizar Card */}
+                        <Card className="flex-1">
+                            <CardHeader>Total de Certificações</CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">
+                                    {certificationCountData}
+                                </div>
+                            </CardContent>
+                        </Card>
+                        <Card className="flex-1">
+                            <CardHeader>Total de Tasks</CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">
+                                    {allTaskCount}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
 
+                    <div className="w-full items-center flex gap-4">
+                        {/* <p>grafico</p> */}
+                        <BarChart taskCount={taskCount} />
+                        <p>pizza</p>
+                    </div>
+
+                    <div className="flex flex-col">
+                        {lastTasksData.map((data) => (
+                            <p key={data.id}>{data.name}</p>
+                        ))}
+                    </div>
+                </div>
                 {/* <div>{numTasks} tasks</div>
                 <div>{numTasksCompleted} tasks</div> */}
             </div>
