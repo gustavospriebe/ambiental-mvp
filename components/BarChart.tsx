@@ -35,7 +35,7 @@ const BarChart = ({ taskCount }: BarChartProps) => {
         plugins: {
             title: {
                 display: true,
-                text: "Chart.js Bar Chart - Stacked",
+                text: "Status das tasks por Certificação",
             },
         },
         responsive: true,
@@ -78,7 +78,8 @@ const BarChart = ({ taskCount }: BarChartProps) => {
         datasets: datasets,
     };
 
-    return <Bar options={options} data={data} />;
+    return <Bar options={options} data={data}
+    />;
 };
 
 const getBackgroundColor = (status: string) => {

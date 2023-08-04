@@ -2,7 +2,7 @@ import LogOutButton from "./LogOutButton";
 
 const Sidebar = () => {
     return (
-        <div className="md:flex hidden overflow-hidden w-72 bg-white">
+        <div className="md:flex hidden w-72 bg-white">
             <div className="flex flex-col w-full">
                 <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r">
                     <div className="flex flex-col flex-shrink-0 px-4">

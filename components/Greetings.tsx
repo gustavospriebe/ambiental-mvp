@@ -4,7 +4,7 @@ interface GreetingsProps {
 
 const Greetings = async ({ name }: GreetingsProps) => {
     return (
-        <div className="w-full py-4 relative">
+        <div className=" py-4">
             <div className="mb-4">
                 <h1 className="text-3xl text-gray-700 font-bold mb-4">
                     Hello {name}

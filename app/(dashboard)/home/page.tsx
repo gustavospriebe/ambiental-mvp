@@ -859,7 +859,7 @@ const lastTasksData = [
     },
 ];
 
-const certificationCountData = 5;
+const certificationCountData = 6;
 
 export default async function Page() {
     // const session = await getServerSession(authOptions);
@@ -875,6 +875,7 @@ export default async function Page() {
     const taskCount = taskCountData.map((data) => ({
         ...data,
         _count: data._count.name,
+        certificationId: `CERTIFICAÇÃO ${data.certificationId.slice(0, 3)}`,
     }));
 
     const allTaskCount = taskCount.reduce(
@@ -882,37 +883,16 @@ export default async function Page() {
         0
     );
 
-    // Deletar dps, nao precisa dessa variavel se ja tem
-    // const allCertificationCount = certificationCountData
-
     // console.log(taskCount);
     // console.log(allTaskCount);
     // console.log(lastTasksData);
 
-    // card total de certificações
-    // card total de tasks
+    // card total de certificações - ok
+    // card total de tasks - ok
     // card
-    // grafico de barra agregado de tasks por status e certificação
+    // grafico de barra agregado de tasks por status e certificação - ok
     // um grafico de pizza das certificações por status
     // tabela com ultimas 5 tasks e suas infos
-
-    // const createdData = data.map((data) => data.createdAt);
-    // const certificationData = data.map((data) => data.createdAt);
-
-    // const numCertifications = mockCertificationData.length;
-
-    // const numTasks = mockTaskData.length;
-
-    // const numTasksCompleted = mockTaskData.filter(
-    //     (data) => data.status === "COMPLETED"
-    // ).length;
-
-    // const teste = mockTaskData.map((data) => [
-    //     data.status,
-    //     data.certificationId,
-    // ]);
-
-    // console.log(teste);
 
     return (
         <div className="flex h-screen w-full bg-red-50">
@@ -921,9 +901,8 @@ export default async function Page() {
                     {/* <Greetings name={session!.user!.name} /> */}
                     <Greetings name="Gustavo" />
                 </Suspense>
-
                 <div className="space-y-4">
-                    <div className="flex gap-2">
+                    <div className="md:flex space-y-4 md:space-y-0 md:gap-2">
                         {/* Componentizar Card */}
                         <Card className="flex-1">
                             <CardHeader>Total de Certificações</CardHeader>
@@ -945,8 +924,12 @@ export default async function Page() {
 
                     <div className="w-full items-center flex gap-4">
                         {/* <p>grafico</p> */}
-                        <BarChart taskCount={taskCount} />
-                        <p>pizza</p>
+                        <Card className="w-full">
+                            <CardContent>
+                                <BarChart taskCount={taskCount} />
+                            </CardContent>
+                        </Card>
+                        <p className="w-64">pizza</p>
                     </div>
 
                     <div className="flex flex-col">
