@@ -15,7 +15,7 @@ export async function GET(req: Request, res: NextResponse) {
 
     const certificationData = await db.certification.findMany({
         where: { companyId: sessionId },
-        select: { id: true, name: true, status: true },
+        select: { id: true, name: true, status: true, due: true },
     });
 
     const taskCountData = await db.task.groupBy({

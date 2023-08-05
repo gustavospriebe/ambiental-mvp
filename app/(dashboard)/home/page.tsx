@@ -160,36 +160,43 @@ const certificationData = [
         id: "e7b8a1cd-678d-450f-b5eb-2297ca4b0c49",
         name: "Certification 0",
         status: "NOT_STARTED",
+        due: "2023-11-17T03:00:00.000Z",
     },
     {
         id: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3",
         name: "Certification 1",
         status: "NOT_STARTED",
+        due: "2023-11-17T03:00:00.000Z",
     },
     {
         id: "1b919aea-823e-42b2-ace1-3360b41f2d52",
         name: "Certification 2",
-        status: "COMPLETED",
+        status: "NOT_STARTED",
+        due: "2023-11-17T03:00:00.000Z",
     },
     {
         id: "f4348674-6fcc-479b-b374-bdd3cd94ddad",
         name: "Certification 3",
         status: "NOT_STARTED",
+        due: "2023-11-17T03:00:00.000Z",
     },
     {
         id: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
         name: "Certification 4",
-        status: "COMPLETED",
+        status: "NOT_STARTED",
+        due: "2023-11-17T03:00:00.000Z",
     },
     {
         id: "94a7cb62-a399-4f24-836f-155e8634fc77",
         name: "teste",
-        status: "STARTED",
+        status: "NOT_STARTED",
+        due: null,
     },
     {
         id: "a4e67efe-d62b-41cf-b441-cbdc0de92c38",
         name: "teste2",
         status: "NOT_STARTED",
+        due: null,
     },
 ];
 
@@ -205,7 +212,8 @@ export default async function Page() {
     // console.log(req.data.certificationData);
 
     const certificationCount = certificationData.length;
-
+    const certificationDue = certificationData;
+    console.log(certificationDue);
     const certificationGraph = certificationData.map((cert) => ({
         ...cert,
         status:
@@ -255,6 +263,14 @@ export default async function Page() {
                     <div className="md:flex space-y-4 md:space-y-0 md:gap-2">
                         {/* Componentizar Card */}
                         <Card className="flex-1">
+                            <CardHeader>Total de Tasks</CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">
+                                    {allTaskCount}
+                                </div>
+                            </CardContent>
+                        </Card>
+                        <Card className="flex-1">
                             <CardHeader>Total de Certificações</CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
@@ -263,10 +279,12 @@ export default async function Page() {
                             </CardContent>
                         </Card>
                         <Card className="flex-1">
-                            <CardHeader>Total de Tasks</CardHeader>
+                            <CardHeader>
+                                Próxima data de Vencimento de Certificação{" "}
+                            </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
-                                    {allTaskCount}
+                                    {certificationCount}
                                 </div>
                             </CardContent>
                         </Card>

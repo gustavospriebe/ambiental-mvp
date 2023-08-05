@@ -42,9 +42,15 @@ const BarChart = ({ taskData }: BarChartProps) => {
         scales: {
             x: {
                 stacked: true,
+                grid: {
+                    display: false,
+                },
             },
             y: {
                 stacked: true,
+                grid: {
+                    display: false,
+                },
             },
         },
     };
