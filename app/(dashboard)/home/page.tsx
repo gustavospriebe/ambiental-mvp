@@ -1,13 +1,13 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Greetings from "@/components/Greetings";
 import GreetingsSkeleton from "@/components/GreetingsSkeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Certification } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { Suspense } from "react";
-import axios from "axios";
 import BarChart from "@/components/charts/BarChart";
 import DonutChart from "@/components/charts/DonutChart";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import dayjs from "dayjs";
+import ptBr from "dayjs/locale/pt-br";
+import { Suspense } from "react";
+
+dayjs.locale(ptBr);
 
 const taskCountData = [
     {
@@ -212,8 +212,11 @@ export default async function Page() {
     // console.log(req.data.certificationData);
 
     const certificationCount = certificationData.length;
-    const certificationDue = certificationData;
-    console.log(certificationDue);
+    const certificationDue = dayjs(
+        //@ts-expect-error
+        new Date(Math.max(...certificationData.map((x) => new Date(x.due))))
+    ).format("D[ / ]MM[ / ]YYYY");
+
     const certificationGraph = certificationData.map((cert) => ({
         ...cert,
         status:
@@ -239,17 +242,6 @@ export default async function Page() {
 
     const allTaskCount = taskData.reduce((acc, task) => (acc += task.count), 0);
 
-    // console.log(certificationData);
-
-    // console.log(taskCount);
-    // console.log(allTaskCount);
-    // console.log(lastTasksData);
-
-    // card total de certificações - ok
-    // card total de tasks - ok
-    // card
-    // grafico de barra agregado de tasks por status e certificação - ok
-    // um grafico de pizza das certificações por status
     // tabela com ultimas 5 tasks e suas infos
 
     return (
@@ -280,11 +272,11 @@ export default async function Page() {
                         </Card>
                         <Card className="flex-1">
                             <CardHeader>
-                                Próxima data de Vencimento de Certificação{" "}
+                                Vencimento próxima Certificação
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
-                                    {certificationCount}
+                                    {certificationDue}
                                 </div>
                             </CardContent>
                         </Card>
