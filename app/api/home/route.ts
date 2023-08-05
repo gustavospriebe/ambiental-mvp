@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+interface certificationCountData {}
+
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
     const sessionId = req.headers.get("session-id");
@@ -11,12 +13,13 @@ export async function GET(req: Request, res: NextResponse) {
         });
     }
 
-    const certificationCountData = await db.certification.count({
+    const certificationData = await db.certification.findMany({
         where: { companyId: sessionId },
+        select: { id: true, name: true, status: true },
     });
 
     const taskCountData = await db.task.groupBy({
-        by: ["status", 'certificationId'],
+        by: ["status", "certificationId"],
         where: { companyId: sessionId },
         _count: { name: true },
     });
@@ -29,7 +32,7 @@ export async function GET(req: Request, res: NextResponse) {
 
     return NextResponse.json({
         taskCountData,
-        certificationCountData,
+        certificationData,
         lastTasksData,
     });
 }

@@ -1,13 +1,13 @@
 "use client";
 
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
     BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
     Title,
     Tooltip,
-    Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
@@ -21,16 +21,16 @@ ChartJS.register(
 );
 
 interface Task {
-    _count: number;
+    count: number;
     status: string;
-    certificationId: string;
+    certification: string;
 }
 
 interface BarChartProps {
-    taskCount: Task[];
+    taskData: Task[];
 }
 
-const BarChart = ({ taskCount }: BarChartProps) => {
+const BarChart = ({ taskData }: BarChartProps) => {
     const options = {
         plugins: {
             title: {
@@ -49,26 +49,20 @@ const BarChart = ({ taskCount }: BarChartProps) => {
         },
     };
 
-    const labels = [
-        ...new Set(
-            taskCount.map(
-                (data: { certificationId: string }) => data.certificationId
-            )
-        ),
-    ];
+    const labels = [...new Set(taskData.map((data) => data.certification))];
 
-    const statusTypes = [...new Set(taskCount.map((task) => task.status))];
+    const statusTypes = [...new Set(taskData.map((task) => task.status))];
 
     const datasets = statusTypes.map((status) => ({
         label: status,
         data: labels.map((certificationId) =>
-            taskCount
+            taskData
                 .filter(
                     (task) =>
-                        task.certificationId === certificationId &&
+                        task.certification === certificationId &&
                         task.status === status
                 )
-                .reduce((sum, task) => sum + task._count, 0)
+                .reduce((sum, task) => sum + task.count, 0)
         ),
         backgroundColor: getBackgroundColor(status),
     }));
@@ -78,20 +72,19 @@ const BarChart = ({ taskCount }: BarChartProps) => {
         datasets: datasets,
     };
 
-    return <Bar options={options} data={data}
-    />;
+    return <Bar options={options} data={data} />;
 };
 
 const getBackgroundColor = (status: string) => {
     switch (status) {
-        case "COMPLETED":
-            return "rgba(75, 192, 192, 0.6)";
-        case "STARTED":
-            return "rgba(255, 159, 64, 0.6)";
-        case "NOT_STARTED":
-            return "rgba(255, 99, 132, 0.6)";
+        case "Completo":
+            return "rgba(75, 192, 192, 1)";
+        case "Em andamento":
+            return "rgba(255, 159, 64, 1)";
+        case "Não iniciado":
+            return "rgba(255, 99, 132, 1)";
         default:
-            return "rgba(0, 0, 0, 0.6)";
+            return "rgba(0, 0, 0, 1)";
     }
 };
 
