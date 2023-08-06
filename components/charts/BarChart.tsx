@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
     BarElement,
     CategoryScale,
@@ -10,6 +11,7 @@ import {
     Tooltip,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { Card, CardContent } from "../ui/card";
 
 ChartJS.register(
     CategoryScale,
@@ -26,11 +28,11 @@ interface Task {
     certification: string;
 }
 
-interface BarChartProps {
+interface BarChartProps extends React.HTMLAttributes<HTMLElement> {
     taskData: Task[];
 }
 
-const BarChart = ({ taskData }: BarChartProps) => {
+const BarChart = ({ taskData, className }: BarChartProps) => {
     const options = {
         plugins: {
             title: {
@@ -78,7 +80,13 @@ const BarChart = ({ taskData }: BarChartProps) => {
         datasets: datasets,
     };
 
-    return <Bar options={options} data={data} />;
+    return (
+        <Card className={cn("w-full h-full", className)}>
+            <CardContent>
+                <Bar options={options} data={data} />
+            </CardContent>
+        </Card>
+    );
 };
 
 const getBackgroundColor = (status: string) => {

@@ -1,16 +1,13 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Greetings from "@/components/dashboard/home/Greetings";
-import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
 import BarChart from "@/components/charts/BarChart";
 import DonutChart from "@/components/charts/DonutChart";
+import Greetings from "@/components/dashboard/home/Greetings";
+import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { maxDate } from "@/lib/date";
 import axios from "axios";
-import dayjs from "dayjs";
-import ptBr from "dayjs/locale/pt-br";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
-
-dayjs.locale(ptBr);
 
 const taskCountData = [
     {
@@ -204,21 +201,18 @@ const certificationData = [
 ];
 
 export default async function Page() {
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
 
-    const req = await axios.get("http://localhost:3000/api/home", {
-        headers: { "session-id": session?.user.id },
-    });
+    // const req = await axios.get("http://localhost:3000/api/home", {
+    //     headers: { "session-id": session?.user.id },
+    // });
 
-    const { taskCountData, certificationData, lastTasksData } = req.data;
+    // const { taskCountData, certificationData, lastTasksData } = req.data;
 
-    console.log(req.data);
+    // console.log(req.data);
 
     const certificationCount = certificationData.length;
-    const certificationDue = dayjs(
-        //@ts-expect-error
-        new Date(Math.max(...certificationData.map((x) => new Date(x.due))))
-    ).format("D[ / ]MM[ / ]YYYY");
+    const maxCertificationDue = maxDate(certificationData.map((x) => x?.due));
 
     const certificationGraph = certificationData.map(
         (cert: { status: string }) => ({
@@ -291,9 +285,7 @@ export default async function Page() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        {certificationDue === "Invalid Date"
-                                            ? "Sem novas datas"
-                                            : certificationDue}
+                                        {maxCertificationDue}
                                     </div>
                                 </CardContent>
                             </Card>
@@ -301,18 +293,13 @@ export default async function Page() {
 
                         <div className="w-full items-center flex gap-4">
                             {/* <p>grafico</p> */}
-                            <Card className="w-full h-full">
-                                <CardContent>
-                                    <BarChart taskData={taskData} />
-                                </CardContent>
-                            </Card>
-                            <Card className="w-full h-full flex-1">
-                                <CardContent>
-                                    <DonutChart
-                                        certificationGraph={certificationGraph}
-                                    />
-                                </CardContent>
-                            </Card>
+
+                            <BarChart className="" taskData={taskData} />
+
+                            <DonutChart
+                                className="flex-1"
+                                certificationGraph={certificationGraph}
+                            />
                         </div>
 
                         <div className="flex flex-col">

@@ -2,6 +2,9 @@
 
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
+import { Card, CardContent } from "../ui/card";
+import { cn } from "@/lib/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -9,11 +12,11 @@ interface Task {
     status: string;
 }
 
-interface DonutChartProps {
+interface DonutChartProps extends React.HTMLAttributes<HTMLElement> {
     certificationGraph: Task[];
 }
 
-const DonutChart = ({ certificationGraph }: DonutChartProps) => {
+const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
     const options = {
         plugins: {
             title: {
@@ -50,7 +53,13 @@ const DonutChart = ({ certificationGraph }: DonutChartProps) => {
         datasets: datasets,
     };
 
-    return <Doughnut data={data} options={options} />;
+    return (
+        <Card className={cn("w-full h-full", className)}>
+            <CardContent>
+                <Doughnut data={data} options={options} />
+            </CardContent>
+        </Card>
+    );
 };
 
 export default DonutChart;
