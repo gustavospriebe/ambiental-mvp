@@ -1,14 +1,14 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Greetings from "@/components/Greetings";
-import GreetingsSkeleton from "@/components/GreetingsSkeleton";
+import Greetings from "@/components/dashboard/home/Greetings";
+import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
 import BarChart from "@/components/charts/BarChart";
 import DonutChart from "@/components/charts/DonutChart";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import axios from "axios";
 import dayjs from "dayjs";
 import ptBr from "dayjs/locale/pt-br";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
-import axios from "axios";
 
 dayjs.locale(ptBr);
 
@@ -203,40 +203,6 @@ const certificationData = [
     },
 ];
 
-interface taskCountDataProps {
-    taskCountData: {
-        _count: {
-            name: number;
-        };
-        status: string;
-        certificationId: string;
-    }[];
-}
-
-interface certificationDataProps {
-    certificationData: {
-        id: string;
-        name: string;
-        status: string;
-        due: string;
-    }[];
-}
-
-interface lastTasksDataProps {
-    lastTasksData: {
-        id: string;
-        createdAt: string;
-        updatedAt: string;
-        status: string;
-        name: string;
-        description: null;
-        due: null;
-        deleted: boolean;
-        certificationId: string;
-        companyId: string;
-    }[];
-}
-
 export default async function Page() {
     const session = await getServerSession(authOptions);
 
@@ -244,11 +210,7 @@ export default async function Page() {
         headers: { "session-id": session?.user.id },
     });
 
-    const {
-        taskCountData: taskCountDataProps,
-        certificationData: certificationDataProps,
-        lastTasksData: lastTasksDataProps,
-    } = req.data;
+    const { taskCountData, certificationData, lastTasksData } = req.data;
 
     console.log(req.data);
 
@@ -258,30 +220,41 @@ export default async function Page() {
         new Date(Math.max(...certificationData.map((x) => new Date(x.due))))
     ).format("D[ / ]MM[ / ]YYYY");
 
-    const certificationGraph = certificationData.map((cert) => ({
-        ...cert,
-        status:
-            cert.status === "COMPLETED"
-                ? "Completo"
-                : cert.status === "STARTED"
-                ? "Em andamento"
-                : "Não iniciado",
-    }));
+    const certificationGraph = certificationData.map(
+        (cert: { status: string }) => ({
+            ...cert,
+            status:
+                cert.status === "COMPLETED"
+                    ? "Completo"
+                    : cert.status === "STARTED"
+                    ? "Em andamento"
+                    : "Não iniciado",
+        })
+    );
 
-    const taskData = taskCountData.map((task) => ({
-        count: task._count.name,
-        certification: certificationData.find(
-            (cert) => cert.id === task.certificationId
-        )!.name,
-        status:
-            task.status === "COMPLETED"
-                ? "Completo"
-                : task.status === "STARTED"
-                ? "Em andamento"
-                : "Não iniciado",
-    }));
+    const taskData = taskCountData.map(
+        (task: {
+            _count: { name: any };
+            certificationId: string;
+            status: string;
+        }) => ({
+            count: task._count.name,
+            certification: certificationData.find(
+                (cert: { id: string }) => cert.id === task.certificationId
+            )!.name,
+            status:
+                task.status === "COMPLETED"
+                    ? "Completo"
+                    : task.status === "STARTED"
+                    ? "Em andamento"
+                    : "Não iniciado",
+        })
+    );
 
-    const allTaskCount = taskData.reduce((acc, task) => (acc += task.count), 0);
+    const allTaskCount = taskData.reduce(
+        (acc: number, task: { count: number }) => (acc += task.count),
+        0
+    );
 
     // tabela com ultimas 5 tasks e suas infos
 
@@ -292,61 +265,70 @@ export default async function Page() {
                     {/* <Greetings name={session!.user!.name} /> */}
                     <Greetings name="Gustavo" />
                 </Suspense>
-                <div className="space-y-4">
-                    <div className="md:flex space-y-4 md:space-y-0 md:gap-2">
-                        {/* Componentizar Card */}
-                        <Card className="flex-1">
-                            <CardHeader>Total de Tasks</CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">
-                                    {allTaskCount}
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <Card className="flex-1">
-                            <CardHeader>Total de Certificações</CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">
-                                    {certificationCount}
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <Card className="flex-1">
-                            <CardHeader>
-                                Vencimento próxima Certificação
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">
-                                    {certificationDue}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
+                {certificationData.length ? (
+                    <div className="space-y-4">
+                        <div className="md:flex space-y-4 md:space-y-0 md:gap-2">
+                            {/* Componentizar Card */}
+                            <Card className="flex-1">
+                                <CardHeader>Total de Tasks</CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">
+                                        {allTaskCount}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                            <Card className="flex-1">
+                                <CardHeader>Total de Certificações</CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">
+                                        {certificationCount}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                            <Card className="flex-1">
+                                <CardHeader>
+                                    Vencimento próxima Certificação
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">
+                                        {certificationDue === "Invalid Date"
+                                            ? "Sem novas datas"
+                                            : certificationDue}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
 
-                    <div className="w-full items-center flex gap-4">
-                        {/* <p>grafico</p> */}
-                        <Card className="w-full h-full">
-                            <CardContent>
-                                <BarChart taskData={taskData} />
-                            </CardContent>
-                        </Card>
-                        <Card className="w-full h-full flex-1">
-                            <CardContent>
-                                <DonutChart
-                                    certificationGraph={certificationGraph}
-                                />
-                            </CardContent>
-                        </Card>
-                    </div>
+                        <div className="w-full items-center flex gap-4">
+                            {/* <p>grafico</p> */}
+                            <Card className="w-full h-full">
+                                <CardContent>
+                                    <BarChart taskData={taskData} />
+                                </CardContent>
+                            </Card>
+                            <Card className="w-full h-full flex-1">
+                                <CardContent>
+                                    <DonutChart
+                                        certificationGraph={certificationGraph}
+                                    />
+                                </CardContent>
+                            </Card>
+                        </div>
 
-                    <div className="flex flex-col">
-                        {lastTasksData.map((data) => (
-                            <p key={data.id}>{data.name}</p>
-                        ))}
+                        <div className="flex flex-col">
+                            {/* @ts-ignore */}
+                            {lastTasksData.map((data) => (
+                                <p key={data.id}>{data.name}</p>
+                            ))}
+                        </div>
                     </div>
-                </div>
-                {/* <div>{numTasks} tasks</div>
-                <div>{numTasksCompleted} tasks</div> */}
+                ) : (
+                    // refazer dps quando tiver comandos
+                    <div>
+                        <p>Você não tem nenhuma certificação ativa.</p>
+                        <p>Crie uma certificação.</p>
+                    </div>
+                )}
             </div>
         </div>
     );

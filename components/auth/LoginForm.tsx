@@ -21,36 +21,22 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import LinkComp from "./Link";
+import LinkComp from "../Link";
 
-const formSchema = z
-    .object({
-        companyName: z
-            .string({ required_error: "Digite o nome da empresa." })
-            .min(2, { message: "Deve ter 2 ou mais caracteres." }),
-        email: z.string().email({ message: "Email inválido" }),
-        password: z
-            .string()
-            .min(5, { message: "Deve ter 5 ou mais caracteres." }),
-        confirm: z
-            .string()
-            .min(5, { message: "Deve ter 5 ou mais caracteres." }),
-    })
-    .refine((data) => data.password === data.confirm, {
-        message: "Senha não coincide, tente novamente.",
-        path: ["confirm"],
-    });
+const formSchema = z.object({
+    email: z.string().email({ message: "Email inválido" }),
+    password: z.string().min(5, { message: "Deve ter 5 ou mais caracteres." }),
+});
 
-const SignupForm = () => {
+const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState("");
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            companyName: "",
             email: "",
             password: "",
-            confirm: "",
         },
     });
 
@@ -58,16 +44,19 @@ const SignupForm = () => {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            setIsLoading(!isLoading);
+            setIsLoading(true);
             const res = await signIn("credentials", {
-                name: values.companyName,
                 email: values.email,
                 password: values.password,
                 redirect: false,
             });
+            if (res?.error) {
+                setIsError(res.error);
+                form.reset();
+            }
 
             console.log(res);
-            if (res?.error === null) router.replace("/login");
+            if (res?.error === null) router.replace("/home");
         } catch (error) {
             console.error("Erro no envio da requisição:", error);
         } finally {
@@ -78,36 +67,25 @@ const SignupForm = () => {
     return (
         <div className="m-auto w-3/4 sm:w-2/3 lg:w-full px-4 py-10 lg:py-5 lg:px-20 xl:px-24 sm:px-6">
             <ForwardOutlined rotate={270} style={{ fontSize: "40px" }} />
-            <h2 className="mt-4 text-3xl font-extrabold text-gray-900">
-                Crie uma Conta
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+                Acesse sua conta
             </h2>
-            <p className="mt-2 text-sm mb-6">
+            <p className="mt-2 text-sm mb-8">
                 Ou{" "}
                 <LinkComp
                     className="text-red-600 hover:text-red-900"
-                    href="/login"
+                    href="register"
                 >
-                    acesse sua conta
+                    crie uma nova conta
                 </LinkComp>
             </p>
+
+            {/* componentizar o form de forma a passar a prop pra dizer se é LOGIN ou REGISTRO */}
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-4"
                 >
-                    <FormField
-                        control={form.control}
-                        name="companyName"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Nome da Empresa</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
                     <FormField
                         control={form.control}
                         name="email"
@@ -126,38 +104,39 @@ const SignupForm = () => {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Senha</FormLabel>
+                                <div className="flex items-center justify-between">
+                                    <FormLabel>Senha</FormLabel>
+                                    <LinkComp
+                                        className="text-red-600 text-sm hover:text-red-900"
+                                        href="register"
+                                    >
+                                        Esqueceu a senha?
+                                    </LinkComp>
+                                </div>
                                 <FormControl>
                                     <Input type="password" {...field} />
                                 </FormControl>
+
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="confirm"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Confirmar senha</FormLabel>
-                                <FormControl>
-                                    <Input type="password" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+
                     {isLoading ? (
                         <Button className="w-full" type="submit">
                             <LoadingOutlined style={{ fontSize: "20px" }} />
                         </Button>
                     ) : (
-                        <Button className="w-full" type="submit">
-                            Cadastrar
-                        </Button>
+                        <>
+                            {" "}
+                            <Button className="w-full" type="submit">
+                                Entrar
+                            </Button>
+                        </>
                     )}
                 </form>
             </Form>
+            {isError && <h1 className="mt-2">{isError}</h1>}
             {isLoading ? (
                 <Button
                     variant="secondary"
@@ -181,4 +160,4 @@ const SignupForm = () => {
     );
 };
 
-export default SignupForm;
+export default LoginForm;

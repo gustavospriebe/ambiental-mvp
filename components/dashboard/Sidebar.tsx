@@ -1,4 +1,4 @@
-import LogOutButton from "./LogOutButton";
+import LogOutButton from "../auth/LogOutButton";
 
 const Sidebar = () => {
     return (

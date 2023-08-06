@@ -1,8 +1,6 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-interface certificationCountData {}
-
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
     const sessionId = req.headers.get("session-id");
