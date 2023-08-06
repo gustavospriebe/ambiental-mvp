@@ -12,6 +12,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Card, CardContent } from "../ui/card";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 
 ChartJS.register(
     CategoryScale,
@@ -19,7 +21,8 @@ ChartJS.register(
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    ChartDataLabels
 );
 
 interface Task {
@@ -47,6 +50,7 @@ const BarChart = ({ taskData, className }: BarChartProps) => {
         maintainAspectRatio: false,
         scales: {
             x: {
+                ticks: {},
                 stacked: true,
                 grid: {
                     display: false,
@@ -85,7 +89,7 @@ const BarChart = ({ taskData, className }: BarChartProps) => {
     };
 
     return (
-        <Card className={cn("h-96 w-full", className)}>
+        <Card className={cn("h-[440px] sm:h-96 w-full", className)}>
             <CardContent className="p-4 h-full items-center flex relative">
                 <Bar options={options} data={data} />
             </CardContent>

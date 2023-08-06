@@ -1,14 +1,13 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import BarChart from "@/components/datavis/BarChart";
-import DonutChart from "@/components/datavis/DonutChart";
 import Greetings from "@/components/dashboard/home/Greetings";
 import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import BarChart from "@/components/datavis/BarChart";
+import DonutChart from "@/components/datavis/DonutChart";
+import Indicator from "@/components/datavis/Indicator";
 import { maxDate } from "@/lib/date";
+import { Suspense } from "react";
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { Suspense } from "react";
-import Indicator from "@/components/datavis/Indicator";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const taskCountData = [
     {
@@ -160,13 +159,13 @@ const certificationData = [
     {
         id: "e7b8a1cd-678d-450f-b5eb-2297ca4b0c49",
         name: "Certification 0",
-        status: "NOT_STARTED",
+        status: "STARTED",
         due: "2023-11-17T03:00:00.000Z",
     },
     {
         id: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3",
         name: "Certification 1",
-        status: "NOT_STARTED",
+        status: "COMPLETED",
         due: "2023-11-17T03:00:00.000Z",
     },
     {
@@ -254,9 +253,10 @@ export default async function Page() {
     // tabela com ultimas 5 tasks e suas infos
 
     return (
-        <div className="flex md:h-full w-full ml-56 bg-red-50">
+        <div className="flex md:h-full w-full md:ml-56 bg-red-50">
             <div className="md:m-10 m-5 w-full">
                 <Suspense fallback={<GreetingsSkeleton />}>
+                    {/* <Greetings name={session!.user!.name} /> */}
                     <Greetings name="Gustavo" />
                 </Suspense>
                 {certificationData.length ? (

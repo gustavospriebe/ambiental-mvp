@@ -45,9 +45,9 @@ const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
                         .length
             ),
             backgroundColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(75, 192, 192, 1)",
                 "rgba(255, 159, 64, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(255, 99, 132, 1)",
             ],
         },
     ];
@@ -57,7 +57,7 @@ const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
     };
 
     return (
-        <Card className={cn("w-full h-96", className)}>
+        <Card className={cn("w-full h-[440px] sm:h-96", className)}>
             <CardContent className="p-4 h-full items-center flex relative">
                 <Doughnut data={data} options={options} />
             </CardContent>
