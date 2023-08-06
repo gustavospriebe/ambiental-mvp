@@ -38,9 +38,13 @@ const BarChart = ({ taskData, className }: BarChartProps) => {
             title: {
                 display: true,
                 text: "Status das tasks por Certificação",
+                font: {
+                    size: 16,
+                },
             },
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: true,
@@ -81,8 +85,8 @@ const BarChart = ({ taskData, className }: BarChartProps) => {
     };
 
     return (
-        <Card className={cn("w-full h-full", className)}>
-            <CardContent>
+        <Card className={cn("h-96 w-full", className)}>
+            <CardContent className="p-4 h-full items-center flex relative">
                 <Bar options={options} data={data} />
             </CardContent>
         </Card>

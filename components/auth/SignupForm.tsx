@@ -10,11 +10,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-    ForwardOutlined,
-    GoogleOutlined,
-    LoadingOutlined,
-} from "@ant-design/icons";
+import { GoogleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -22,6 +18,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import LinkComp from "../Link";
+import Logo from "../Logo";
 
 const formSchema = z
     .object({
@@ -77,7 +74,7 @@ const SignupForm = () => {
 
     return (
         <div className="m-auto w-3/4 sm:w-2/3 lg:w-full px-4 py-10 lg:py-5 lg:px-20 xl:px-24 sm:px-6">
-            <ForwardOutlined rotate={270} style={{ fontSize: "40px" }} />
+            <Logo />
             <h2 className="mt-4 text-3xl font-extrabold text-gray-900">
                 Crie uma Conta
             </h2>

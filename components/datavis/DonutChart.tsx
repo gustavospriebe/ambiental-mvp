@@ -1,10 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { Bar } from "react-chartjs-2";
 import { Card, CardContent } from "../ui/card";
-import { cn } from "@/lib/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -22,9 +21,13 @@ const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
             title: {
                 display: true,
                 text: "Status das Certificações",
+                font: {
+                    size: 16,
+                },
             },
         },
         responsive: true,
+        maintainAspectRatio: false,
     };
 
     const labels = [
@@ -54,8 +57,8 @@ const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
     };
 
     return (
-        <Card className={cn("w-full h-full", className)}>
-            <CardContent>
+        <Card className={cn("w-full h-96", className)}>
+            <CardContent className="p-4 h-full items-center flex relative">
                 <Doughnut data={data} options={options} />
             </CardContent>
         </Card>

@@ -1,30 +1,13 @@
+import Logo from "../Logo";
 import LogOutButton from "../auth/LogOutButton";
 
 const Sidebar = () => {
     return (
-        <div className="md:flex hidden w-72 bg-white">
+        <div className="md:flex hidden w-56 h-screen fixed top-0 bg-white">
             <div className="flex flex-col w-full">
                 <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r">
-                    <div className="flex flex-col flex-shrink-0 px-4">
-                        <a
-                            className="text-lg font-semibold tracking-tighter text-black focus:outline-none focus:ring "
-                            href="/"
-                        >
-                            <span className="inline-flex items-center gap-2">
-                                <svg
-                                    className="w-5 h-5 mx-auto"
-                                    viewBox="0 0 232 232"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M166.524 51.4683L116.367 101.625L65.5235 51.4683L116.367 0.62434L166.524 51.4683ZM231.11 116.054L180.953 166.898L130.796 116.054L180.953 65.8969L231.11 116.054ZM101.939 116.054L51.0948 166.898L0.250934 116.054L51.0948 65.8969L101.939 116.054ZM166.524 181.326L116.367 231.483L65.5235 181.326L116.367 130.482L166.524 181.326Z"
-                                        fill="#0c0c0c"
-                                    ></path>
-                                </svg>
-                                windstatic
-                            </span>{" "}
-                        </a>
+                    <div className="flex items-start flex-col flex-shrink-0 px-4">
+                        <Logo />
                         <button className="hidden rounded-lg focus:outline-none focus:shadow-outline">
                             <svg
                                 fill="currentColor"

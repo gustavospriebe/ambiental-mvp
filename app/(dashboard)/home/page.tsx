@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import BarChart from "@/components/charts/BarChart";
-import DonutChart from "@/components/charts/DonutChart";
+import BarChart from "@/components/datavis/BarChart";
+import DonutChart from "@/components/datavis/DonutChart";
 import Greetings from "@/components/dashboard/home/Greetings";
 import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { maxDate } from "@/lib/date";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
+import Indicator from "@/components/datavis/Indicator";
 
 const taskCountData = [
     {
@@ -253,55 +254,35 @@ export default async function Page() {
     // tabela com ultimas 5 tasks e suas infos
 
     return (
-        <div className="flex h-screen w-full bg-red-50">
-            <div className="m-10 w-full">
+        <div className="flex md:h-full w-full ml-56 bg-red-50">
+            <div className="md:m-10 m-5 w-full">
                 <Suspense fallback={<GreetingsSkeleton />}>
-                    {/* <Greetings name={session!.user!.name} /> */}
                     <Greetings name="Gustavo" />
                 </Suspense>
                 {certificationData.length ? (
                     <div className="space-y-4">
-                        <div className="md:flex space-y-4 md:space-y-0 md:gap-2">
-                            {/* Componentizar Card */}
-                            <Card className="flex-1">
-                                <CardHeader>Total de Tasks</CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold">
-                                        {allTaskCount}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            <Card className="flex-1">
-                                <CardHeader>Total de Certificações</CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold">
-                                        {certificationCount}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            <Card className="flex-1">
-                                <CardHeader>
-                                    Vencimento próxima Certificação
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold">
-                                        {maxCertificationDue}
-                                    </div>
-                                </CardContent>
-                            </Card>
+                        <div className="sm:flex space-y-4 sm:space-y-0 sm:gap-2">
+                            <Indicator
+                                title="Total de Tasks"
+                                data={allTaskCount}
+                            />
+                            <Indicator
+                                title="Total de Certificações"
+                                data={certificationCount}
+                            />
+                            <Indicator
+                                title="Vencimento próxima Certificação"
+                                data={maxCertificationDue}
+                            />
                         </div>
-
-                        <div className="w-full items-center flex gap-4">
-                            {/* <p>grafico</p> */}
-
+                        <div className="w-full items-center sm:flex gap-4 space-y-4 sm:space-y-0">
                             <BarChart className="" taskData={taskData} />
-
                             <DonutChart
-                                className="flex-1"
+                                className=""
                                 certificationGraph={certificationGraph}
                             />
                         </div>
-
+                        {/* Componentizar Tabela */}
                         <div className="flex flex-col">
                             {/* @ts-ignore */}
                             {lastTasksData.map((data) => (
