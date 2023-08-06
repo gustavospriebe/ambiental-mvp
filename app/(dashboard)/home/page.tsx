@@ -1,3 +1,4 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Greetings from "@/components/Greetings";
 import GreetingsSkeleton from "@/components/GreetingsSkeleton";
 import BarChart from "@/components/charts/BarChart";
@@ -5,7 +6,9 @@ import DonutChart from "@/components/charts/DonutChart";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import dayjs from "dayjs";
 import ptBr from "dayjs/locale/pt-br";
+import { getServerSession } from "next-auth";
 import { Suspense } from "react";
+import axios from "axios";
 
 dayjs.locale(ptBr);
 
@@ -200,16 +203,54 @@ const certificationData = [
     },
 ];
 
+interface taskCountDataProps {
+    taskCountData: {
+        _count: {
+            name: number;
+        };
+        status: string;
+        certificationId: string;
+    }[];
+}
+
+interface certificationDataProps {
+    certificationData: {
+        id: string;
+        name: string;
+        status: string;
+        due: string;
+    }[];
+}
+
+interface lastTasksDataProps {
+    lastTasksData: {
+        id: string;
+        createdAt: string;
+        updatedAt: string;
+        status: string;
+        name: string;
+        description: null;
+        due: null;
+        deleted: boolean;
+        certificationId: string;
+        companyId: string;
+    }[];
+}
+
 export default async function Page() {
-    // const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
-    // const req = await axios.get("http://localhost:3000/api/home", {
-    //     headers: { "session-id": session?.user.id },
-    // });
+    const req = await axios.get("http://localhost:3000/api/home", {
+        headers: { "session-id": session?.user.id },
+    });
 
-    // const { taskCountData, certificationData, lastTasksData } = req.data;
+    const {
+        taskCountData: taskCountDataProps,
+        certificationData: certificationDataProps,
+        lastTasksData: lastTasksDataProps,
+    } = req.data;
 
-    // console.log(req.data.certificationData);
+    console.log(req.data);
 
     const certificationCount = certificationData.length;
     const certificationDue = dayjs(

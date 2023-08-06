@@ -12,17 +12,7 @@ const Register = async () => {
         redirect("/home");
     }
 
-    return (
-        <div className="flex min-h-screen lg:flex-none w-full">
-            <SignupForm />
-            <Image
-                src={hero}
-                alt="hero"
-                priority
-                className="h-screen object-cover aspect-square w-full hidden lg:block"
-            />
-        </div>
-    );
+    return <SignupForm />;
 };
 
 export default Register;

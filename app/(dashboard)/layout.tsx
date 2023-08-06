@@ -2,7 +2,7 @@ import Sidebar from "@/components/Sidebar";
 
 const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="flex h-screen w-full">
+        <div className="flex">
             <Sidebar />
             {children}
         </div>
