@@ -12,8 +12,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Card, CardContent } from "../ui/card";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(
     CategoryScale,

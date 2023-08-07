@@ -1,11 +1,14 @@
-import Sidebar from "@/components/dashboard/Sidebar";
+import Navigation from "@/components/dashboard/navigation/Navigation";
+import { MobileProvider } from "@/context/MobileContext";
 
 const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="flex">
-            <Sidebar />
-            {children}
-        </div>
+        <MobileProvider>
+            <div className="flex flex-col sm:flex-row">
+                <Navigation />
+                {children}
+            </div>
+        </MobileProvider>
     );
 };
 
