@@ -212,8 +212,9 @@ export default async function Page() {
     // console.log(req.data);
 
     const certificationCount = certificationData.length;
-    const maxCertificationDue = maxDate(certificationData.map((x) => x?.due));
 
+    const maxCertificationDue = maxDate(certificationData.map((x) => x?.due));
+    
     const certificationGraph = certificationData.map(
         (cert: { status: string }) => ({
             ...cert,
@@ -228,7 +229,7 @@ export default async function Page() {
 
     const taskData = taskCountData.map(
         (task: {
-            _count: { name: any };
+            _count: { name: number };
             certificationId: string;
             status: string;
         }) => ({

@@ -17,8 +17,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import LinkComp from "../Link";
 import Logo from "../Logo";
+import LinkComp from "./Link";
 
 const formSchema = z
     .object({

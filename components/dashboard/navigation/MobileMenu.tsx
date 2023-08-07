@@ -1,3 +1,4 @@
+import LogOutButton from "@/components/LogOutButton";
 import { Separator } from "@/components/ui/separator";
 import { navConfig } from "@/config/Menu";
 import { useLockBody } from "@/hook/useLockBody";
@@ -6,9 +7,10 @@ import Link from "next/link";
 
 interface MobileMenuProps {
     setShowMobileMenu: (boolean: boolean) => void;
+    className: string;
 }
 
-const MobileMenu = ({ setShowMobileMenu }: MobileMenuProps) => {
+const MobileMenu = ({ setShowMobileMenu, className }: MobileMenuProps) => {
     useLockBody();
 
     const items = navConfig.NavMenu;
@@ -16,7 +18,7 @@ const MobileMenu = ({ setShowMobileMenu }: MobileMenuProps) => {
     return (
         <div
             className={cn(
-                "fixed inset-0 top-20 z-50 bg-red-100/60  p-6 pb-32 font-exo shadow-md animate-in slide-in-from-bottom-80 md:hidden"
+                "fixed inset-0 top-20 z-50 bg-red-100/60  p-6 pb-32 font-exo shadow-md animate-in slide-in-from-bottom-80 md:hidden", className ?? ""
             )}
         >
             <div className="relative z-20 grid gap-4 rounded-md bg-red-100 p-4 shadow-md">
@@ -37,6 +39,7 @@ const MobileMenu = ({ setShowMobileMenu }: MobileMenuProps) => {
                         </Link>
                     ))}
                 </nav>
+                <LogOutButton />
             </div>
         </div>
     );

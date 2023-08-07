@@ -88,7 +88,7 @@ const BarChart = ({ taskData, className }: BarChartProps) => {
     };
 
     return (
-        <Card className={cn("h-[440px] sm:h-96 w-full", className)}>
+        <Card className={cn("h-[440px] sm:h-96 w-full", className ?? "")}>
             <CardContent className="p-4 h-full items-center flex relative">
                 <Bar options={options} data={data} />
             </CardContent>

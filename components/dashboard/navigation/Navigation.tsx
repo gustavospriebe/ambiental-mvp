@@ -24,11 +24,9 @@ const Navigation = () => {
                     )}
                 </Button>
             </div>
-
             {showMobileMenu && (
                 <MobileMenu setShowMobileMenu={setShowMobileMenu} />
             )}
-
             <Sidebar />
         </>
     );

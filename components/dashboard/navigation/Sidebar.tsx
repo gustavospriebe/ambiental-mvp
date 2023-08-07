@@ -1,7 +1,10 @@
+import { navConfig } from "@/config/Menu";
+import LogOutButton from "../../LogOutButton";
 import Logo from "../../Logo";
-import LogOutButton from "../../auth/LogOutButton";
 
 const Sidebar = () => {
+    const items = navConfig.NavMenu;
+
     return (
         <div className="md:flex hidden w-56 h-screen fixed top-0 bg-white">
             <div className="flex flex-col w-full">

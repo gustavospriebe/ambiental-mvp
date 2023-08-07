@@ -1,7 +1,11 @@
 import Navigation from "@/components/dashboard/navigation/Navigation";
 import { MobileProvider } from "@/context/MobileContext";
 
-const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
+interface DashboardRootLayoutProps {
+    children: React.ReactNode;
+}
+
+const DashboardRootLayout = ({ children }: DashboardRootLayoutProps) => {
     return (
         <MobileProvider>
             <div className="flex flex-col md:flex-row">
