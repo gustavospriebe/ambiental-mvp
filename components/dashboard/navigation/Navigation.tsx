@@ -10,26 +10,24 @@ import MobileMenu from "./MobileMenu";
 import Sidebar from "./Sidebar";
 
 const Navigation = () => {
-    const { showMobileMenu, setShowMobileMenu } = useMobile();
+  const { showMobileMenu, setShowMobileMenu } = useMobile();
 
-    return (
-        <>
-            <div className="md:hidden flex justify-between items-center bg-red-50 p-5">
-                <Logo />
-                <Button onClick={() => setShowMobileMenu(!showMobileMenu)}>
-                    {showMobileMenu ? (
-                        <Image alt="" src={closemenu} className="h-8 w-8" />
-                    ) : (
-                        <Image alt="" src={menu} className="h-8 w-8" />
-                    )}
-                </Button>
-            </div>
-            {showMobileMenu && (
-                <MobileMenu setShowMobileMenu={setShowMobileMenu} />
-            )}
-            <Sidebar />
-        </>
-    );
+  return (
+    <>
+      <div className="flex items-center justify-between bg-red-50 p-5 md:hidden">
+        <Logo />
+        <Button onClick={() => setShowMobileMenu(!showMobileMenu)}>
+          {showMobileMenu ? (
+            <Image alt="" src={closemenu} className="h-8 w-8" />
+          ) : (
+            <Image alt="" src={menu} className="h-8 w-8" />
+          )}
+        </Button>
+      </div>
+      {showMobileMenu && <MobileMenu setShowMobileMenu={setShowMobileMenu} />}
+      <Sidebar />
+    </>
+  );
 };
 
 export default Navigation;

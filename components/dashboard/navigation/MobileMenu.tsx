@@ -8,7 +8,7 @@ import Link from "next/link";
 
 interface MobileMenuProps {
   setShowMobileMenu: (boolean: boolean) => void;
-  className: string;
+  className?: string;
 }
 
 const MobileMenu = ({ setShowMobileMenu, className }: MobileMenuProps) => {

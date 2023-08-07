@@ -2,111 +2,110 @@
 
 import { cn } from "@/lib/utils";
 import {
-    BarElement,
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    Title,
-    Tooltip,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
 } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 import { Card, CardContent } from "../ui/card";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    ChartDataLabels
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels,
 );
 
 interface Task {
-    count: number;
-    status: string;
-    certification: string;
+  count: number;
+  status: string;
+  certification: string;
 }
 
 interface BarChartProps extends React.HTMLAttributes<HTMLElement> {
-    taskData: Task[];
+  taskData: Task[];
 }
 
 const BarChart = ({ taskData, className }: BarChartProps) => {
-    const options = {
-        plugins: {
-            title: {
-                display: true,
-                text: "Status das tasks por Certificação",
-                font: {
-                    size: 16,
-                },
-            },
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: "Status das tasks por Certificação",
+        font: {
+          size: 16,
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                ticks: {},
-                stacked: true,
-                grid: {
-                    display: false,
-                },
-            },
-            y: {
-                stacked: true,
-                grid: {
-                    display: false,
-                },
-            },
+      },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {},
+        stacked: true,
+        grid: {
+          display: false,
         },
-    };
+      },
+      y: {
+        stacked: true,
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
 
-    const labels = [...new Set(taskData.map((data) => data.certification))];
+  const labels = [...new Set(taskData.map((data) => data.certification))];
 
-    const statusTypes = [...new Set(taskData.map((task) => task.status))];
+  const statusTypes = [...new Set(taskData.map((task) => task.status))];
 
-    const datasets = statusTypes.map((status) => ({
-        label: status,
-        data: labels.map((certificationId) =>
-            taskData
-                .filter(
-                    (task) =>
-                        task.certification === certificationId &&
-                        task.status === status
-                )
-                .reduce((sum, task) => sum + task.count, 0)
-        ),
-        backgroundColor: getBackgroundColor(status),
-    }));
+  const datasets = statusTypes.map((status) => ({
+    label: status,
+    data: labels.map((certificationId) =>
+      taskData
+        .filter(
+          (task) =>
+            task.certification === certificationId && task.status === status,
+        )
+        .reduce((sum, task) => sum + task.count, 0),
+    ),
+    backgroundColor: getBackgroundColor(status),
+  }));
 
-    const data = {
-        labels: labels,
-        datasets: datasets,
-    };
+  const data = {
+    labels: labels,
+    datasets: datasets,
+  };
 
-    return (
-        <Card className={cn("h-[440px] sm:h-96 w-full", className ?? "")}>
-            <CardContent className="p-4 h-full items-center flex relative">
-                <Bar options={options} data={data} />
-            </CardContent>
-        </Card>
-    );
+  return (
+    <Card className={cn("h-[440px] w-full sm:h-96", className ?? "")}>
+      <CardContent className="relative flex h-full items-center p-4">
+        <Bar options={options} data={data} />
+      </CardContent>
+    </Card>
+  );
 };
 
 const getBackgroundColor = (status: string) => {
-    switch (status) {
-        case "Completo":
-            return "rgba(75, 192, 192, 1)";
-        case "Em andamento":
-            return "rgba(255, 159, 64, 1)";
-        case "Não iniciado":
-            return "rgba(255, 99, 132, 1)";
-        default:
-            return "rgba(0, 0, 0, 1)";
-    }
+  switch (status) {
+    case "Completo":
+      return "rgba(75, 192, 192, 1)";
+    case "Em andamento":
+      return "rgba(255, 159, 64, 1)";
+    case "Não iniciado":
+      return "rgba(255, 99, 132, 1)";
+    default:
+      return "rgba(0, 0, 0, 1)";
+  }
 };
 
 export default BarChart;

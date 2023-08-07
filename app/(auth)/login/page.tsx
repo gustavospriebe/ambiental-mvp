@@ -4,13 +4,13 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 const Login = async () => {
-    const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-    if (!!session) {
-        redirect("/home");
-    }
+  if (!!session) {
+    redirect("/home");
+  }
 
-    return <LoginForm />;
+  return <LoginForm />;
 };
 
 export default Login;

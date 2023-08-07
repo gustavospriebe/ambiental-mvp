@@ -1,37 +1,35 @@
 "use client";
 
 import {
-    Dispatch,
-    SetStateAction,
-    createContext,
-    useContext,
-    useState,
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
 } from "react";
 
 interface MobileContextProps {
-    showMobileMenu: boolean;
-    setShowMobileMenu: Dispatch<SetStateAction<boolean>>;
+  showMobileMenu: boolean;
+  setShowMobileMenu: Dispatch<SetStateAction<boolean>>;
 }
 
 const MobileContext = createContext<MobileContextProps>({
-    showMobileMenu: false,
-    setShowMobileMenu: () => {},
+  showMobileMenu: false,
+  setShowMobileMenu: () => {},
 });
 
 interface MobileProviderProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const MobileProvider = ({ children }: MobileProviderProps) => {
-    const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+  const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
-    const value = { showMobileMenu, setShowMobileMenu };
+  const value = { showMobileMenu, setShowMobileMenu };
 
-    return (
-        <MobileContext.Provider value={value}>
-            {children}
-        </MobileContext.Provider>
-    );
+  return (
+    <MobileContext.Provider value={value}>{children}</MobileContext.Provider>
+  );
 };
 
 const useMobile = () => useContext(MobileContext);

@@ -1,10 +1,10 @@
 export interface NavItem {
-    title: string;
-    href: string;
-    icon?: any;
-    disabled?: boolean;
+  title: string;
+  href: string;
+  icon?: any;
+  disabled?: boolean;
 }
 
 export interface NavMenu {
-    NavMenu: NavItem[];
+  NavMenu: NavItem[];
 }
