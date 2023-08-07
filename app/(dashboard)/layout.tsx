@@ -4,7 +4,7 @@ import { MobileProvider } from "@/context/MobileContext";
 const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <MobileProvider>
-            <div className="flex flex-col sm:flex-row">
+            <div className="flex flex-col md:flex-row">
                 <Navigation />
                 {children}
             </div>

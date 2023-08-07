@@ -14,7 +14,7 @@ const Navigation = () => {
 
     return (
         <>
-            <div className="sm:hidden flex justify-between items-center bg-red-50 p-5">
+            <div className="md:hidden flex justify-between items-center bg-red-50 p-5">
                 <Logo />
                 <Button onClick={() => setShowMobileMenu(!showMobileMenu)}>
                     {showMobileMenu ? (
@@ -25,7 +25,9 @@ const Navigation = () => {
                 </Button>
             </div>
 
-            {showMobileMenu && <MobileMenu />}
+            {showMobileMenu && (
+                <MobileMenu setShowMobileMenu={setShowMobileMenu} />
+            )}
 
             <Sidebar />
         </>
