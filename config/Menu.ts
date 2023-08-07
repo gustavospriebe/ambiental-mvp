@@ -1,5 +1,9 @@
-import closemenu from "@/assets/closemenu.svg";
+import dashboard from "@/assets/dashboard.svg";
+import certification from "@/assets/certification.svg";
+import newcertification from "@/assets/newcertification.svg";
+import config from "@/assets/config.svg";
 import { NavMenu } from "@/types";
+import { DashboardOutlined } from "@ant-design/icons";
 
 export const navConfig: NavMenu = {
   NavMenu: [
@@ -7,25 +11,25 @@ export const navConfig: NavMenu = {
       title: "Dashboard",
       href: "#",
       disabled: false,
-      icon: closemenu,
+      icon: dashboard,
     },
     {
-      title: "Certificação",
+      title: "Certificações",
       href: "#",
       disabled: false,
-      icon: closemenu,
+      icon: certification,
     },
     {
-      title: "Criar nova Certificação",
+      title: "Nova Certificação",
       href: "#",
       disabled: false,
-      icon: closemenu,
+      icon: newcertification,
     },
     {
-      title: "Contato",
+      title: "Configurações",
       href: "#",
-      disabled: false,
-      icon: closemenu,
+      disabled: true,
+      icon: config,
     },
   ],
 };

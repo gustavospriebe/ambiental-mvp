@@ -1,4 +1,7 @@
 import { navConfig } from "@/config/Menu";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
 import LogOutButton from "../../LogOutButton";
 import Logo from "../../Logo";
 
@@ -10,100 +13,20 @@ const Sidebar = () => {
       <div className="flex w-full flex-col">
         <div className="flex flex-grow flex-col overflow-y-auto border-r bg-white pt-5">
           <Logo className="px-4" />
-          <nav className="mt-5flex-1 space-y-1 bg-white px-4">
-            <p className="px-4 pt-4 text-xs font-semibold uppercase text-gray-400">
-              Analytics
-            </p>
-            <ul>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Dashboard</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Performance</span>
-                </a>
-              </li>
-            </ul>
-            <p className="px-4 pt-4 text-xs font-semibold uppercase text-gray-400">
-              Content
-            </p>
-            <ul>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Guides</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Hotspots</span>
-                  <span className="ml-auto inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-500">
-                    25
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Checklist</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">TLD</span>
-                </a>
-              </li>
-            </ul>
-            <p className="px-4 pt-4 text-xs font-semibold uppercase text-gray-400">
-              Customization
-            </p>
-            <ul>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Segments</span>
-                  <span className="ml-auto inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-500">
-                    25
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-sm text-gray-500 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-blue-500"
-                  href="#"
-                >
-                  icon
-                  <span className="ml-4">Links</span>
-                </a>
-              </li>
-            </ul>
+          <nav className="mt-5 flex-1 space-y-1 bg-white px-4">
+            {items.map((item, index) => (
+              <Link
+                key={index}
+                href={item.disabled ? "#" : item.href}
+                className={cn(
+                  "focus:shadow-outline mt-6 flex w-full transform select-none items-center  gap-2 rounded-md px-2 py-4 text-sm font-semibold text-gray-600 transition duration-200 ease-in-out hover:scale-95 hover:bg-gray-100 hover:text-gray-800 hover:underline",
+                  item.disabled && "cursor-not-allowed opacity-60",
+                )}
+              >
+                <Image src={item.icon} alt="" />
+                {item.title}
+              </Link>
+            ))}
           </nav>
         </div>
         <LogOutButton className="rounded-none" />
