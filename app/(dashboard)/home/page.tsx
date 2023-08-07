@@ -214,7 +214,7 @@ export default async function Page() {
     const certificationCount = certificationData.length;
 
     const maxCertificationDue = maxDate(certificationData.map((x) => x?.due));
-    
+
     const certificationGraph = certificationData.map(
         (cert: { status: string }) => ({
             ...cert,
@@ -255,7 +255,7 @@ export default async function Page() {
 
     return (
         <div className="flex md:h-full w-full md:ml-56 bg-red-50">
-            <div className="md:m-10 m-5 w-full">
+            <div className="md:m-10 mx-5 my-2 w-full">
                 <Suspense fallback={<GreetingsSkeleton />}>
                     {/* <Greetings name={session!.user!.name} /> */}
                     <Greetings name="Gustavo" />

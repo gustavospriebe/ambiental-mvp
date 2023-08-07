@@ -11,7 +11,7 @@ interface LogOutButtonProps {
 export default function LogOutButton({ className }: LogOutButtonProps) {
     return (
         <Button
-            className={cn("rounded-none", className ?? "")}
+            className={cn("", className ?? "")}
             onClick={() => signOut({ callbackUrl: "/login" })}
         >
             Sair
