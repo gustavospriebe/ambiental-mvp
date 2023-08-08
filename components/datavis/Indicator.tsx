@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, Metric, Text } from "@tremor/react";
 
 interface IndicatorProps {
   title: string;
@@ -8,10 +8,8 @@ interface IndicatorProps {
 const Indicator = ({ title, data }: IndicatorProps) => {
   return (
     <Card className="flex-1">
-      <CardHeader>{title}</CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{data}</div>
-      </CardContent>
+      <Text>{title}</Text>
+      <Metric>{data}</Metric>
     </Card>
   );
 };

@@ -11,11 +11,11 @@ interface Task {
   status: string;
 }
 
-interface DonutChartProps extends React.HTMLAttributes<HTMLElement> {
+interface DonutChartOldProps extends React.HTMLAttributes<HTMLElement> {
   certificationGraph: Task[];
 }
 
-const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
+const DonutChartOld = ({ certificationGraph, className }: DonutChartOldProps) => {
   const options = {
     plugins: {
       title: {
@@ -64,4 +64,4 @@ const DonutChart = ({ certificationGraph, className }: DonutChartProps) => {
   );
 };
 
-export default DonutChart;
+export default DonutChartOld;
