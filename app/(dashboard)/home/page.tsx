@@ -3,6 +3,7 @@ import DonutChartNew from "@/components/datavis/DonutChartNew";
 import Indicator from "@/components/datavis/Indicator";
 import { formattedDate, maxDate } from "@/lib/date";
 import {
+  Badge,
   Card,
   Legend,
   Table,
@@ -271,6 +272,12 @@ export default async function Page() {
     certification: certificationData.find(
       (cert: { id: string }) => cert.id === task.certificationId,
     )!.name,
+    color:
+      task.status === "COMPLETED"
+        ? "green"
+        : task.status === "STARTED"
+        ? "yellow"
+        : "red",
   }));
 
   console.log(lastTasksDataFormatted);
@@ -306,7 +313,7 @@ export default async function Page() {
                 <DonutChartNew certificationGraph={certificationGraph} />
               </Indicator>
             </div>
-            {/* tirar os com deleted true na api / componentizar tabela / ajustar mobile width */}
+            {/* tirar os com deleted true na api / componentizar tabela / ajustar mobile width / ajustar badges no status */}
             <Card className="w-full sm:flex sm:flex-col">
               <Title>Últimas tasks criadas</Title>
               <Table className="mt-5">
@@ -325,7 +332,9 @@ export default async function Page() {
                       <TableCell>{item.name}</TableCell>
                       <TableCell>{item.createdAt}</TableCell>
                       <TableCell>{item.description}</TableCell>
-                      <TableCell>{item.status}</TableCell>
+                      <TableCell>
+                        <Badge color={item.color}>{item.status}</Badge>
+                      </TableCell>
                       <TableCell>{item.certification}</TableCell>
                     </TableRow>
                   ))}
