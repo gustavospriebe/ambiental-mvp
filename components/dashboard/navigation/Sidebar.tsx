@@ -9,7 +9,7 @@ const Sidebar = () => {
   const items = navConfig.NavMenu;
 
   return (
-    <div className="fixed top-0 hidden h-screen w-56 bg-white md:flex">
+    <div className="fixed top-0 hidden h-screen w-52 bg-white md:flex">
       <div className="flex w-full flex-col">
         <div className="flex flex-grow flex-col overflow-y-auto border-r bg-white pt-5">
           <Logo className="px-4" />

@@ -2,10 +2,10 @@ import Greetings from "@/components/dashboard/home/Greetings";
 import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
 import BarChartNew from "@/components/datavis/BarChart";
 import DonutChartNew from "@/components/datavis/DonutChartNew";
-import DonutChartOld from "@/components/datavis/DonutChartOld";
 import Indicator from "@/components/datavis/Indicator";
+import { Separator } from "@/components/ui/separator";
 import { maxDate } from "@/lib/date";
-import { Grid } from "@tremor/react";
+import { Grid, Title, Text, Metric, Flex } from "@tremor/react";
 import { Suspense } from "react";
 
 const taskCountData = [
@@ -253,29 +253,35 @@ export default async function Page() {
   // tabela com ultimas 5 tasks e suas infos
 
   return (
-    <div className="flex w-full bg-red-50 md:ml-56 md:h-full">
-      <div className="mx-5 my-2 w-full md:m-10">
-        <Suspense fallback={<GreetingsSkeleton />}>
-          {/* <Greetings name={session!.user!.name} /> */}
-          <Greetings name="Gustavo" />
-        </Suspense>
+    <div className="flex w-full bg-red-50 md:ml-52 md:h-full">
+      <div className="mx-5 my-2 w-full md:m-8">
+        <Title className="text-2xl font-bold">Bem vindo, Gustavo!</Title>
+        {/* <Title className="text-2xl font-bold">Bem vindo, {session!.user!.name}!</Title> */}
+        <Text className="mt-2">
+          Confira as atualizações das suas certificações no dashboard abaixo.
+        </Text>
         {certificationData.length ? (
-          <div className="space-y-4">
-            <Grid numItemsMd={2} numItemsLg={3} className="mt-6 gap-6">
-              <Indicator title="Total de Tasks" data={allTaskCount} />
+          <div className="mt-6 space-y-4">
+            <div className="w-full h-full items-stretch gap-6 space-y-6 sm:flex sm:space-y-0">
+              <Indicator title="Total de Tasks" data={allTaskCount}>
+                <BarChartNew taskData={taskData} />
+              </Indicator>
               <Indicator
                 title="Total de Certificações"
                 data={certificationCount}
-              />
-              <Indicator
+              >
+                <DonutChartNew certificationGraph={certificationGraph} />
+              </Indicator>
+              {/* <Indicator
                 title="Vencimento próxima Certificação"
                 data={maxCertificationDue}
-              />
-            </Grid>
-            <div className="h-full w-full items-center gap-6 space-y-6 sm:flex sm:space-y-0">
+                certificationGraph={certificationGraph}
+              /> */}
+            </div>
+            {/* <div className="h-full w-full items-stretch gap-6 space-y-6 sm:flex sm:space-y-0">
               <BarChartNew taskData={taskData} />
               <DonutChartNew certificationGraph={certificationGraph} />
-            </div>
+            </div> */}
             {/* Componentizar Tabela */}
             <div className="flex flex-col">
               {lastTasksData.map((data) => (

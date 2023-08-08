@@ -37,9 +37,9 @@ const BarChartNew = ({ taskData }: BarChartNewProps) => {
   const resultArray = Object.values(transformedData);
 
   return (
-    <Card className="h-full sm:max-w-[600px]">
-      <Title>Status das Tasks por Certificação</Title>
-      <Text>Tickets by Status</Text>
+    // <Card className=" sm:max-w-[600px]">
+    //   <Title>Status das Tasks por Certificação</Title>
+    //   <Text>Tickets by Status</Text>
       <BarChart
         className="mt-4"
         data={resultArray}
@@ -47,9 +47,10 @@ const BarChartNew = ({ taskData }: BarChartNewProps) => {
         categories={statusTypes}
         colors={["green", "yellow", "red"]}
         stack={true}
+        yAxisWidth={20}
         showGridLines={false}
       />
-    </Card>
+    // </Card>
   );
 };
 
