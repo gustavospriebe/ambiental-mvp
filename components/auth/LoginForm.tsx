@@ -52,7 +52,7 @@ const LoginForm = () => {
         form.reset();
       }
 
-      console.log(res);
+      // console.log(res);
       if (res?.error === null) router.replace("/home");
     } catch (error) {
       console.error("Erro no envio da requisição:", error);

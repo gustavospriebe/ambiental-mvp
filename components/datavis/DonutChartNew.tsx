@@ -22,8 +22,6 @@ const DonutChartNew = ({
     data: certificationGraph.filter((q) => q.status === status).length,
   }));
 
-  console.log(data);
-
   return (
     <DonutChart
       className={cn("mt-5 sm:mt-4 sm:h-2/3", className ?? "")}

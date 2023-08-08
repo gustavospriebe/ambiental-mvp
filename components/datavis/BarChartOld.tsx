@@ -81,8 +81,6 @@ const BarChartOld = ({ taskData, className }: BarChartOldProps) => {
     backgroundColor: getBackgroundColor(status),
   }));
 
-  console.log(datasets);
-
   const data = {
     labels: labels,
     datasets: datasets,

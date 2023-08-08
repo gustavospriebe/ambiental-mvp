@@ -2,7 +2,7 @@ import BarChartNew from "@/components/datavis/BarChart";
 import DonutChartNew from "@/components/datavis/DonutChartNew";
 import Indicator from "@/components/datavis/Indicator";
 import { maxDate } from "@/lib/date";
-import { Legend, Text, Title } from "@tremor/react";
+import { Card, Legend, Text, Title } from "@tremor/react";
 
 const taskCountData = [
   {
@@ -247,9 +247,10 @@ export default async function Page() {
   );
 
   // tabela com ultimas 5 tasks e suas infos
+  console.log(lastTasksData);
 
   return (
-    <div className="flex w-full bg-red-50 md:ml-52 md:h-full">
+    <div className="flex h-screen w-full bg-red-50 md:ml-52 md:h-full">
       <div className="mx-5 my-2 w-full md:m-8">
         <Title className="text-2xl font-bold">Bem vindo, Gustavo!</Title>
         {/* <Title className="text-2xl font-bold">Bem vindo, {session!.user!.name}!</Title> */}
@@ -278,17 +279,13 @@ export default async function Page() {
                 />
                 <DonutChartNew certificationGraph={certificationGraph} />
               </Indicator>
-              {/* <Indicator
-                title="Vencimento próxima Certificação"
-                data={maxCertificationDue}
-              /> */}
             </div>
             {/* Componentizar Tabela */}
-            <div className="flex flex-col">
+            <Card className="flex flex-col">
               {lastTasksData.map((data) => (
                 <p key={data.id}>{data.name}</p>
               ))}
-            </div>
+            </Card>
           </div>
         ) : (
           // refazer dps quando tiver comandos - transferir os <p> para config
