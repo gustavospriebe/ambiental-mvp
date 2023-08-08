@@ -1,6 +1,7 @@
 "use client";
 
-import { BarChart, Card, Text, Title } from "@tremor/react";
+import { cn } from "@/lib/utils";
+import { BarChart } from "@tremor/react";
 
 interface Task {
   count: number;
@@ -12,7 +13,7 @@ interface BarChartNewProps extends React.HTMLAttributes<HTMLElement> {
   taskData: Task[];
 }
 
-const BarChartNew = ({ taskData }: BarChartNewProps) => {
+const BarChartNew = ({ taskData, className }: BarChartNewProps) => {
   const statusTypes = [...new Set(taskData.map((task) => task.status))];
 
   const transformedData = taskData.reduce((result, item) => {
@@ -37,20 +38,16 @@ const BarChartNew = ({ taskData }: BarChartNewProps) => {
   const resultArray = Object.values(transformedData);
 
   return (
-    // <Card className=" sm:max-w-[600px]">
-    //   <Title>Status das Tasks por Certificação</Title>
-    //   <Text>Tickets by Status</Text>
-      <BarChart
-        className="mt-4"
-        data={resultArray}
-        index={"certification"}
-        categories={statusTypes}
-        colors={["green", "yellow", "red"]}
-        stack={true}
-        yAxisWidth={20}
-        showGridLines={false}
-      />
-    // </Card>
+    <BarChart
+      className={cn("mt-4", className ?? "")}
+      data={resultArray}
+      index={"certification"}
+      categories={statusTypes}
+      colors={["green", "yellow", "red"]}
+      stack={true}
+      yAxisWidth={20}
+      showGridLines={false}
+    />
   );
 };
 

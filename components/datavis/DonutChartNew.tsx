@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Card, DonutChart, Text, Title } from "@tremor/react";
+import { DonutChart } from "@tremor/react";
 
 interface Task {
   status: string;
@@ -17,34 +17,21 @@ const DonutChartNew = ({
 }: DonutChartNewProps) => {
   const labels = [...new Set(certificationGraph.map((task) => task.status))];
 
-  const data = labels.map(
-    (status) => ({
-      label: status,
-      data: certificationGraph.filter((q) => q.status === status).length,
-    }),
-    // (result, item) =>
-    //   {
-    //     const {status, }
-
-    //     {
-    //     label: label,
-    //     count: certificationGraph.filter((cert) => cert.status === label).length}}
-  );
+  const data = labels.map((status) => ({
+    label: status,
+    data: certificationGraph.filter((q) => q.status === status).length,
+  }));
 
   console.log(data);
 
   return (
-    // <Card className="flex-1 sm:flex sm:flex-col">
-    // <Title className="">Status das Certificações</Title>
-    // <Text className="">Tickets by Status</Text>
     <DonutChart
-      className={cn("", className ?? "")}
+      className={cn("mt-5 sm:mt-4 sm:h-2/3", className ?? "")}
       data={data}
       category="data"
       index="label"
       colors={["yellow", "green", "red"]}
     />
-    // </Card>
   );
 };
 

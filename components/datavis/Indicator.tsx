@@ -1,5 +1,6 @@
 import { Card, DonutChartProps, Metric, Text } from "@tremor/react";
 import DonutChartNew from "./DonutChartNew";
+import { cn } from "@/lib/utils";
 
 interface IndicatorProps extends React.HTMLAttributes<HTMLElement> {
   title: string;
@@ -7,9 +8,9 @@ interface IndicatorProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-const Indicator = ({ title, data, children }: IndicatorProps) => {
+const Indicator = ({ title, data, children, className }: IndicatorProps) => {
   return (
-    <Card className="flex-1">
+    <Card className={cn("", className ?? "")}>
       <Text>{title}</Text>
       <Metric>{data}</Metric>
       {children}

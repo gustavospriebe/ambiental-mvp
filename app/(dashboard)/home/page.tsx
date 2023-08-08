@@ -1,12 +1,8 @@
-import Greetings from "@/components/dashboard/home/Greetings";
-import GreetingsSkeleton from "@/components/dashboard/home/GreetingsSkeleton";
 import BarChartNew from "@/components/datavis/BarChart";
 import DonutChartNew from "@/components/datavis/DonutChartNew";
 import Indicator from "@/components/datavis/Indicator";
-import { Separator } from "@/components/ui/separator";
 import { maxDate } from "@/lib/date";
-import { Grid, Title, Text, Metric, Flex } from "@tremor/react";
-import { Suspense } from "react";
+import { Legend, Text, Title } from "@tremor/react";
 
 const taskCountData = [
   {
@@ -262,26 +258,31 @@ export default async function Page() {
         </Text>
         {certificationData.length ? (
           <div className="mt-6 space-y-4">
-            <div className="w-full h-full items-stretch gap-6 space-y-6 sm:flex sm:space-y-0">
-              <Indicator title="Total de Tasks" data={allTaskCount}>
+            <div className="h-full w-full gap-5 space-y-6 sm:flex sm:items-stretch sm:space-y-0">
+              <Indicator
+                className="md:w-2/3"
+                title="Total de Tasks"
+                data={allTaskCount}
+              >
                 <BarChartNew taskData={taskData} />
               </Indicator>
               <Indicator
+                className="sm:flex sm:flex-col md:w-1/3"
                 title="Total de Certificações"
                 data={certificationCount}
               >
+                <Legend
+                  className="mt-3"
+                  categories={["Completo", "Em andamento", "Não iniciado"]}
+                  colors={["green", "yellow", "red"]}
+                />
                 <DonutChartNew certificationGraph={certificationGraph} />
               </Indicator>
               {/* <Indicator
                 title="Vencimento próxima Certificação"
                 data={maxCertificationDue}
-                certificationGraph={certificationGraph}
               /> */}
             </div>
-            {/* <div className="h-full w-full items-stretch gap-6 space-y-6 sm:flex sm:space-y-0">
-              <BarChartNew taskData={taskData} />
-              <DonutChartNew certificationGraph={certificationGraph} />
-            </div> */}
             {/* Componentizar Tabela */}
             <div className="flex flex-col">
               {lastTasksData.map((data) => (
