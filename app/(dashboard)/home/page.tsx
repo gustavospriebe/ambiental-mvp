@@ -1,8 +1,19 @@
 import BarChartNew from "@/components/datavis/BarChart";
 import DonutChartNew from "@/components/datavis/DonutChartNew";
 import Indicator from "@/components/datavis/Indicator";
-import { maxDate } from "@/lib/date";
-import { Card, Legend, Text, Title } from "@tremor/react";
+import { formattedDate, maxDate } from "@/lib/date";
+import {
+  Card,
+  Legend,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  Text,
+  Title,
+} from "@tremor/react";
 
 const taskCountData = [
   {
@@ -246,11 +257,26 @@ export default async function Page() {
     0,
   );
 
-  // tabela com ultimas 5 tasks e suas infos
-  console.log(lastTasksData);
+  const lastTasksDataFormatted = lastTasksData.map((task) => ({
+    id: task.id,
+    name: task.name,
+    createdAt: formattedDate(task.createdAt),
+    description: task.description ?? "Sem Descrição",
+    status:
+      task.status === "COMPLETED"
+        ? "Completo"
+        : task.status === "STARTED"
+        ? "Em andamento"
+        : "Não iniciado",
+    certification: certificationData.find(
+      (cert: { id: string }) => cert.id === task.certificationId,
+    )!.name,
+  }));
+
+  console.log(lastTasksDataFormatted);
 
   return (
-    <div className="flex h-screen w-full bg-red-50 md:ml-52 md:h-full">
+    <div className="flex w-full bg-red-50 md:ml-52 md:h-full">
       <div className="mx-5 my-2 w-full md:m-8">
         <Title className="text-2xl font-bold">Bem vindo, Gustavo!</Title>
         {/* <Title className="text-2xl font-bold">Bem vindo, {session!.user!.name}!</Title> */}
@@ -280,11 +306,31 @@ export default async function Page() {
                 <DonutChartNew certificationGraph={certificationGraph} />
               </Indicator>
             </div>
-            {/* Componentizar Tabela */}
-            <Card className="flex flex-col">
-              {lastTasksData.map((data) => (
-                <p key={data.id}>{data.name}</p>
-              ))}
+            {/* tirar os com deleted true na api / componentizar tabela / ajustar mobile width */}
+            <Card className="w-full sm:flex sm:flex-col">
+              <Title>Últimas tasks criadas</Title>
+              <Table className="mt-5">
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>Nome</TableHeaderCell>
+                    <TableHeaderCell>Criado em</TableHeaderCell>
+                    <TableHeaderCell>Descrição</TableHeaderCell>
+                    <TableHeaderCell>Status</TableHeaderCell>
+                    <TableHeaderCell>Certificação</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {lastTasksDataFormatted.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.createdAt}</TableCell>
+                      <TableCell>{item.description}</TableCell>
+                      <TableCell>{item.status}</TableCell>
+                      <TableCell>{item.certification}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </Card>
           </div>
         ) : (

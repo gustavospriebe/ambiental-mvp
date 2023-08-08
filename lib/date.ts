@@ -9,7 +9,10 @@ export const maxDate = (date: (string | null)[]) => {
 
   const maxDate = dayjs(
     new Date(Math.max(...formattedDate.map(Number))),
-  ).format("D[ / ]MM[ / ]YYYY");
+  ).format("D[/]MM[/]YYYY");
 
   return maxDate;
 };
+
+export const formattedDate = (date: string) =>
+  dayjs(date).format("DD[/]MM[/]YYYY");
