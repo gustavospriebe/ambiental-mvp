@@ -210,22 +210,6 @@ export default async function Page() {
 
   const certificationCount = certificationData.length;
 
-  const maxCertificationDue = maxDate(
-    certificationData.map((x: { due: string }) => x?.due),
-  );
-
-  const certificationGraph = certificationData.map(
-    (cert: { status: string }) => ({
-      ...cert,
-      status:
-        cert.status === "COMPLETED"
-          ? "Completo"
-          : cert.status === "STARTED"
-          ? "Em andamento"
-          : "Não iniciado",
-    }),
-  );
-
   const taskData = taskCountData.map(
     (task: {
       _count: { name: number };
@@ -278,7 +262,7 @@ export default async function Page() {
                   categories={["Completo", "Em andamento", "Não iniciado"]}
                   colors={["green", "yellow", "red"]}
                 />
-                <DonutChartNew certificationGraph={certificationGraph} />
+                <DonutChartNew certificationData={certificationData} />
               </Indicator>
             </div>
             {/* tirar os com deleted true na api / componentizar tabela */}

@@ -7,15 +7,36 @@ interface Task {
   status: string;
 }
 
+interface certificationData {
+  id: string;
+  name: string;
+  status: string;
+  due: string;
+}
+
 interface DonutChartNewProps extends React.HTMLAttributes<HTMLElement> {
-  certificationGraph: Task[];
+  certificationData: certificationData[];
 }
 
 const DonutChartNew = ({
-  certificationGraph,
+  certificationData,
   className,
 }: DonutChartNewProps) => {
-  const labels = [...new Set(certificationGraph.map((task) => task.status))];
+  const certificationGraph = certificationData.map(
+    (cert: { status: string }) => ({
+      ...cert,
+      status:
+        cert.status === "COMPLETED"
+          ? "Completo"
+          : cert.status === "STARTED"
+          ? "Em andamento"
+          : "Não iniciado",
+    }),
+  );
+
+  const labels = [
+    ...new Set(certificationGraph.map((task: Task) => task.status)),
+  ];
 
   const data = labels.map((status) => ({
     label: status,

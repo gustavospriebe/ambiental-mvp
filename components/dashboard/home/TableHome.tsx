@@ -19,7 +19,7 @@ interface tasksData {
   status: string;
   certification: string;
   certificationId?: string;
-  color: string; // Original color type
+  color: string; // Original color typew
 }
 
 type lastTasksDataFormatted = {
