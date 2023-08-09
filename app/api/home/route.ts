@@ -23,7 +23,9 @@ export async function GET(req: Request, res: NextResponse) {
   });
 
   const lastTasksData = await db.task.findMany({
-    where: { companyId: sessionId },
+    where: {
+      AND: [{ companyId: sessionId }, { deleted: false }],
+    },
     take: 5,
     orderBy: { createdAt: "desc" },
   });

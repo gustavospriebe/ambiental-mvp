@@ -1,20 +1,12 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import TableHome from "@/components/dashboard/home/TableHome";
 import BarChartNew from "@/components/datavis/BarChart";
 import DonutChartNew from "@/components/datavis/DonutChartNew";
 import Indicator from "@/components/datavis/Indicator";
-import { formattedDate, maxDate } from "@/lib/date";
-import {
-  Badge,
-  Card,
-  Legend,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  Text,
-  Title,
-} from "@tremor/react";
+import { maxDate } from "@/lib/date";
+import { Legend, Text, Title } from "@tremor/react";
+import axios from "axios";
+import { getServerSession } from "next-auth";
 
 const taskCountData = [
   {
@@ -207,36 +199,20 @@ const certificationData = [
   },
 ];
 
-interface lastTasksData {
-  id: string;
-  name: string;
-  createdAt: string;
-  description: string;
-  status: string;
-  certification: string;
-  color: string; // Original color type
-}
-
-type lastTasksDataFormatted = {
-  [K in keyof lastTasksData]: K extends "color"
-    ? "green" | "yellow" | "red"
-    : lastTasksData[K];
-};
-
 export default async function Page() {
-  // const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-  // const req = await axios.get("http://localhost:3000/api/home", {
-  //     headers: { "session-id": session?.user.id },
-  // });
+  const req = await axios.get("http://localhost:3000/api/home", {
+    headers: { "session-id": session?.user.id },
+  });
 
-  // const { taskCountData, certificationData, lastTasksData } = req.data;
-
-  // console.log(req.data);
+  const { taskCountData, certificationData, lastTasksData } = req.data;
 
   const certificationCount = certificationData.length;
 
-  const maxCertificationDue = maxDate(certificationData.map((x) => x?.due));
+  const maxCertificationDue = maxDate(
+    certificationData.map((x: { due: string }) => x?.due),
+  );
 
   const certificationGraph = certificationData.map(
     (cert: { status: string }) => ({
@@ -274,32 +250,6 @@ export default async function Page() {
     0,
   );
 
-  const lastTasksDataFormatted: lastTasksDataFormatted[] = lastTasksData.map(
-    (task) => ({
-      id: task.id,
-      name: task.name,
-      createdAt: formattedDate(task.createdAt),
-      description: task.description ?? "Sem Descrição",
-      status:
-        task.status === "COMPLETED"
-          ? "Completo"
-          : task.status === "STARTED"
-          ? "Em andamento"
-          : "Não iniciado",
-      certification: certificationData.find(
-        (cert: { id: string }) => cert.id === task.certificationId,
-      )!.name,
-      color:
-        task.status === "COMPLETED"
-          ? "green"
-          : task.status === "STARTED"
-          ? "yellow"
-          : "red",
-    }),
-  );
-
-  console.log(lastTasksDataFormatted);
-
   return (
     <div className="flex w-full bg-red-50 md:ml-52 md:h-full">
       <div className="my-2 w-full px-5 md:m-8">
@@ -331,34 +281,11 @@ export default async function Page() {
                 <DonutChartNew certificationGraph={certificationGraph} />
               </Indicator>
             </div>
-            {/* tirar os com deleted true na api / componentizar tabela / ajustar mobile width */}
-            <Card className="w-full">
-              <Title>Últimas tasks criadas</Title>
-              <Table className="mt-5">
-                <TableHead>
-                  <TableRow>
-                    <TableHeaderCell>Nome</TableHeaderCell>
-                    <TableHeaderCell>Criado em</TableHeaderCell>
-                    <TableHeaderCell>Descrição</TableHeaderCell>
-                    <TableHeaderCell>Status</TableHeaderCell>
-                    <TableHeaderCell>Certificação</TableHeaderCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {lastTasksDataFormatted.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>{item.createdAt}</TableCell>
-                      <TableCell>{item.description}</TableCell>
-                      <TableCell>
-                        <Badge color={item.color}>{item.status}</Badge>
-                      </TableCell>
-                      <TableCell>{item.certification}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
+            {/* tirar os com deleted true na api / componentizar tabela */}
+            <TableHome
+              lastTasksData={lastTasksData}
+              certificationData={certificationData}
+            />
           </div>
         ) : (
           // refazer dps quando tiver comandos - transferir os <p> para config
