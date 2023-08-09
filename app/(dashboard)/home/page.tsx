@@ -4,7 +4,6 @@ import Indicator from "@/components/datavis/Indicator";
 import { formattedDate, maxDate } from "@/lib/date";
 import {
   Badge,
-  BadgeProps,
   Card,
   Legend,
   Table,
@@ -303,14 +302,14 @@ export default async function Page() {
 
   return (
     <div className="flex w-full bg-red-50 md:ml-52 md:h-full">
-      <div className="mx-5 my-2 w-full md:m-8">
+      <div className="my-2 w-full px-5 md:m-8">
         <Title className="text-2xl font-bold">Bem vindo, Gustavo!</Title>
         {/* <Title className="text-2xl font-bold">Bem vindo, {session!.user!.name}!</Title> */}
         <Text className="mt-2">
           Confira as atualizações das suas certificações no dashboard abaixo.
         </Text>
         {certificationData.length ? (
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 flex flex-col space-y-6">
             <div className="h-full w-full gap-5 space-y-6 sm:flex sm:items-stretch sm:space-y-0">
               <Indicator
                 className="md:w-2/3"
@@ -332,8 +331,8 @@ export default async function Page() {
                 <DonutChartNew certificationGraph={certificationGraph} />
               </Indicator>
             </div>
-            {/* tirar os com deleted true na api / componentizar tabela / ajustar mobile width / ajustar badges no status */}
-            <Card className="w-full sm:flex sm:flex-col">
+            {/* tirar os com deleted true na api / componentizar tabela / ajustar mobile width */}
+            <Card className="w-full">
               <Title>Últimas tasks criadas</Title>
               <Table className="mt-5">
                 <TableHead>
