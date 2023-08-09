@@ -4,6 +4,7 @@ import Indicator from "@/components/datavis/Indicator";
 import { formattedDate, maxDate } from "@/lib/date";
 import {
   Badge,
+  BadgeProps,
   Card,
   Legend,
   Table,
@@ -207,6 +208,22 @@ const certificationData = [
   },
 ];
 
+interface lastTasksData {
+  id: string;
+  name: string;
+  createdAt: string;
+  description: string;
+  status: string;
+  certification: string;
+  color: string; // Original color type
+}
+
+type lastTasksDataFormatted = {
+  [K in keyof lastTasksData]: K extends "color"
+    ? "green" | "yellow" | "red"
+    : lastTasksData[K];
+};
+
 export default async function Page() {
   // const session = await getServerSession(authOptions);
 
@@ -258,27 +275,29 @@ export default async function Page() {
     0,
   );
 
-  const lastTasksDataFormatted = lastTasksData.map((task) => ({
-    id: task.id,
-    name: task.name,
-    createdAt: formattedDate(task.createdAt),
-    description: task.description ?? "Sem Descrição",
-    status:
-      task.status === "COMPLETED"
-        ? "Completo"
-        : task.status === "STARTED"
-        ? "Em andamento"
-        : "Não iniciado",
-    certification: certificationData.find(
-      (cert: { id: string }) => cert.id === task.certificationId,
-    )!.name,
-    color:
-      task.status === "COMPLETED"
-        ? "green"
-        : task.status === "STARTED"
-        ? "yellow"
-        : "red",
-  }));
+  const lastTasksDataFormatted: lastTasksDataFormatted[] = lastTasksData.map(
+    (task) => ({
+      id: task.id,
+      name: task.name,
+      createdAt: formattedDate(task.createdAt),
+      description: task.description ?? "Sem Descrição",
+      status:
+        task.status === "COMPLETED"
+          ? "Completo"
+          : task.status === "STARTED"
+          ? "Em andamento"
+          : "Não iniciado",
+      certification: certificationData.find(
+        (cert: { id: string }) => cert.id === task.certificationId,
+      )!.name,
+      color:
+        task.status === "COMPLETED"
+          ? "green"
+          : task.status === "STARTED"
+          ? "yellow"
+          : "red",
+    }),
+  );
 
   console.log(lastTasksDataFormatted);
 
