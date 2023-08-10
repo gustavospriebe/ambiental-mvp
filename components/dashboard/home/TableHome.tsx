@@ -32,7 +32,6 @@ interface TableHomeProps {
   lastTasksData: tasksData[];
   certificationData: {
     find: any;
-    // find(arg0: (cert: { id: string; }) => boolean): unknown;
     id: string;
     name: string;
     status: string;

@@ -3,7 +3,6 @@ import TableHome from "@/components/dashboard/home/TableHome";
 import BarChartNew from "@/components/datavis/BarChart";
 import DonutChartNew from "@/components/datavis/DonutChartNew";
 import Indicator from "@/components/datavis/Indicator";
-import { maxDate } from "@/lib/date";
 import { Legend, Text, Title } from "@tremor/react";
 import axios from "axios";
 import { getServerSession } from "next-auth";
@@ -208,8 +207,8 @@ const Page = async () => {
 
   const { taskCountData, certificationData, lastTasksData } = req.data;
 
-  console.log(lastTasksData);
-  console.log(certificationData);
+  // console.log(lastTasksData);
+  // console.log(certificationData);
 
   const certificationCount = certificationData.length;
 

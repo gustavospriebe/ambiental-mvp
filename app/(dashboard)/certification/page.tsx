@@ -6,9 +6,18 @@
 // tabela com tasks e suas infos e botoes de update create delete
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { formattedDate } from "@/lib/date";
-import { Text, Title } from "@tremor/react";
+import TableCertification from "@/components/certifications/TableCertification";
+import Indicator from "@/components/datavis/Indicator";
+import {
+  formattedDate,
+  isAfterNow,
+  isBeforeOrSameNow,
+  maxDate,
+  minDate,
+} from "@/lib/date";
+import { Text, Tracker, Title, List, ListItem } from "@tremor/react";
 import axios from "axios";
+import dayjs from "dayjs";
 import { getServerSession } from "next-auth";
 
 const Page = async () => {
@@ -23,14 +32,11 @@ const Page = async () => {
   const certificationDataFormatted = certificationData.map(
     (item: {
       name: string;
-      description: string;
       _count: { tasks: number };
       status: string;
-      createdAt: string;
       due: string | null;
     }) => ({
       name: item.name,
-      description: item.description,
       count: item._count.tasks,
       status:
         item.status === "COMPLETED"
@@ -38,12 +44,46 @@ const Page = async () => {
           : item.status === "STARTED"
           ? "Em andamento"
           : "Não iniciado",
-      createdAt: formattedDate(item.createdAt),
-      due: item.due !== null ? formattedDate(item.due) : "Sem data",
+      color:
+        item.status === "COMPLETED"
+          ? "green"
+          : item.status === "STARTED"
+          ? "yellow"
+          : "red",
+      due: item.due,
     }),
   );
 
-  console.log(certificationDataFormatted);
+  const lateCertification = certificationDataFormatted.filter(
+    (cert: { status: string; due: string }) =>
+      cert.status !== "Completo" && cert.due && isBeforeOrSameNow(cert.due),
+  );
+
+  const completedCertication = certificationDataFormatted.filter(
+    (cert: { status: string }) => cert.status === "Completo",
+  );
+
+  const trackerCertification = certificationDataFormatted
+    .map((item: { color: string; status: string }) => ({
+      color: item.color,
+      tooltip: item.status,
+    }))
+    .sort((a: { color: string }, b: { color: string }) => {
+      const colorOrder: Record<string, number> = {
+        green: 0,
+        yellow: 1,
+        red: 2,
+      };
+
+      return colorOrder[a.color] - colorOrder[b.color];
+    });
+
+  const nextCertificationDue = minDate(
+    certificationDataFormatted.filter(
+      (item: { due: string; status: string }) =>
+        item.due && dayjs(item.due) > dayjs() && item.status !== "Completo",
+    ),
+  );
 
   return (
     <div className="flex w-full bg-red-50 md:ml-52 md:h-screen">
@@ -53,8 +93,52 @@ const Page = async () => {
           Confira as atualizações das suas certificações no dashboard abaixo.
         </Text>
         <div className="mt-6 flex flex-col space-y-6">
-          <div className="h-full w-full gap-5 space-y-6 sm:flex sm:items-stretch sm:space-y-0">
-            oi
+          <div className="flex gap-2">
+            <Indicator
+              data={`${completedCertication.length}/${certificationDataFormatted.length} completos`}
+              title="Qtd. de Certificações"
+            >
+              <div className="mt-2 flex justify-end">
+                <Text>
+                  {Math.round(
+                    (completedCertication.length /
+                      certificationDataFormatted.length) *
+                      100,
+                  )}
+                  %
+                </Text>
+              </div>
+              <Tracker data={trackerCertification} className="mt-2" />
+              {/* <List className="mt-3">
+                {lateCertification.map((item: { name: string }) => (
+                  <ListItem key={item.name}>
+                    <span>{item.name}</span>
+                  </ListItem>
+                ))}
+              </List> */}
+            </Indicator>
+            <Indicator
+              data={lateCertification.length}
+              title="Certificações em atraso"
+            >
+              <List>
+                {lateCertification.map((item: { name: string }) => (
+                  <ListItem key={item.name}>
+                    <span>{item.name}</span>
+                  </ListItem>
+                ))}
+              </List>
+            </Indicator>
+            <Indicator
+              className="space-y-8"
+              data={nextCertificationDue}
+              title="Próx. Vencimento de Certificação"
+            />
+          </div>
+          <div className="h-full w-full space-y-6">
+            <TableCertification
+              certificationDataFormatted={certificationDataFormatted}
+            />
           </div>
         </div>
       </div>
@@ -63,7 +147,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-// const maxCertificationDue = maxDate(
-//   certificationData.map((x: { due: string }) => x?.due),
-// );

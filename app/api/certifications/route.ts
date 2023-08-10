@@ -24,9 +24,7 @@ export async function GET(req: Request, res: NextResponse) {
     select: {
       name: true,
       status: true,
-      createdAt: true,
       due: true,
-      description: true,
       _count: { select: { tasks: { where: { deleted: false } } } },
     },
   });

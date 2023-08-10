@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 interface IndicatorProps extends React.HTMLAttributes<HTMLElement> {
   title: string;
   data: number | string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Indicator = ({ title, data, children, className }: IndicatorProps) => {
   return (
-    <Card className={cn("", className ?? "")}>
+    <Card className={cn("flex flex-col", className ?? "")}>
       <Text>{title}</Text>
       <Metric>{data}</Metric>
       {children}
