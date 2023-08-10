@@ -31,11 +31,13 @@ const Page = async () => {
 
   const certificationDataFormatted = certificationData.map(
     (item: {
+      id: string;
       name: string;
       _count: { tasks: number };
       status: string;
       due: string | null;
     }) => ({
+      id: item.id,
       name: item.name,
       count: item._count.tasks,
       status:
@@ -46,10 +48,10 @@ const Page = async () => {
           : "Não iniciado",
       color:
         item.status === "COMPLETED"
-          ? "green"
+          ? "emerald"
           : item.status === "STARTED"
           ? "yellow"
-          : "red",
+          : "rose",
       due: item.due,
     }),
   );
@@ -70,9 +72,9 @@ const Page = async () => {
     }))
     .sort((a: { color: string }, b: { color: string }) => {
       const colorOrder: Record<string, number> = {
-        green: 0,
+        emerald: 0,
         yellow: 1,
-        red: 2,
+        rose: 2,
       };
 
       return colorOrder[a.color] - colorOrder[b.color];
@@ -98,7 +100,7 @@ const Page = async () => {
               data={`${completedCertication.length}/${certificationDataFormatted.length} completos`}
               title="Qtd. de Certificações"
             >
-              <div className="mt-2 flex justify-end">
+              <div className=" flex justify-end">
                 <Text>
                   {Math.round(
                     (completedCertication.length /
@@ -108,14 +110,7 @@ const Page = async () => {
                   %
                 </Text>
               </div>
-              <Tracker data={trackerCertification} className="mt-2" />
-              {/* <List className="mt-3">
-                {lateCertification.map((item: { name: string }) => (
-                  <ListItem key={item.name}>
-                    <span>{item.name}</span>
-                  </ListItem>
-                ))}
-              </List> */}
+              <Tracker data={trackerCertification} />
             </Indicator>
             <Indicator
               data={lateCertification.length}

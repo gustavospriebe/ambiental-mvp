@@ -10,7 +10,7 @@ interface IndicatorProps extends React.HTMLAttributes<HTMLElement> {
 
 const Indicator = ({ title, data, children, className }: IndicatorProps) => {
   return (
-    <Card className={cn("flex flex-col", className ?? "")}>
+    <Card className={cn("flex flex-col space-y-2", className ?? "")}>
       <Text>{title}</Text>
       <Metric>{data}</Metric>
       {children}

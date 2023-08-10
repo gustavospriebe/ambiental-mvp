@@ -24,7 +24,7 @@ interface tasksData {
 
 type lastTasksDataFormatted = {
   [K in keyof tasksData]: K extends "color"
-    ? "green" | "yellow" | "red"
+    ? "emerald" | "yellow" | "rose"
     : tasksData[K];
 };
 
@@ -57,10 +57,10 @@ const TableHome = ({ lastTasksData, certificationData }: TableHomeProps) => {
       )!.name,
       color:
         task.status === "COMPLETED"
-          ? "green"
+          ? "emerald"
           : task.status === "STARTED"
           ? "yellow"
-          : "red",
+          : "rose",
     }),
   );
 

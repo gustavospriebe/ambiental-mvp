@@ -22,6 +22,7 @@ export async function GET(req: Request, res: NextResponse) {
       AND: [{ companyId: sessionId }],
     },
     select: {
+      id: true,
       name: true,
       status: true,
       due: true,

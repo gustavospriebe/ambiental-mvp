@@ -207,11 +207,6 @@ const Page = async () => {
 
   const { taskCountData, certificationData, lastTasksData } = req.data;
 
-  // console.log(lastTasksData);
-  // console.log(certificationData);
-
-  const certificationCount = certificationData.length;
-
   const taskData = taskCountData.map(
     (task: {
       _count: { name: number };
@@ -257,12 +252,12 @@ const Page = async () => {
               <Indicator
                 className="sm:flex sm:flex-col md:w-1/3"
                 title="Total de Certificações"
-                data={certificationCount}
+                data={certificationData.length}
               >
                 <Legend
                   className="mt-3"
                   categories={["Completo", "Em andamento", "Não iniciado"]}
-                  colors={["green", "yellow", "red"]}
+                  colors={["emerald", "yellow", "rose"]}
                 />
                 <DonutChartNew certificationData={certificationData} />
               </Indicator>
