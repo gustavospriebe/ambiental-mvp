@@ -1,26 +1,17 @@
-// card Certificações em atraso
-// card Certificações tiradas / Certificações em aberto
-// card vencimento mais proxima certificação
-// tabela com certificações com exclusão   ---  talvez edição
-// Botao nova certificação
-// tabela com tasks e suas infos e botoes de update create delete
-
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import TableCertification from "@/components/certifications/TableCertification";
 import Indicator from "@/components/datavis/Indicator";
-import {
-  formattedDate,
-  isAfterNow,
-  isBeforeOrSameNow,
-  maxDate,
-  minDate,
-} from "@/lib/date";
-import { Text, Tracker, Title, List, ListItem } from "@tremor/react";
+import { isBeforeOrSameNow, minDate } from "@/lib/date";
+import { Card, List, ListItem, Text, Title, Tracker } from "@tremor/react";
 import axios from "axios";
 import dayjs from "dayjs";
 import { getServerSession } from "next-auth";
+import { Button } from "@/components/ui/button";
+import ButtonNewTask from "@/components/ButtonNewTask";
+import getQueryClient from "@/lib/get-query-client";
+import { dehydrate } from "@tanstack/react-query";
 
-const Page = async () => {
+async function getData() {
   const session = await getServerSession(authOptions);
 
   const req = await axios.get("http://localhost:3000/api/certifications", {
@@ -29,17 +20,36 @@ const Page = async () => {
 
   const { certificationData } = req.data;
 
-  const certificationDataFormatted = certificationData.map(
-    (item: {
-      id: string;
-      name: string;
-      _count: { tasks: number };
-      status: string;
-      due: string | null;
-    }) => ({
+  return certificationData;
+}
+
+const Page = async () => {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery(["data"], getData);
+  const dehydratedState = dehydrate(queryClient);
+
+
+  const dataFetched = dehydratedState.queries.map((x) => x.state.data)[0])
+
+  // async function createNewCertification() {
+  //   const req = await axios.post("http://localhost:3000/api/certification", {
+  //     headers: { "session-id": session?.user.id },
+  //     body: {
+  //       name: "Facenok Certification",
+  //       description: "Lorem ipsum fkfj",
+  //       due: "2023-10-27T03:00:00.000Z",
+  //     },
+  //   });
+
+  //   return req;
+  // }
+
+  const certificationDataFormatted = dataFetched.queries
+    .map((x) => x.state.data)
+    .map((item) => ({
       id: item.id,
       name: item.name,
-      count: item._count.tasks,
+      // count: item._count.tasks,
       status:
         item.status === "COMPLETED"
           ? "Completo"
@@ -53,8 +63,9 @@ const Page = async () => {
           ? "yellow"
           : "rose",
       due: item.due,
-    }),
-  );
+    }));
+
+  console.log(certificationDataFormatted);
 
   const lateCertification = certificationDataFormatted.filter(
     (cert: { status: string; due: string }) =>
@@ -95,7 +106,7 @@ const Page = async () => {
           Confira as atualizações das suas certificações no dashboard abaixo.
         </Text>
         <div className="mt-6 flex flex-col space-y-6">
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <Indicator
               data={`${completedCertication.length}/${certificationDataFormatted.length} completos`}
               title="Qtd. de Certificações"
@@ -131,9 +142,18 @@ const Page = async () => {
             />
           </div>
           <div className="h-full w-full space-y-6">
-            <TableCertification
-              certificationDataFormatted={certificationDataFormatted}
-            />
+            <Card className="w-full space-y-4">
+              <div className="flex items-center justify-between">
+                <Title>Tabela de Certificações</Title>
+                {/* <form action={createNewCertification}>
+                  <button type="submit">Add to Cart</button>
+                </form> */}
+                {/* <ButtonNewTask action={createNewCertification} /> */}
+              </div>
+              <TableCertification
+                certificationDataFormatted={certificationDataFormatted}
+              />
+            </Card>
           </div>
         </div>
       </div>

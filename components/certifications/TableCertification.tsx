@@ -64,58 +64,48 @@ const TableCertification = ({
   //   );
 
   return (
-    <Card className="w-full space-y-4">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Title>Tabela de Certificações</Title>
-          <Button>Criar nova Certificação</Button>
-        </div>
-      </div>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell>Nome</TableHeaderCell>
-            <TableHeaderCell>Qtd. Tasks</TableHeaderCell>
-            <TableHeaderCell>Vencimento</TableHeaderCell>
-            <TableHeaderCell>Status</TableHeaderCell>
-            <TableHeaderCell>Ações</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {certificationDataOrdered.map((item: certificationData) => (
-            <TableRow className="hover:bg-slate-50" key={item.id}>
-              <TableCell>
-                <Link
-                  className="hover:underline"
-                  href={`/certification/${item.id}`}
-                >
-                  {item.name}
-                </Link>
-              </TableCell>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableHeaderCell>Nome</TableHeaderCell>
+          <TableHeaderCell>Qtd. Tasks</TableHeaderCell>
+          <TableHeaderCell>Vencimento</TableHeaderCell>
+          <TableHeaderCell>Status</TableHeaderCell>
+          <TableHeaderCell>Ações</TableHeaderCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {certificationDataOrdered.map((item: certificationData) => (
+          <TableRow className="hover:bg-slate-50" key={item.id}>
+            <TableCell>
+              <Link
+                className="hover:underline"
+                href={`/certification/${item.id}`}
+              >
+                {item.name}
+              </Link>
+            </TableCell>
 
-              <TableCell className="flex justify-center">
-                {item.count}
-              </TableCell>
-              <TableCell>
-                {!!item.due ? formattedDate(item.due!) : "Sem data"}
-              </TableCell>
-              <TableCell>
-                {/* @ts-expect-error */}
-                <Badge color={item.color}>{item.status}</Badge>
-              </TableCell>
-              <TableCell className="flex gap-2">
-                <Button disabled variant="outline">
-                  Editar
-                </Button>
-                <Button disabled variant="destructive">
-                  Excluir
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Card>
+            <TableCell className="flex justify-center">{item.count}</TableCell>
+            <TableCell>
+              {!!item.due ? formattedDate(item.due!) : "Sem data"}
+            </TableCell>
+            <TableCell>
+              {/* @ts-expect-error */}
+              <Badge color={item.color}>{item.status}</Badge>
+            </TableCell>
+            <TableCell className="flex gap-2">
+              <Button disabled variant="outline">
+                Editar
+              </Button>
+              <Button disabled variant="destructive">
+                Excluir
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
