@@ -8,7 +8,7 @@ export async function GET(req: Request, res: NextResponse) {
   // Teste chamada direto api
   const session = await getServerSession(authOptions);
   const sessionId = session?.user.id;
-  
+
   // const sessionId = req.headers.get("session-id");
 
   if (!sessionId) {
@@ -27,14 +27,22 @@ export async function GET(req: Request, res: NextResponse) {
   const taskCountData = await db.task.groupBy({
     by: ["status", "certificationId"],
     where: {
-      AND: [{ companyId: sessionId }, { deleted: false }],
+      AND: [
+        { companyId: sessionId },
+        { deleted: false },
+        { certification: { deleted: false } },
+      ],
     },
     _count: { name: true },
   });
 
   const lastTasksData = await db.task.findMany({
     where: {
-      AND: [{ companyId: sessionId }, { deleted: false }],
+      AND: [
+        { companyId: sessionId },
+        { deleted: false },
+        { certification: { deleted: false } },
+      ],
     },
     take: 5,
     orderBy: { createdAt: "desc" },

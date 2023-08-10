@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
+import { truncateSync } from "fs";
 
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
@@ -19,7 +20,7 @@ export async function GET(req: Request, res: NextResponse) {
 
   const certificationData = await db.certification.findMany({
     where: {
-      AND: [{ companyId: sessionId }, { deleted: false }],
+      AND: [{ companyId: sessionId }],
     },
     select: {
       name: true,
@@ -27,29 +28,22 @@ export async function GET(req: Request, res: NextResponse) {
       createdAt: true,
       due: true,
       description: true,
-      tasks: {
-        select: {
-          status: true,
-        },
-      },
+      _count: { select: { tasks: { where: { deleted: false } } } },
     },
   });
 
-  const taskData = await db.task.findMany({
-    where: {
-      AND: [
-        { companyId: sessionId },
-        { deleted: false },
-        // { certification: { deleted: false } },
-      ],
-    },
-    take: 5,
-    orderBy: { createdAt: "desc" },
-  });
+  // const taskData = await db.task.findMany({
+  //   where: {
+  //     AND: [
+  //       { companyId: sessionId },
+  //       { certificationId: "a4e67efe-d62b-41cf-b441-cbdc0de92c38" },
+  //       { deleted: false },
+  //       { certification: { deleted: false } },
+  //     ],
+  //   },
+  // });
 
-  console.log(taskData);
-
-  return NextResponse.json({ certificationData, taskData });
+  return NextResponse.json({ certificationData });
 }
 
 // Criar nova certificação
@@ -65,14 +59,10 @@ export async function POST(req: Request, res: Response) {
 
     // const newData = await db.certification.create({
     //     data: {
-    //         name: "teste2",
+    //         name: body.name,
     //         companyId: sessionId,
-    //         description: "teste231sdf3123",
-    //         tasks: {
-    //             create: {
-    //                 name: "testamdp",
-    //                 companyId: sessionId,
-    //             },
+    //         description: body.description,
+    //         due: body.due
     //         },
     //     },
     // });

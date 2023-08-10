@@ -1,8 +1,8 @@
-// card progresso
-// card total de tasks
-// card
-// grafico de barra de tasks por certificação e status
-// um grafico de pizza das certificações por status
+// card Certificações em atraso
+// card Certificações tiradas / Certificações em aberto
+// card vencimento mais proxima certificação
+// tabela com certificações com exclusão   ---  talvez edição
+// Botao nova certificação
 
 import { Title, Text } from "@tremor/react";
 

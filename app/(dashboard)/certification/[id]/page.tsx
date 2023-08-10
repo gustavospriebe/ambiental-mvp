@@ -125,6 +125,12 @@ const Certification = () => {
   return <div className="flex w-full bg-red-50 md:ml-52 md:h-screen">oi</div>;
 };
 
+// Qtd task em atraso
+// Tasks feitas / Tasks em aberto
+// Prazo da Certificação
+// Botão nova task
+// tabela com as tarefas com exclusão   --- talvez edição
+
 {
   /* <Indicator
                 title="Vencimento próxima Certificação"
