@@ -6,10 +6,10 @@ import { authOptions } from "../auth/[...nextauth]/route";
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
   // Teste chamada direto api
-  const session = await getServerSession(authOptions);
-  const sessionId = session?.user.id;
+  // const session = await getServerSession(authOptions);
+  // const sessionId = session?.user.id;
 
-  // const sessionId = req.headers.get("session-id");
+  const sessionId = req.headers.get("session-id");
 
   if (!sessionId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {

@@ -2,15 +2,14 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
-import { truncateSync } from "fs";
 
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
-  // Teste chamada direto api
-  const session = await getServerSession(authOptions);
-  const sessionId = session?.user.id;
+  // // Teste chamada direto api
+  // const session = await getServerSession(authOptions);
+  // const sessionId = session?.user.id;
 
-  // const sessionId = req.headers.get("session-id");
+  const sessionId = req.headers.get("session-id");
 
   if (!sessionId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
@@ -31,17 +30,6 @@ export async function GET(req: Request, res: NextResponse) {
       _count: { select: { tasks: { where: { deleted: false } } } },
     },
   });
-
-  // const taskData = await db.task.findMany({
-  //   where: {
-  //     AND: [
-  //       { companyId: sessionId },
-  //       { certificationId: "a4e67efe-d62b-41cf-b441-cbdc0de92c38" },
-  //       { deleted: false },
-  //       { certification: { deleted: false } },
-  //     ],
-  //   },
-  // });
 
   return NextResponse.json({ certificationData });
 }

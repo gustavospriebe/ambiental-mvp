@@ -200,13 +200,13 @@ const certificationData = [
 ];
 
 const Page = async () => {
-  // const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-  // const req = await axios.get("http://localhost:3000/api/home", {
-  //   headers: { "session-id": session?.user.id },
-  // });
+  const req = await axios.get("http://localhost:3000/api/home", {
+    headers: { "session-id": session?.user.id },
+  });
 
-  // const { taskCountData, certificationData, lastTasksData } = req.data;
+  const { taskCountData, certificationData, lastTasksData } = req.data;
 
   console.log(lastTasksData);
   console.log(certificationData);
