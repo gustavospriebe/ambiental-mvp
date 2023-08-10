@@ -3,10 +3,7 @@
 import { formattedDate } from "@/lib/date";
 import {
   Badge,
-  BadgeProps,
   Card,
-  MultiSelect,
-  MultiSelectItem,
   Table,
   TableBody,
   TableCell,
@@ -15,8 +12,8 @@ import {
   TableRow,
   Title,
 } from "@tremor/react";
+import Link from "next/link";
 import { Button } from "../ui/button";
-import { RefAttributes } from "react";
 
 interface certificationData {
   id: string;
@@ -29,6 +26,8 @@ interface certificationData {
 
 interface TableCertificationProps {
   certificationDataFormatted: {
+    slice: any;
+    sort: any;
     map: any;
     id: string;
     name: string;
@@ -42,27 +41,33 @@ interface TableCertificationProps {
 const TableCertification = ({
   certificationDataFormatted,
 }: TableCertificationProps) => {
-  // const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+  const certificationDataOrdered = certificationDataFormatted.sort(
+    (a: { status: string }, b: { status: string }) => {
+      const certOrder: Record<string, number> = {
+        "Não iniciado": 0,
+        "Em andamento": 1,
+        Completo: 2,
+      };
 
-  // const isStatusSelected = (item) =>
-  // selectedStatus.includes(item.status) || selectedStatus.length === 0;
+      return certOrder[a.status] - certOrder[b.status];
+    },
+  );
 
-  console.log(certificationDataFormatted);
+  // const sortedCertifications = certificationDataFormatted
+  //   .slice()
+  //   .sort((a: { due: string }, b: { due: string }) =>
+  //     a.due === null
+  //       ? 1
+  //       : b.due === null
+  //       ? -1
+  //       : new Date(a.due).getTime() - new Date(b.due).getTime(),
+  //   );
 
   return (
     <Card className="w-full space-y-4">
       <div className="space-y-4">
-        <Title>Tabela de Certificações</Title>
         <div className="flex items-center justify-between">
-          <MultiSelect
-            // onValueChange={setSelectedNames}
-            placeholder="Select Salespeople..."
-            className="max-w-xs"
-          >
-            {/* {salesPeople.map((item) => ( */}
-            <MultiSelectItem value="teste">teste</MultiSelectItem>
-            {/* ))} */}
-          </MultiSelect>
+          <Title>Tabela de Certificações</Title>
           <Button>Criar nova Certificação</Button>
         </div>
       </div>
@@ -74,27 +79,37 @@ const TableCertification = ({
             <TableHeaderCell>Vencimento</TableHeaderCell>
             <TableHeaderCell>Status</TableHeaderCell>
             <TableHeaderCell>Ações</TableHeaderCell>
-            <TableHeaderCell>Link</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {certificationDataFormatted.map((item: certificationData) => (
-            <TableRow key={item.id}>
-              <TableCell>{item.name}</TableCell>
+          {certificationDataOrdered.map((item: certificationData) => (
+            <TableRow className="hover:bg-slate-50" key={item.id}>
+              <TableCell>
+                <Link
+                  className="hover:underline"
+                  href={`/certification/${item.id}`}
+                >
+                  {item.name}
+                </Link>
+              </TableCell>
+
               <TableCell className="flex justify-center">
                 {item.count}
               </TableCell>
-              <TableCell>{formattedDate(item.due!) ?? "Sem data"}</TableCell>
+              <TableCell>
+                {!!item.due ? formattedDate(item.due!) : "Sem data"}
+              </TableCell>
               <TableCell>
                 {/* @ts-expect-error */}
                 <Badge color={item.color}>{item.status}</Badge>
               </TableCell>
               <TableCell className="flex gap-2">
-                <Button variant="outline">Editar</Button>
-                <Button variant="destructive">Excluir</Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="secondary">Ver detalhes</Button>
+                <Button disabled variant="outline">
+                  Editar
+                </Button>
+                <Button disabled variant="destructive">
+                  Excluir
+                </Button>
               </TableCell>
             </TableRow>
           ))}
