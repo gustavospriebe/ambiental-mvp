@@ -43,7 +43,7 @@ const BarChartNew = ({ taskData, className }: BarChartNewProps) => {
       data={resultArray}
       index={"certification"}
       categories={statusTypes}
-      colors={["green", "yellow", "red"]}
+      colors={["emerald", "yellow", "rose"]}
       stack={true}
       yAxisWidth={20}
       showGridLines={false}

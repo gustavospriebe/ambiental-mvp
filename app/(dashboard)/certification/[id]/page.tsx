@@ -122,16 +122,14 @@ const mockTasksData = [
 ];
 
 const Certification = () => {
-  return <div>Certification</div>;
+  return <div className="flex w-full bg-red-50 md:ml-52 md:h-screen">oi</div>;
 };
 
-{/* <Indicator
+{
+  /* <Indicator
                 title="Vencimento próxima Certificação"
                 data={maxCertificationDue}
-              /> */}
-
-
-
-
+              /> */
+}
 
 export default Certification;

@@ -1,9 +1,15 @@
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
-  const sessionId = req.headers.get("session-id");
+  // Teste chamada direto api
+  const session = await getServerSession(authOptions);
+  const sessionId = session?.user.id;
+  
+  // const sessionId = req.headers.get("session-id");
 
   if (!sessionId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
@@ -12,13 +18,17 @@ export async function GET(req: Request, res: NextResponse) {
   }
 
   const certificationData = await db.certification.findMany({
-    where: { companyId: sessionId },
+    where: {
+      AND: [{ companyId: sessionId }, { deleted: false }],
+    },
     select: { id: true, name: true, status: true, due: true },
   });
 
   const taskCountData = await db.task.groupBy({
     by: ["status", "certificationId"],
-    where: { companyId: sessionId },
+    where: {
+      AND: [{ companyId: sessionId }, { deleted: false }],
+    },
     _count: { name: true },
   });
 

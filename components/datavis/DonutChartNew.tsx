@@ -49,7 +49,7 @@ const DonutChartNew = ({
       data={data}
       category="data"
       index="label"
-      colors={["yellow", "green", "red"]}
+      colors={["yellow", "emerald", "rose"]}
     />
   );
 };

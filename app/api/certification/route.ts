@@ -1,9 +1,15 @@
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 // Puxar as infos da certificação e suas tasks
 export async function GET(req: Request, res: NextResponse) {
-  const sessionId = req.headers.get("session-id");
+  // Teste chamada direto api
+  const session = await getServerSession(authOptions);
+  const sessionId = session?.user.id;
+
+  // const sessionId = req.headers.get("session-id");
 
   if (!sessionId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {

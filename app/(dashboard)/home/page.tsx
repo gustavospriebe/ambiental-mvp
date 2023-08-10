@@ -93,15 +93,15 @@ const taskCountData = [
 
 const lastTasksData = [
   {
-    id: "60bac779-2105-4a9b-8e8e-ba057b0b88f4",
-    createdAt: "2023-08-02T05:56:28.464Z",
-    updatedAt: "2023-08-02T05:56:28.464Z",
+    id: "3f63eb92-b2e4-433e-8e19-c39c604e3563",
+    createdAt: "2023-07-29T03:08:32.855Z",
+    updatedAt: "2023-07-29T03:08:32.855Z",
     status: "NOT_STARTED",
-    name: "testamdp",
-    description: null,
+    name: "Task 2",
+    description: "Descrição da Task 2",
     due: null,
     deleted: false,
-    certificationId: "a4e67efe-d62b-41cf-b441-cbdc0de92c38",
+    certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
     companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
   },
   {
@@ -141,12 +141,12 @@ const lastTasksData = [
     companyId: "a36c1d4c-8edc-409a-ab3f-285081a00e7a",
   },
   {
-    id: "3f63eb92-b2e4-433e-8e19-c39c604e3563",
+    id: "ae6178c3-755f-4437-9d71-34c0b9401d2f",
     createdAt: "2023-07-29T03:08:32.855Z",
     updatedAt: "2023-07-29T03:08:32.855Z",
     status: "NOT_STARTED",
-    name: "Task 2",
-    description: "Descrição da Task 2",
+    name: "Task 4",
+    description: "Descrição da Task 4",
     due: null,
     deleted: false,
     certificationId: "a29b4e53-05dd-4e6a-910c-16f19158ced0",
@@ -158,13 +158,13 @@ const certificationData = [
   {
     id: "e7b8a1cd-678d-450f-b5eb-2297ca4b0c49",
     name: "Certification 0",
-    status: "STARTED",
+    status: "NOT_STARTED",
     due: "2023-11-17T03:00:00.000Z",
   },
   {
     id: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3",
     name: "Certification 1",
-    status: "COMPLETED",
+    status: "NOT_STARTED",
     due: "2023-11-17T03:00:00.000Z",
   },
   {
@@ -199,14 +199,17 @@ const certificationData = [
   },
 ];
 
-export default async function Page() {
-  const session = await getServerSession(authOptions);
+const Page = async () => {
+  // const session = await getServerSession(authOptions);
 
-  const req = await axios.get("http://localhost:3000/api/home", {
-    headers: { "session-id": session?.user.id },
-  });
+  // const req = await axios.get("http://localhost:3000/api/home", {
+  //   headers: { "session-id": session?.user.id },
+  // });
 
-  const { taskCountData, certificationData, lastTasksData } = req.data;
+  // const { taskCountData, certificationData, lastTasksData } = req.data;
+
+  console.log(lastTasksData);
+  console.log(certificationData);
 
   const certificationCount = certificationData.length;
 
@@ -265,7 +268,6 @@ export default async function Page() {
                 <DonutChartNew certificationData={certificationData} />
               </Indicator>
             </div>
-            {/* tirar os com deleted true na api / componentizar tabela */}
             <TableHome
               lastTasksData={lastTasksData}
               certificationData={certificationData}
@@ -281,4 +283,6 @@ export default async function Page() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;

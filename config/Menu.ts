@@ -1,27 +1,26 @@
-import dashboard from "@/assets/dashboard.svg";
 import certification from "@/assets/certification.svg";
-import newcertification from "@/assets/newcertification.svg";
 import config from "@/assets/config.svg";
+import dashboard from "@/assets/dashboard.svg";
+import newcertification from "@/assets/newcertification.svg";
 import { NavMenu } from "@/types";
-import { DashboardOutlined } from "@ant-design/icons";
 
 export const navConfig: NavMenu = {
   NavMenu: [
     {
       title: "Dashboard",
-      href: "#",
+      href: "/home",
       disabled: false,
       icon: dashboard,
     },
     {
       title: "Certificações",
-      href: "#",
+      href: "/certification",
       disabled: false,
       icon: certification,
     },
     {
       title: "Nova Certificação",
-      href: "#",
+      href: "/newcertification",
       disabled: false,
       icon: newcertification,
     },
