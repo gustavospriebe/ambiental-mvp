@@ -35,18 +35,32 @@ export async function GET(req: Request, res: NextResponse) {
 }
 
 // Criar nova certificação
-// Teste chamada direto api
 // const session = await getServerSession(authOptions);
 // const sessionId = session?.user.id;
+// Teste chamada direto api
 export async function POST(req: Request, res: Response) {
-
   const sessionId = req.headers.get("session-id");
+
+console.log(sessionId);
 
   if (!sessionId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
     });
   }
+
+  // const name = req.headers.get("name");
+  // const description = req.headers.get("description");
+  // const due = req.headers.get("due");
+
+  // if (!name || !description || !due) {
+  //   return new NextResponse(
+  //     JSON.stringify({ error: "Invalid request headers" }),
+  //     {
+  //       status: 400,
+  //     },
+  //   );
+  // }
 
   const body = req.body as {
     name: string;
