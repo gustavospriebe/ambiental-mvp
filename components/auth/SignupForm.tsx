@@ -59,7 +59,6 @@ const SignupForm = () => {
         redirect: false,
       });
 
-      // console.log(res);
       if (res?.error === null) router.replace("/login");
     } catch (error) {
       console.error("Erro no envio da requisição:", error);

@@ -9,14 +9,18 @@ import { getServerSession } from "next-auth";
 import { Button } from "@/components/ui/button";
 import ButtonNewTask from "@/components/ButtonNewTask";
 import getQueryClient from "@/lib/get-query-client";
-import { getData } from "@/lib/Queries";
-
-const queryClient = getQueryClient();
+import { createCertification, getData } from "@/lib/Queries";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const Page = async () => {
-  const certificationData = await queryClient.fetchQuery(["data"], () =>
-    getData("testando 1234556"),
-  );
+  const session = await getServerSession(authOptions);
+
+  const sessionId = session!.user.id;
+
+
+  const { certificationData } = await getData("certifications");
+
+  // console.log(certificationData);
 
   const certificationDataFormatted = certificationData.map(
     (item: {
@@ -45,7 +49,7 @@ const Page = async () => {
     }),
   );
 
-  console.log(certificationDataFormatted);
+  // console.log(certificationDataFormatted);
 
   const lateCertification = certificationDataFormatted.filter(
     (cert: { status: string; due: string }) =>
@@ -125,10 +129,7 @@ const Page = async () => {
             <Card className="w-full space-y-4">
               <div className="flex items-center justify-between">
                 <Title>Tabela de Certificações</Title>
-                {/* <form action={createNewCertification}>
-                  <button type="submit">Add to Cart</button>
-                </form> */}
-                {/* <ButtonNewTask action={createNewCertification} /> */}
+                <ButtonNewTask sessionId={sessionId}>Criar nova Certificação</ButtonNewTask>
               </div>
               <TableCertification
                 certificationDataFormatted={certificationDataFormatted}

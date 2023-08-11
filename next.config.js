@@ -5,6 +5,10 @@ const nextConfig = {
   },
 };
 
+module.exports = {
+  transpilePackages: ["@acme/ui", "lodash-es"],
+};
+
 module.exports = nextConfig;
 
 module.exports = {

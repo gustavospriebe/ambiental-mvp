@@ -2,10 +2,11 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
+import { Certification } from "@prisma/client";
 
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
-  // // Teste chamada direto api
+  // // // Teste chamada direto api
   // const session = await getServerSession(authOptions);
   // const sessionId = session?.user.id;
 
@@ -34,10 +35,10 @@ export async function GET(req: Request, res: NextResponse) {
 }
 
 // Criar nova certificação
+// Teste chamada direto api
+// const session = await getServerSession(authOptions);
+// const sessionId = session?.user.id;
 export async function POST(req: Request, res: Response) {
-  // // Teste chamada direto api
-  // const session = await getServerSession(authOptions);
-  // const sessionId = session!.user.id;
 
   const sessionId = req.headers.get("session-id");
 
@@ -52,6 +53,8 @@ export async function POST(req: Request, res: Response) {
     description: string;
     due: string;
   } | null;
+
+  console.log(body);
 
   if (!body) {
     return new NextResponse(JSON.stringify({ error: "Invalid request body" }), {
