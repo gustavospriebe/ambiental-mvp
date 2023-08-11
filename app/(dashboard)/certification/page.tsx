@@ -9,47 +9,26 @@ import { getServerSession } from "next-auth";
 import { Button } from "@/components/ui/button";
 import ButtonNewTask from "@/components/ButtonNewTask";
 import getQueryClient from "@/lib/get-query-client";
-import { dehydrate } from "@tanstack/react-query";
+import { getData } from "@/lib/Queries";
 
-async function getData() {
-  const session = await getServerSession(authOptions);
-
-  const req = await axios.get("http://localhost:3000/api/certifications", {
-    headers: { "session-id": session?.user.id },
-  });
-
-  const { certificationData } = req.data;
-
-  return certificationData;
-}
+const queryClient = getQueryClient();
 
 const Page = async () => {
-  const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(["data"], getData);
-  const dehydratedState = dehydrate(queryClient);
+  const certificationData = await queryClient.fetchQuery(["data"], () =>
+    getData("testando 1234556"),
+  );
 
-
-  const dataFetched = dehydratedState.queries.map((x) => x.state.data)[0])
-
-  // async function createNewCertification() {
-  //   const req = await axios.post("http://localhost:3000/api/certification", {
-  //     headers: { "session-id": session?.user.id },
-  //     body: {
-  //       name: "Facenok Certification",
-  //       description: "Lorem ipsum fkfj",
-  //       due: "2023-10-27T03:00:00.000Z",
-  //     },
-  //   });
-
-  //   return req;
-  // }
-
-  const certificationDataFormatted = dataFetched.queries
-    .map((x) => x.state.data)
-    .map((item) => ({
+  const certificationDataFormatted = certificationData.map(
+    (item: {
+      id: string;
+      name: string;
+      _count: { tasks: number };
+      status: string;
+      due: string | null;
+    }) => ({
       id: item.id,
       name: item.name,
-      // count: item._count.tasks,
+      count: item._count.tasks,
       status:
         item.status === "COMPLETED"
           ? "Completo"
@@ -63,7 +42,8 @@ const Page = async () => {
           ? "yellow"
           : "rose",
       due: item.due,
-    }));
+    }),
+  );
 
   console.log(certificationDataFormatted);
 
