@@ -5,12 +5,12 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-
 import {
   Form,
   FormControl,
@@ -32,6 +32,7 @@ import * as z from "zod";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Textarea } from "../ui/textarea";
+import { Alert } from "../ui/alert";
 
 interface ModalCertificationsProps {
   sessionId?: string;
@@ -48,8 +49,9 @@ const formSchema = z.object({
 
 const ModalCertifications = ({ sessionId }: ModalCertificationsProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState("none");
 
-  console.log(sessionId);
+  // console.log(sessionId);
 
   const router = useRouter();
 
@@ -62,9 +64,9 @@ const ModalCertifications = ({ sessionId }: ModalCertificationsProps) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setToast("none");
     try {
-      setIsLoading(true);
-
       let data = {
         name: values.name,
         description: values.description,
@@ -86,14 +88,17 @@ const ModalCertifications = ({ sessionId }: ModalCertificationsProps) => {
 
       console.log(req);
 
+      setToast("send");
       if (req.status === 200)
         router.replace(`/certification/${req.data.newData.id}`);
 
       return req;
     } catch (error) {
       console.error(`Erro no envio da requisição: ${error}`);
+
+      setToast("error");
     } finally {
-      form.reset()
+      form.reset();
       setIsLoading(false);
     }
   }
@@ -194,6 +199,22 @@ const ModalCertifications = ({ sessionId }: ModalCertificationsProps) => {
             </form>
           </Form>
         </div>
+        {toast === "send" && (
+          <Alert>
+            <p>
+              <span className="font-medium">Sucesso! </span>
+              Sua certificação foi criada.
+            </p>
+          </Alert>
+        )}
+        {toast === "error" && (
+          <Alert variant={"destructive"}>
+            <p>
+              <span className="font-medium">Erro! </span>
+              Sua certificação não pode ser criado, tente novamente.
+            </p>
+          </Alert>
+        )}
       </DialogContent>
     </Dialog>
   );
