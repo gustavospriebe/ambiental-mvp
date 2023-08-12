@@ -51,7 +51,7 @@ const SignupForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      setIsLoading(!isLoading);
+      setIsLoading(true);
       const res = await signIn("credentials", {
         name: values.companyName,
         email: values.email,
@@ -61,7 +61,7 @@ const SignupForm = () => {
 
       if (res?.error === null) router.replace("/login");
     } catch (error) {
-      console.error("Erro no envio da requisição:", error);
+      console.error(`Erro no envio da requisição: ${error}`);
     } finally {
       setIsLoading(false);
     }

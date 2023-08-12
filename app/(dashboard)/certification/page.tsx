@@ -1,26 +1,20 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import ButtonNewTask from "@/components/ButtonNewTask";
+import ModalCertifications from "@/components/certifications/ModalCertifications";
 import TableCertification from "@/components/certifications/TableCertification";
 import Indicator from "@/components/datavis/Indicator";
+import { getData } from "@/lib/Queries";
 import { isBeforeOrSameNow, minDate } from "@/lib/date";
 import { Card, List, ListItem, Text, Title, Tracker } from "@tremor/react";
-import axios from "axios";
 import dayjs from "dayjs";
 import { getServerSession } from "next-auth";
-import { Button } from "@/components/ui/button";
-import ButtonNewTask from "@/components/ButtonNewTask";
-import getQueryClient from "@/lib/get-query-client";
-import { createCertification, getData } from "@/lib/Queries";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
 
   const sessionId = session!.user.id;
 
-
   const { certificationData } = await getData("certifications");
-
-  // console.log(certificationData);
 
   const certificationDataFormatted = certificationData.map(
     (item: {
@@ -48,8 +42,6 @@ const Page = async () => {
       due: item.due,
     }),
   );
-
-  // console.log(certificationDataFormatted);
 
   const lateCertification = certificationDataFormatted.filter(
     (cert: { status: string; due: string }) =>
@@ -129,7 +121,10 @@ const Page = async () => {
             <Card className="w-full space-y-4">
               <div className="flex items-center justify-between">
                 <Title>Tabela de Certificações</Title>
-                <ButtonNewTask sessionId={sessionId}>Criar nova Certificação</ButtonNewTask>
+                <ModalCertifications sessionId={sessionId}/>
+                {/* <ButtonNewTask sessionId={sessionId}>
+                  Criar nova Certificação
+                </ButtonNewTask> */}
               </div>
               <TableCertification
                 certificationDataFormatted={certificationDataFormatted}

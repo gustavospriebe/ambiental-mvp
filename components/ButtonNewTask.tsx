@@ -1,29 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-// import { createCertification } from "@/lib/Queries";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import axios from "axios";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import * as z from "zod";
-import { useSession } from "next-auth/react";
-import { NextResponse } from "next/server";
-import { createCertification } from "@/lib/Queries";
+import { useRouter } from "next/navigation";
 
 interface ButtonNewTask extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
   sessionId?: string;
 }
-
-// const formSchema = z.object({
-//   name: z
-//     .string({ required_error: "Digite o nome da certificação." })
-//     .min(2, { message: "Deve ter 2 ou mais caracteres." }),
-//   description: z.string(),
-//   due: z.date(),
-// });
 
 const ButtonNewTask = ({ children, className, sessionId }: ButtonNewTask) => {
   const router = useRouter();
