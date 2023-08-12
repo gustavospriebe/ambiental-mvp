@@ -1,5 +1,4 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import ButtonNewTask from "@/components/ButtonNewTask";
 import ModalCertifications from "@/components/certifications/ModalCertifications";
 import TableCertification from "@/components/certifications/TableCertification";
 import Indicator from "@/components/datavis/Indicator";
@@ -75,7 +74,7 @@ const Page = async () => {
   );
 
   return (
-    <div className="flex w-full bg-red-50 md:ml-52 md:h-screen">
+    <div className="flex w-full bg-red-50 md:ml-52 md:h-full">
       <div className="my-2 w-full px-5 md:m-8">
         <Title className="text-2xl font-bold">Certificações</Title>
         <Text className="mt-2">
@@ -121,12 +120,9 @@ const Page = async () => {
             <Card className="w-full space-y-4">
               <div className="flex items-center justify-between">
                 <Title>Tabela de Certificações</Title>
-                <ModalCertifications sessionId={sessionId}/>
-                {/* <ButtonNewTask sessionId={sessionId}>
-                  Criar nova Certificação
-                </ButtonNewTask> */}
+                <ModalCertifications sessionId={sessionId} />
               </div>
-              <TableCertification
+              <TableCertification sessionId={sessionId}
                 certificationDataFormatted={certificationDataFormatted}
               />
             </Card>

@@ -2,18 +2,29 @@
 
 import { formattedDate } from "@/lib/date";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Badge,
-  Card,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeaderCell,
   TableRow,
-  Title,
 } from "@tremor/react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface certificationData {
   id: string;
@@ -36,10 +47,12 @@ interface TableCertificationProps {
     color: string;
     due: string | null;
   };
+  sessionId: string;
 }
 
 const TableCertification = ({
   certificationDataFormatted,
+  sessionId,
 }: TableCertificationProps) => {
   const certificationDataOrdered = certificationDataFormatted.sort(
     (a: { status: string }, b: { status: string }) => {
@@ -52,6 +65,10 @@ const TableCertification = ({
       return certOrder[a.status] - certOrder[b.status];
     },
   );
+
+  const router = useRouter();
+
+  async function deleteCertification(sessionId: string) {}
 
   // const sortedCertifications = certificationDataFormatted
   //   .slice()
@@ -98,9 +115,42 @@ const TableCertification = ({
               <Button disabled variant="outline">
                 Editar
               </Button>
-              <Button disabled variant="destructive">
-                Excluir
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">Excluir</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Tem certeza que quer excluir?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Essa ação não pode ser desfeita.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      onClick={async () => {
+                        await axios.request({
+                          method: "delete",
+                          url: "http://localhost:3000/api/certifications",
+                          data: {
+                            certificationId: item.id,
+                          },
+                          headers: {
+                            "session-id": sessionId,
+                          },
+                        });
+                        router.refresh();
+                      }}
+                    >
+                      Excluir
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </TableCell>
           </TableRow>
         ))}

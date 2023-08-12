@@ -1,8 +1,5 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
-import { Certification } from "@prisma/client";
 
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: NextRequest, res: NextResponse) {
@@ -43,12 +40,9 @@ export async function POST(req: Request, res: Response) {
   const { name, description, due } = await req.json();
 
   if (!name || !description || !due) {
-    return new NextResponse(
-      JSON.stringify({ error: "Invalid request headers" }),
-      {
-        status: 400,
-      },
-    );
+    return new NextResponse(JSON.stringify({ error: "Invalid request body" }), {
+      status: 400,
+    });
   }
 
   const newData = await db.certification.create({
@@ -66,3 +60,34 @@ export async function POST(req: Request, res: Response) {
 // Atualiza certificação
 
 // Deleta certificação
+export async function DELETE(req: Request, res: Response) {
+  const sessionId = req.headers.get("session-id");
+
+  if (!sessionId) {
+    return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+    });
+  }
+
+  const { certificationId }: { certificationId: string } = await req.json();
+
+  console.log(certificationId);
+
+  if (!certificationId) {
+    return new NextResponse(JSON.stringify({ error: "Invalid request body" }), {
+      status: 400,
+    });
+  }
+
+  const deleteTaskData = await db.task.deleteMany({
+    where: {
+      certificationId: certificationId,
+    },
+  });
+
+  const deleteCertificationData = await db.certification.delete({
+    where: { id: certificationId },
+  });
+
+  return NextResponse.json({ deleteTaskData, deleteCertificationData });
+}
