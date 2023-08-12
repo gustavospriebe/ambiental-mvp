@@ -1,6 +1,5 @@
 "use client";
 
-import { formattedDate } from "@/lib/date";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { formattedDate } from "@/lib/date";
 import {
   Badge,
   Table,
@@ -21,10 +21,10 @@ import {
   TableHeaderCell,
   TableRow,
 } from "@tremor/react";
-import Link from "next/link";
-import { Button } from "../ui/button";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 interface certificationData {
   id: string;
@@ -67,8 +67,6 @@ const TableCertification = ({
   );
 
   const router = useRouter();
-
-  async function deleteCertification(sessionId: string) {}
 
   // const sortedCertifications = certificationDataFormatted
   //   .slice()
