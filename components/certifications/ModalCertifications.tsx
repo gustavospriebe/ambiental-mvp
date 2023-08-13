@@ -87,8 +87,6 @@ const ModalCertifications = ({
 
       const req = await axios.request(config);
 
-      console.log(req);
-
       setToast("send");
       if (req.status === 200) {
         router.replace(`/certification/${req.data.newData.id}`);
@@ -99,6 +97,7 @@ const ModalCertifications = ({
 
       setToast("error");
     } finally {
+      router.refresh();
       form.reset();
       setIsLoading(false);
     }

@@ -16,6 +16,8 @@ import { formattedDate } from "@/lib/date";
 import {
   Badge,
   Card,
+  Select,
+  SelectItem,
   Tab,
   TabGroup,
   TabList,
@@ -188,9 +190,68 @@ const TableCertification = ({
                   <Badge color={item.color}>{item.status}</Badge>
                 </TableCell>
                 <TableCell className="flex gap-2">
-                  <Button variant="outline">
-                    Editar Status
-                  </Button>
+                  <div className="mx-auto max-w-sm space-y-6">
+                    <Select placeholder="Editar Status">
+                      <SelectItem
+                        onClick={async () => {
+                          await axios.request({
+                            method: "patch",
+                            url: "http://localhost:3000/api/certifications",
+                            data: {
+                              certificationId: item.id,
+                              newStatus: "NOT_STARTED",
+                            },
+                            headers: {
+                              "session-id": sessionId,
+                            },
+                          });
+                          router.refresh();
+                        }}
+                        value="NOT_STARTED"
+                      >
+                        Não iniciado
+                      </SelectItem>
+                      <SelectItem
+                        onClick={async () => {
+                          await axios.request({
+                            method: "patch",
+                            url: "http://localhost:3000/api/certifications",
+                            data: {
+                              certificationId: item.id,
+                              newStatus: "STARTED",
+                            },
+                            headers: {
+                              "session-id": sessionId,
+                            },
+                          });
+                          router.refresh();
+                        }}
+                        value="STARTED"
+                      >
+                        Em andamento
+                      </SelectItem>
+                      <SelectItem
+                        onClick={async () => {
+                          await axios.request({
+                            method: "patch",
+                            url: "http://localhost:3000/api/certifications",
+                            data: {
+                              certificationId: item.id,
+                              newStatus: "COMPLETED",
+                            },
+                            headers: {
+                              "session-id": sessionId,
+                            },
+                          });
+                          router.refresh();
+                        }}
+                        value="COMPLETED"
+                      >
+                        Completo
+                      </SelectItem>
+                    </Select>
+                  </div>
+                  {/* Componentizar botoes */}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive">Excluir</Button>
