@@ -5,7 +5,7 @@ import Indicator from "@/components/datavis/Indicator";
 import { getData } from "@/lib/Queries";
 import { isBeforeOrSameNow, minDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import { Card, List, ListItem, Text, Title, Tracker } from "@tremor/react";
+import { List, ListItem, Text, Title, Tracker } from "@tremor/react";
 import dayjs from "dayjs";
 import { getServerSession } from "next-auth";
 
@@ -123,18 +123,10 @@ const Page = async () => {
                 title="Próx. Vencimento de Certificação"
               />
             </div>
-            <div className="h-full w-full space-y-6">
-              <Card className="w-full space-y-4">
-                <div className="flex items-center justify-between">
-                  <Title>Tabela de Certificações</Title>
-                  <ModalCertifications sessionId={sessionId} />
-                </div>
-                <TableCertification
-                  sessionId={sessionId}
-                  certificationDataFormatted={certificationDataFormatted}
-                />
-              </Card>
-            </div>
+            <TableCertification
+              sessionId={sessionId}
+              certificationDataFormatted={certificationDataFormatted}
+            />
           </div>
         ) : (
           <div className="mt-12 flex w-full flex-col items-center justify-center space-y-6">

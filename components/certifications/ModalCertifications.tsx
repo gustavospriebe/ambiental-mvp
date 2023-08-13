@@ -32,7 +32,6 @@ import { Alert } from "../ui/alert";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Textarea } from "../ui/textarea";
-import { getData } from "@/lib/Queries";
 
 interface ModalCertificationsProps {
   sessionId?: string;
