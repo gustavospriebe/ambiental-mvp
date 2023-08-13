@@ -31,8 +31,8 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 interface certificationData {
   id: string;
@@ -129,18 +129,6 @@ const TableCertification = ({
               : new Date(a.due).getTime() - new Date(b.due).getTime(),
           );
 
-  // const filteredCertifications = sortedDateCertifications.filter(
-  //   (x) =>
-  //     x.status ===
-  //     (selectedIndex === 1
-  //       ? "Não iniciado"
-  //       : selectedIndex === 2
-  //       ? "Em andamento"
-  //       : selectedIndex === 3
-  //       ? "Completo"
-  //       : x.status),
-  // );
-
   return (
     <div className="h-full w-full">
       <Card className="w-full space-y-6">
@@ -200,8 +188,8 @@ const TableCertification = ({
                   <Badge color={item.color}>{item.status}</Badge>
                 </TableCell>
                 <TableCell className="flex gap-2">
-                  <Button disabled variant="outline">
-                    Editar
+                  <Button variant="outline">
+                    Editar Status
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
