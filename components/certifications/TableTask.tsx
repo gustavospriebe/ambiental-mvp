@@ -118,13 +118,14 @@ const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
                         onClick={async () => {
                           await axios.request({
                             method: "patch",
-                            url: "http://localhost:3000/api/certifications",
+                            url: "http://localhost:3000/api/certification",
                             data: {
-                              certificationId: item.id,
+                              taskId: item.id,
                               newStatus: "NOT_STARTED",
                             },
                             headers: {
                               "session-id": sessionId,
+                              "cert-id": certId,
                             },
                           });
                           router.refresh();
@@ -137,13 +138,14 @@ const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
                         onClick={async () => {
                           await axios.request({
                             method: "patch",
-                            url: "http://localhost:3000/api/certifications",
+                            url: "http://localhost:3000/api/certification",
                             data: {
-                              certificationId: item.id,
+                              taskId: item.id,
                               newStatus: "STARTED",
                             },
                             headers: {
                               "session-id": sessionId,
+                              "cert-id": certId,
                             },
                           });
                           router.refresh();
@@ -156,13 +158,14 @@ const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
                         onClick={async () => {
                           await axios.request({
                             method: "patch",
-                            url: "http://localhost:3000/api/certifications",
+                            url: "http://localhost:3000/api/certification",
                             data: {
-                              certificationId: item.id,
+                              taskId: item.id,
                               newStatus: "COMPLETED",
                             },
                             headers: {
                               "session-id": sessionId,
+                              "cert-id": certId,
                             },
                           });
                           router.refresh();
@@ -194,12 +197,13 @@ const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
                           onClick={async () => {
                             await axios.request({
                               method: "delete",
-                              url: "http://localhost:3000/api/certifications",
+                              url: "http://localhost:3000/api/certification",
                               data: {
-                                certificationId: item.id,
+                                taskId: item.id,
                               },
                               headers: {
                                 "session-id": sessionId,
+                                "cert-id": certId,
                               },
                             });
                             router.refresh();

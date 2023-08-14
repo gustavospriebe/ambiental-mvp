@@ -34,11 +34,13 @@ const Certification = async ({ params }: CertificationProps) => {
 
   const taskformatted = certificationData.tasks.map(
     (item: {
+      id: string;
       name: string;
       status: string;
       description: string;
       due: Date;
     }) => ({
+      id: item.id,
       name: item.name,
       status:
         item.status === "COMPLETED"
