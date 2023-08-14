@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ModalCertifications from "@/components/certifications/ModalCertifications";
-import TableCertification from "@/components/certifications/TableCertification";
+import TableTask from "@/components/certifications/TableCertification";
 import Indicator from "@/components/datavis/Indicator";
 import { getData } from "@/lib/Queries";
 import { isBeforeOrSameNow, minDate } from "@/lib/date";
@@ -15,6 +15,8 @@ const Page = async () => {
   const sessionId = session!.user.id;
 
   const { certificationData } = await getData("certifications", sessionId);
+
+  console.log(certificationData);
 
   const certificationDataFormatted = certificationData.map(
     (item: {
@@ -123,7 +125,7 @@ const Page = async () => {
                 title="Próx. Vencimento de Certificação"
               />
             </div>
-            <TableCertification
+            <TableTask
               sessionId={sessionId}
               certificationDataFormatted={certificationDataFormatted}
             />

@@ -12,7 +12,7 @@ export async function GET(req: Request, res: NextResponse) {
     });
   }
 
-  const certificationData = await db.certification.findMany({
+  const certificationData = await db.certification.findFirst({
     where: {
       AND: [{ companyId: sessionId }, { id: certId }, { deleted: false }],
     },
@@ -20,6 +20,7 @@ export async function GET(req: Request, res: NextResponse) {
       id: true,
       name: true,
       status: true,
+      description: true,
       due: true,
       tasks: {
         select: {

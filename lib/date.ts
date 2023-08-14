@@ -29,7 +29,7 @@ export const minDate = (date: (string | null)[]) => {
   return minDate;
 };
 
-export const formattedDate = (date: string) =>
+export const formattedDate = (date: Date | string | null) =>
   dayjs(date).format("DD[/]MM[/]YYYY");
 
 export const isBeforeOrSameNow = (date: string) =>

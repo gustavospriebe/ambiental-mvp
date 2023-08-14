@@ -1,24 +1,12 @@
 "use client";
 
 import ModalCertifications from "@/components/certifications/ModalCertifications";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { formattedDate } from "@/lib/date";
+import { STATUS } from "@prisma/client";
 import {
-  Badge,
   Card,
-  Select,
-  SelectItem,
   Tab,
+  Badge,
   TabGroup,
   TabList,
   Table,
@@ -29,107 +17,42 @@ import {
   TableRow,
   Text,
   Title,
+  Select,
+  SelectItem,
 } from "@tremor/react";
-import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,  AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
+import axios from "axios";
 
-interface certificationData {
+interface taskData {
   id: string;
   name: string;
-  count: number;
-  status: string;
-  color: string;
-  due: string | null;
+  color:string;
+  description: string | null;
+  status: STATUS;
+  due: Date | null;
 }
 
-interface TableCertificationProps {
-  certificationDataFormatted: {
-    slice: any;
-    sort: any;
+interface TableTaskProps {
+  taskformatted: {
     map: any;
     id: string;
+    color:string;
     name: string;
-    count: number;
-    status: string;
-    color: string;
-    due: string | null;
+    description: string | null;
+    status: STATUS;
+    due: Date | null;
   };
+
   sessionId: string;
 }
 
-const TableCertification = ({
-  certificationDataFormatted,
-  sessionId,
-}: TableCertificationProps) => {
+const TableTask = ({ taskformatted, sessionId }: TableTaskProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const router = useRouter();
-
-  // const certificationDataOrdered =
-  //   selectedIndex !== 0
-  //     ? certificationDataFormatted
-  //         .sort((a: { status: string }, b: { status: string }) => {
-  //           const certOrder: Record<string, number> = {
-  //             "Não iniciado": 0,
-  //             "Em andamento": 1,
-  //             Completo: 2,
-  //           };
-
-  //           return certOrder[a.status] - certOrder[b.status];
-  //         })
-  //         .filter(
-  //           (x: { status: string }) =>
-  //             x.status ===
-  //             (selectedIndex === 1
-  //               ? "Não iniciado"
-  //               : selectedIndex === 2
-  //               ? "Em andamento"
-  //               : "Completo"),
-  //         )
-  //     : certificationDataFormatted.sort(
-  //         (a: { status: string }, b: { status: string }) => {
-  //           const certOrder: Record<string, number> = {
-  //             "Não iniciado": 0,
-  //             "Em andamento": 1,
-  //             Completo: 2,
-  //           };
-
-  //           return certOrder[a.status] - certOrder[b.status];
-  //         },
-  //       );
-
-  const sortedDateCertifications =
-    selectedIndex !== 0
-      ? certificationDataFormatted
-          .slice()
-          .sort((a: { due: string }, b: { due: string }) =>
-            a.due === null
-              ? 1
-              : b.due === null
-              ? -1
-              : new Date(a.due).getTime() - new Date(b.due).getTime(),
-          )
-          .filter(
-            (x: { status: string }) =>
-              x.status ===
-              (selectedIndex === 1
-                ? "Não iniciado"
-                : selectedIndex === 2
-                ? "Em andamento"
-                : "Completo"),
-          )
-      : certificationDataFormatted
-          .slice()
-          .sort((a: { due: string }, b: { due: string }) =>
-            a.due === null
-              ? 1
-              : b.due === null
-              ? -1
-              : new Date(a.due).getTime() - new Date(b.due).getTime(),
-          );
 
   return (
     <div className="h-full w-full">
@@ -161,26 +84,21 @@ const TableCertification = ({
           <TableHead>
             <TableRow>
               <TableHeaderCell>Nome</TableHeaderCell>
-              <TableHeaderCell>Qtd. Tasks</TableHeaderCell>
+              <TableHeaderCell>Descrição</TableHeaderCell>
               <TableHeaderCell>Vencimento</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
               <TableHeaderCell>Ações</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedDateCertifications.map((item: certificationData) => (
+            {" "}
+            {taskformatted.map((item: taskData) => (
               <TableRow className="hover:bg-slate-50" key={item.id}>
                 <TableCell>
-                  <Link
-                    className="hover:underline"
-                    href={`/certification/${item.id}`}
-                  >
                     {item.name}
-                  </Link>
                 </TableCell>
-
-                <TableCell className="flex justify-center">
-                  {item.count}
+                <TableCell>
+                    {item.description}
                 </TableCell>
                 <TableCell>
                   {!!item.due ? formattedDate(item.due) : "Sem data"}
@@ -298,4 +216,4 @@ const TableCertification = ({
   );
 };
 
-export default TableCertification;
+export default TableTask;
