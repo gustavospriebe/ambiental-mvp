@@ -77,7 +77,7 @@ const ModalCertifications = ({
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:3000/api/certifications",
+        url: "https://ambiental-mvp.vercel.app/api/certifications",
         headers: {
           "session-id": sessionId,
           "Content-Type": "application/json",

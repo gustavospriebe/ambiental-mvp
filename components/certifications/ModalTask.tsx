@@ -75,7 +75,7 @@ const ModalTask = ({ sessionId, className, certId }: ModalTaskProps) => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:3000/api/certification",
+        url: "https://ambiental-mvp.vercel.app/api/certification",
         headers: {
           "session-id": sessionId,
           "cert-id": certId,

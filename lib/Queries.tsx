@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 export const getData = async (path: string, sessionId: string) => {
   const session = await getServerSession(authOptions);
 
-  const req = await axios.get(`http://localhost:3000/api/${path}`, {
+  const req = await axios.get(`https://ambiental-mvp.vercel.app/api/${path}`, {
     headers: { "session-id": sessionId },
   });
 
@@ -17,7 +17,7 @@ export const getDataWithParams = async (
   sessionId: string,
   certId: string,
 ) => {
-  const req = await axios.get(`http://localhost:3000/api/${path}`, {
+  const req = await axios.get(`https://ambiental-mvp.vercel.app/api/${path}`, {
     headers: { "session-id": sessionId, "cert-id": certId },
   });
 

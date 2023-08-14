@@ -161,7 +161,7 @@ const TableCertification = ({
                         onClick={async () => {
                           await axios.request({
                             method: "patch",
-                            url: "http://localhost:3000/api/certifications",
+                            url: "https://ambiental-mvp.vercel.app/api/certifications",
                             data: {
                               certificationId: item.id,
                               newStatus: "NOT_STARTED",
@@ -180,7 +180,7 @@ const TableCertification = ({
                         onClick={async () => {
                           await axios.request({
                             method: "patch",
-                            url: "http://localhost:3000/api/certifications",
+                            url: "https://ambiental-mvp.vercel.app/api/certifications",
                             data: {
                               certificationId: item.id,
                               newStatus: "STARTED",
@@ -199,7 +199,7 @@ const TableCertification = ({
                         onClick={async () => {
                           await axios.request({
                             method: "patch",
-                            url: "http://localhost:3000/api/certifications",
+                            url: "https://ambiental-mvp.vercel.app/api/certifications",
                             data: {
                               certificationId: item.id,
                               newStatus: "COMPLETED",
@@ -237,7 +237,7 @@ const TableCertification = ({
                           onClick={async () => {
                             await axios.request({
                               method: "delete",
-                              url: "http://localhost:3000/api/certifications",
+                              url: "https://ambiental-mvp.vercel.app/api/certifications",
                               data: {
                                 certificationId: item.id,
                               },
