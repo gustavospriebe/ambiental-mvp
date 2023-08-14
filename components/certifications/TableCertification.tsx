@@ -68,39 +68,6 @@ const TableCertification = ({
 
   const router = useRouter();
 
-  // const certificationDataOrdered =
-  //   selectedIndex !== 0
-  //     ? certificationDataFormatted
-  //         .sort((a: { status: string }, b: { status: string }) => {
-  //           const certOrder: Record<string, number> = {
-  //             "Não iniciado": 0,
-  //             "Em andamento": 1,
-  //             Completo: 2,
-  //           };
-
-  //           return certOrder[a.status] - certOrder[b.status];
-  //         })
-  //         .filter(
-  //           (x: { status: string }) =>
-  //             x.status ===
-  //             (selectedIndex === 1
-  //               ? "Não iniciado"
-  //               : selectedIndex === 2
-  //               ? "Em andamento"
-  //               : "Completo"),
-  //         )
-  //     : certificationDataFormatted.sort(
-  //         (a: { status: string }, b: { status: string }) => {
-  //           const certOrder: Record<string, number> = {
-  //             "Não iniciado": 0,
-  //             "Em andamento": 1,
-  //             Completo: 2,
-  //           };
-
-  //           return certOrder[a.status] - certOrder[b.status];
-  //         },
-  //       );
-
   const sortedDateCertifications =
     selectedIndex !== 0
       ? certificationDataFormatted
