@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const certificationData = await db.certification.findMany({
     where: {
-      AND: [{ companyId: sessionId }],
+      AND: [{ companyId: sessionId }, { deleted: false }],
     },
     select: {
       id: true,

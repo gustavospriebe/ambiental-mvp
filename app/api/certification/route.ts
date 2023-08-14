@@ -5,11 +5,7 @@ import { authOptions } from "../auth/[...nextauth]/route";
 
 // Puxar as infos da certificação e suas tasks
 export async function GET(req: Request, res: NextResponse) {
-  // Teste chamada direto api
-  const session = await getServerSession(authOptions);
-  const sessionId = session?.user.id;
-
-  // const sessionId = req.headers.get("session-id");
+  const sessionId = req.headers.get("session-id");
 
   if (!sessionId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
@@ -17,22 +13,32 @@ export async function GET(req: Request, res: NextResponse) {
     });
   }
 
-  const certificationData = await db.certification.findMany({
-    where: { id: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3" },
+  const certificationData = await db.task.findMany({
+    where: {
+      AND: [
+        { companyId: sessionId },
+        {certificationId: "1b919aea-823e-42b2-ace1-3360b41f2d52"},
+        { deleted: false },
+        { certification: { deleted: false } },
+      ],
+    },
     select: {
+      id: true,
       name: true,
       status: true,
       description: true,
       due: true,
-      tasks: true,
+      certification: {
+        select: {
+          name: true,
+          status: true,
+          due: true,
+        },
+      },
     },
   });
 
-  const taskData = await db.task.findMany({
-    where: { certificationId: "a700bd6c-4c05-4ab2-ad7d-ca8aa12310c3" },
-  });
-
-  return NextResponse.json({ certificationData, taskData });
+  return NextResponse.json({ certificationData });
 }
 
 // Criar nova task
