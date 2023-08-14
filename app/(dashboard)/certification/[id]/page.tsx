@@ -1,11 +1,27 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getDataWithParams } from "@/lib/Queries";
 import { cn } from "@/lib/utils";
 import { Title, Text } from "@tremor/react";
+import { getServerSession } from "next-auth";
 
 interface CertificationProps {
   params: { id: string };
 }
 
-const Certification = ({ params }: CertificationProps) => {
+const Certification = async ({ params }: CertificationProps) => {
+  const session = await getServerSession(authOptions);
+
+  const sessionId = session!.user.id;
+  const certId = params.id;
+
+  const { certificationData } = await getDataWithParams(
+    "certification",
+    sessionId,
+    certId,
+  );
+
+  console.log(certificationData);
+
   return (
     <div
       className={cn(
@@ -19,6 +35,8 @@ const Certification = ({ params }: CertificationProps) => {
           Confira as atualizações da sua certificação no dashboard abaixo.
         </Text>
         <p>{params.id}</p>
+
+        {certificationData && <p>deu bom</p>}
       </div>
       {/* <p>Intro que tem em todas as paginas</p>
       <p>Indicadores da certificação</p>

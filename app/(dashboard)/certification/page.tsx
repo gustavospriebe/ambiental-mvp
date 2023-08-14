@@ -14,7 +14,7 @@ const Page = async () => {
 
   const sessionId = session!.user.id;
 
-  const { certificationData } = await getData("certifications");
+  const { certificationData } = await getData("certifications", sessionId);
 
   const certificationDataFormatted = certificationData.map(
     (item: {

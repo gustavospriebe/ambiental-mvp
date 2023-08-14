@@ -1,37 +1,32 @@
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
 
 // Puxar as infos da certificação e suas tasks
 export async function GET(req: Request, res: NextResponse) {
   const sessionId = req.headers.get("session-id");
+  const certId = req.headers.get("cert-id");
 
-  if (!sessionId) {
+  if (!sessionId || !certId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
     });
   }
 
-  const certificationData = await db.task.findMany({
+  const certificationData = await db.certification.findMany({
     where: {
-      AND: [
-        { companyId: sessionId },
-        {certificationId: "1b919aea-823e-42b2-ace1-3360b41f2d52"},
-        { deleted: false },
-        { certification: { deleted: false } },
-      ],
+      AND: [{ companyId: sessionId }, { id: certId }, { deleted: false }],
     },
     select: {
       id: true,
       name: true,
       status: true,
-      description: true,
       due: true,
-      certification: {
+      tasks: {
         select: {
+          id: true,
           name: true,
           status: true,
+          description: true,
           due: true,
         },
       },

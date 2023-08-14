@@ -16,6 +16,7 @@ const Page = async () => {
 
   const { taskCountData, certificationData, lastTasksData } = await getData(
     "home",
+    sessionId,
   );
 
   const taskData = taskCountData.map(

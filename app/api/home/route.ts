@@ -1,7 +1,5 @@
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
 
 // Puxar as infos gerais das certificações e ultimas tasks
 export async function GET(req: Request, res: NextResponse) {
