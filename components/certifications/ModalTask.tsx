@@ -33,8 +33,9 @@ import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Textarea } from "../ui/textarea";
 
-interface ModalCertificationsProps {
+interface ModalTaskProps {
   sessionId?: string;
+  certId?: string;
   children?: string;
   className?: string;
 }
@@ -47,10 +48,7 @@ const formSchema = z.object({
   due: z.date({ required_error: "Selecione o Vencimento" }),
 });
 
-const ModalCertifications = ({
-  sessionId,
-  className,
-}: ModalCertificationsProps) => {
+const ModalTask = ({ sessionId, className, certId }: ModalTaskProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState("none");
 
@@ -77,9 +75,10 @@ const ModalCertifications = ({
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:3000/api/certifications",
+        url: "http://localhost:3000/api/certification",
         headers: {
           "session-id": sessionId,
+          "cert-id": certId,
           "Content-Type": "application/json",
         },
         data: data,
@@ -88,9 +87,7 @@ const ModalCertifications = ({
       const req = await axios.request(config);
 
       setToast("send");
-      if (req.status === 200) {
-        router.replace(`/certification/${req.data.newData.id}`);
-      }
+
       return req;
     } catch (error) {
       console.error(`Erro no envio da requisição: ${error}`);
@@ -107,13 +104,13 @@ const ModalCertifications = ({
     <div className={cn("", className ?? "")}>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">Criar nova Certificação</Button>
+          <Button variant="outline">Criar nova Task</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Criar nova Certificação</DialogTitle>
+            <DialogTitle>Criar nova Task</DialogTitle>
             <DialogDescription>
-              Preencha os seguintes dados para criar uma nova certificação.
+              Preencha os seguintes dados para criar uma nova task.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -127,7 +124,7 @@ const ModalCertifications = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nome da Certificação</FormLabel>
+                      <FormLabel>Nome da Task</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -143,7 +140,7 @@ const ModalCertifications = ({
                       <FormLabel>Descrição</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Escreva uma breve descrição da certificação"
+                          placeholder="Escreva uma breve descrição da task"
                           className="resize-none"
                           {...field}
                         />
@@ -207,7 +204,7 @@ const ModalCertifications = ({
             <Alert>
               <p>
                 <span className="font-medium">Sucesso! </span>
-                Sua certificação foi criada.
+                Sua task foi criada.
               </p>
             </Alert>
           )}
@@ -215,7 +212,7 @@ const ModalCertifications = ({
             <Alert variant={"destructive"}>
               <p>
                 <span className="font-medium">Erro! </span>
-                Sua certificação não pode ser criado, tente novamente.
+                Sua task não pode ser criado, tente novamente.
               </p>
             </Alert>
           )}
@@ -225,4 +222,4 @@ const ModalCertifications = ({
   );
 };
 
-export default ModalCertifications;
+export default ModalTask;

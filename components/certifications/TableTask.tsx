@@ -1,6 +1,5 @@
 "use client";
 
-import ModalCertifications from "@/components/certifications/ModalCertifications";
 import { formattedDate } from "@/lib/date";
 import { STATUS } from "@prisma/client";
 import {
@@ -8,9 +7,6 @@ import {
   Card,
   Select,
   SelectItem,
-  Tab,
-  TabGroup,
-  TabList,
   Table,
   TableBody,
   TableCell,
@@ -35,6 +31,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
+import ModalTask from "./ModalTask";
 
 interface taskData {
   id: string;
@@ -99,7 +96,7 @@ const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
               Acesse as informações das certificações.
             </Text>
           </div>
-          <ModalCertifications sessionId={sessionId} certId={certId} />
+          <ModalTask sessionId={sessionId} certId={certId} />
         </div>
         <div className="max-w-sm">
           <Select

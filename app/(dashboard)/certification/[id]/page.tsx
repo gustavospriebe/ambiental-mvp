@@ -1,11 +1,24 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import ModalTask from "@/components/certifications/ModalTask";
 import TableTask from "@/components/certifications/TableTask";
 import Indicator from "@/components/datavis/Indicator";
 import { getDataWithParams } from "@/lib/Queries";
-import { formattedDate } from "@/lib/date";
+import { formattedDate, isBeforeOrSameNow } from "@/lib/date";
 import { cn } from "@/lib/utils";
-import { STATUS } from "@prisma/client";
-import { Badge, Card, Metric, ProgressBar, Text, Title } from "@tremor/react";
+import { Task } from "@prisma/client";
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AreaChart,
+  BarList,
+  Card,
+  ListItem,
+  Metric,
+  ProgressBar,
+  Text,
+  Title,
+} from "@tremor/react";
 import { getServerSession } from "next-auth";
 
 interface CertificationProps {
@@ -37,11 +50,13 @@ const Certification = async ({ params }: CertificationProps) => {
       id: string;
       name: string;
       status: string;
+      updatedAt: Date;
       description: string;
       due: Date;
     }) => ({
       id: item.id,
       name: item.name,
+      updatedAt: item.updatedAt,
       status:
         item.status === "COMPLETED"
           ? "Completo"
@@ -59,7 +74,45 @@ const Certification = async ({ params }: CertificationProps) => {
     }),
   );
 
-  console.log(taskformatted);
+  const labels = [...new Set(taskformatted.map((task: Task) => task.status))];
+
+  const countPerStatus = labels.map((status) => ({
+    name: status,
+    value: taskformatted.filter(
+      (item: { status: string }) => item.status === status,
+    ).length,
+  }));
+
+  const latePerDate = taskformatted
+    .filter(
+      (item: { status: string; due: string }) =>
+        item.status !== "Completo" && isBeforeOrSameNow(item.due),
+    )
+    .map((item: { name: string; due: Date }) => ({
+      name: item.name,
+      due: formattedDate(item.due),
+    }));
+
+  const completedPerDate = taskformatted
+    .filter((item: { status: string }) => item.status === "Completo")
+    .map((item: { updatedAt: string | Date | null }) => ({
+      updatedAt: formattedDate(item.updatedAt),
+    }));
+
+  // @ts-ignore
+  const counts: string[string] = {};
+
+  completedPerDate.forEach(
+    ({ updatedAt }: { updatedAt: string }) =>
+      (counts[updatedAt] = (counts[updatedAt] || 0) + 1),
+  );
+
+  const completedBarChart = Object.entries(counts).map(([date, value]) => ({
+    date,
+    value,
+  }));
+
+  console.log(completedBarChart);
 
   return (
     <div
@@ -73,22 +126,48 @@ const Certification = async ({ params }: CertificationProps) => {
         <Text className="mt-2">
           Confira as atualizações da sua certificação no dashboard abaixo.
         </Text>
-        <p>{params.id}</p>
         {certificationData.tasks.length ? (
           <div className="mt-6 flex flex-col space-y-6">
             <div className="flex flex-col gap-2 sm:flex-row">
               <Indicator
-                data={`oi completos`}
-                title="Qtd. de Certificações"
-              ></Indicator>
-              <Indicator data={`oi`} title="Certificações em atraso">
-                oi
+                data={certificationData.tasks.length}
+                title="Qtd. de Tasks"
+              >
+                <Accordion className="mt-6">
+                  <AccordionHeader>
+                    <div className="space-y-2">
+                      <Text>Qtd. por Status</Text>
+                    </div>
+                  </AccordionHeader>
+                  <AccordionBody>
+                    {/* @ts-expect-error */}
+                    <BarList data={countPerStatus} />
+                  </AccordionBody>
+                </Accordion>
               </Indicator>
               <Indicator
-                className="space-y-8"
-                data={`oi`}
-                title="Próx. Vencimento de Certificação"
-              />
+                data={latePerDate.length}
+                title="Certificações em atraso"
+              >
+                {latePerDate.map((item: { name: string; due: string }) => (
+                  <ListItem className="mt-6" key={item.name}>
+                    <span>{item.name}</span>
+                    <span>{item.due}</span>
+                  </ListItem>
+                ))}
+              </Indicator>
+              <Card className="flex flex-col space-y-2">
+                <Text>Tasks completadas por dia</Text>
+                <AreaChart
+                  className="mt-4 h-52"
+                  data={completedBarChart}
+                  index="date"
+                  categories={["value"]}
+                  showYAxis={false}
+                  showGridLines={false}
+                  colors={["indigo"]}
+                />
+              </Card>
             </div>
             <Card>
               <div className="flex items-center justify-between">
@@ -117,30 +196,13 @@ const Certification = async ({ params }: CertificationProps) => {
           </div>
         ) : (
           <div className="mt-12 flex w-full flex-col items-center justify-center space-y-6">
-            <p>Você não tem nenhuma certificação ativa.</p>
-            {/* <ModalCertifications sessionId={sessionId} /> */}
+            <p>A certificação {certificationData.name} não tem tasks.</p>
+            <ModalTask sessionId={sessionId} certId={certId} />
           </div>
         )}
       </div>
-      {/* <p>Indicadores da certificação</p>
-      <p>Tabela com tasks e ordenação e criação de tasks</p> */}
     </div>
   );
 };
-
-// Qtd task em atraso
-// Tasks feitas / Tasks em aberto
-// Prazo da Certificação
-// Botão nova task
-// tabela com as tarefas com exclusão   --- talvez edição
-// Ordenação
-// grafico de dias que as tasks foram completadas (se 5 foram completadas dias x, linha vai no 5 e por ai vai ...)
-
-{
-  /* <Indicator
-                title="Vencimento próxima Certificação"
-                data={maxCertificationDue}
-              /> */
-}
 
 export default Certification;

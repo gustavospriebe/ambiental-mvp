@@ -28,6 +28,7 @@ export async function GET(req: Request, res: NextResponse) {
           id: true,
           name: true,
           status: true,
+          updatedAt: true,
           description: true,
           due: true,
         },
@@ -57,7 +58,6 @@ export async function POST(req: Request, res: Response) {
     });
   }
 
-  
   const newTask = await db.task.create({
     data: {
       name: name,
@@ -68,7 +68,7 @@ export async function POST(req: Request, res: Response) {
     },
   });
 
-  console.log(newTask)
+  console.log(newTask);
   return NextResponse.json({ newTask });
 }
 
