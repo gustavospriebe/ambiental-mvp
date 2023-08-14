@@ -57,6 +57,7 @@ export async function POST(req: Request, res: Response) {
     });
   }
 
+  
   const newTask = await db.task.create({
     data: {
       name: name,
@@ -67,6 +68,7 @@ export async function POST(req: Request, res: Response) {
     },
   });
 
+  console.log(newTask)
   return NextResponse.json({ newTask });
 }
 

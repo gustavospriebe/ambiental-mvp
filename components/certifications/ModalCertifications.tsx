@@ -35,6 +35,7 @@ import { Textarea } from "../ui/textarea";
 
 interface ModalCertificationsProps {
   sessionId?: string;
+  certId?: string;
   children?: string;
   className?: string;
 }
@@ -50,6 +51,7 @@ const formSchema = z.object({
 const ModalCertifications = ({
   sessionId,
   className,
+  certId,
 }: ModalCertificationsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState("none");
@@ -77,9 +79,10 @@ const ModalCertifications = ({
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:3000/api/certifications",
+        url: "http://localhost:3000/api/certification",
         headers: {
           "session-id": sessionId,
+          "cert-id": certId,
           "Content-Type": "application/json",
         },
         data: data,
@@ -88,9 +91,7 @@ const ModalCertifications = ({
       const req = await axios.request(config);
 
       setToast("send");
-      if (req.status === 200) {
-        router.replace(`/certification/${req.data.newData.id}`);
-      }
+
       return req;
     } catch (error) {
       console.error(`Erro no envio da requisição: ${error}`);

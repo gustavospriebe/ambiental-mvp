@@ -99,7 +99,7 @@ const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
               Acesse as informações das certificações.
             </Text>
           </div>
-          <ModalCertifications sessionId={sessionId} />
+          <ModalCertifications sessionId={sessionId} certId={certId} />
         </div>
         <div className="max-w-sm">
           <Select
