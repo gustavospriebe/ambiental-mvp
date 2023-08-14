@@ -22,14 +22,24 @@ import {
 } from "@tremor/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,  AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import axios from "axios";
 
 interface taskData {
   id: string;
   name: string;
-  color:string;
+  color: string;
   description: string | null;
   status: STATUS;
   due: Date | null;
@@ -39,7 +49,7 @@ interface TableTaskProps {
   taskformatted: {
     map: any;
     id: string;
-    color:string;
+    color: string;
     name: string;
     description: string | null;
     status: STATUS;
@@ -47,9 +57,10 @@ interface TableTaskProps {
   };
 
   sessionId: string;
+  certId: string;
 }
 
-const TableTask = ({ taskformatted, sessionId }: TableTaskProps) => {
+const TableTask = ({ taskformatted, sessionId, certId }: TableTaskProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const router = useRouter();
@@ -66,20 +77,18 @@ const TableTask = ({ taskformatted, sessionId }: TableTaskProps) => {
           </div>
           <ModalCertifications sessionId={sessionId} />
         </div>
-        <div>
-          <TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
-            <div className="block sm:flex sm:justify-between">
-              <div className="mt-4 sm:mt-0">
-                <TabList>
-                  <Tab>Todos</Tab>
-                  <Tab>Não iniciado</Tab>
-                  <Tab>Em andamento</Tab>
-                  <Tab>Completo</Tab>
-                </TabList>
-              </div>
+        <TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
+          <div className="block sm:flex sm:justify-between">
+            <div className="mt-4 sm:mt-0">
+              <TabList>
+                <Tab>Todos</Tab>
+                <Tab>Não iniciado</Tab>
+                <Tab>Em andamento</Tab>
+                <Tab>Completo</Tab>
+              </TabList>
             </div>
-          </TabGroup>
-        </div>
+          </div>
+        </TabGroup>
         <Table>
           <TableHead>
             <TableRow>
@@ -91,15 +100,10 @@ const TableTask = ({ taskformatted, sessionId }: TableTaskProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {" "}
             {taskformatted.map((item: taskData) => (
               <TableRow className="hover:bg-slate-50" key={item.id}>
-                <TableCell>
-                    {item.name}
-                </TableCell>
-                <TableCell>
-                    {item.description}
-                </TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.description}</TableCell>
                 <TableCell>
                   {!!item.due ? formattedDate(item.due) : "Sem data"}
                 </TableCell>

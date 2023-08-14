@@ -143,20 +143,18 @@ const TableCertification = ({
           </div>
           <ModalCertifications sessionId={sessionId} />
         </div>
-        <div>
-          <TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
-            <div className="block sm:flex sm:justify-between">
-              <div className="mt-4 sm:mt-0">
-                <TabList>
-                  <Tab>Todos</Tab>
-                  <Tab>Não iniciado</Tab>
-                  <Tab>Em andamento</Tab>
-                  <Tab>Completo</Tab>
-                </TabList>
-              </div>
+        <TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
+          <div className="block sm:flex sm:justify-between">
+            <div className="mt-4 sm:mt-0">
+              <TabList>
+                <Tab>Todos</Tab>
+                <Tab>Não iniciado</Tab>
+                <Tab>Em andamento</Tab>
+                <Tab>Completo</Tab>
+              </TabList>
             </div>
-          </TabGroup>
-        </div>
+          </div>
+        </TabGroup>
         <Table>
           <TableHead>
             <TableRow>

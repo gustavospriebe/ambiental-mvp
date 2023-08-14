@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { STATUS } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 // Puxar as infos da certificação e suas tasks
@@ -40,30 +41,89 @@ export async function GET(req: Request, res: NextResponse) {
 // Criar nova task
 export async function POST(req: Request, res: Response) {
   const sessionId = req.headers.get("session-id");
+  const certId = req.headers.get("cert-id");
 
-  if (!sessionId) {
+  if (!sessionId || !certId) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
     });
-
-    // const body = req.body
-
-    // const newData = await db.certification.create({
-    //     data: {
-    //         name: "teste2",
-    //         companyId: sessionId,
-    //         description: "teste231sdf3123",
-    //         tasks: {
-    //             create: {
-    //                 name: "testamdp",
-    //                 companyId: sessionId,
-    //             },
-    //         },
-    //     },
-    // });
   }
+
+  const { name, description, due } = await req.json();
+
+  if (!name || !description || !due) {
+    return new NextResponse(JSON.stringify({ error: "Invalid request body" }), {
+      status: 400,
+    });
+  }
+
+  const newTask = await db.task.create({
+    data: {
+      name: name,
+      companyId: sessionId,
+      certificationId: certId,
+      description: description,
+      due: due,
+    },
+  });
+
+  return NextResponse.json({ newTask });
 }
 
-// Atualiza task
+// Atualiza apenas Status certificação
+export async function PATCH(req: Request, res: Response) {
+  const sessionId = req.headers.get("session-id");
+  const certId = req.headers.get("cert-id");
+
+  if (!sessionId || !certId) {
+    return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+    });
+  }
+
+  const { taskId, newStatus }: { taskId: string; newStatus: STATUS } =
+    await req.json();
+
+  console.log(taskId, newStatus);
+
+  if (!taskId || !newStatus) {
+    return new NextResponse(JSON.stringify({ error: "Invalid request body" }), {
+      status: 400,
+    });
+  }
+
+  const updtadeStatus = await db.task.update({
+    where: { id: taskId },
+    data: { status: newStatus },
+  });
+
+  return NextResponse.json({ updtadeStatus });
+}
 
 // Deleta task
+export async function DELETE(req: Request, res: Response) {
+  const sessionId = req.headers.get("session-id");
+  const certId = req.headers.get("cert-id");
+
+  if (!sessionId || !certId) {
+    return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+    });
+  }
+
+  const { taskId } = await req.json();
+
+  if (!taskId) {
+    return new NextResponse(JSON.stringify({ error: "Invalid request body" }), {
+      status: 400,
+    });
+  }
+
+  const deleteTaskData = await db.task.delete({
+    where: {
+      id: taskId,
+    },
+  });
+
+  return NextResponse.json({ deleteTaskData });
+}

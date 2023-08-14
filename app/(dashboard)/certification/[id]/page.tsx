@@ -45,7 +45,7 @@ const Certification = async ({ params }: CertificationProps) => {
           ? "Completo"
           : item.status === "STARTED"
           ? "Em andamento"
-          : "Não iniciado",
+          : "Não iniciado ",
       color:
         item.status === "COMPLETED"
           ? "emerald"
@@ -72,7 +72,6 @@ const Certification = async ({ params }: CertificationProps) => {
           Confira as atualizações da sua certificação no dashboard abaixo.
         </Text>
         <p>{params.id}</p>
-
         {certificationData.tasks.length ? (
           <div className="mt-6 flex flex-col space-y-6">
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -108,7 +107,11 @@ const Certification = async ({ params }: CertificationProps) => {
                 tooltip="Progresso da certificação"
               />
             </Card>
-            <TableTask sessionId={sessionId} taskformatted={taskformatted} />
+            <TableTask
+              sessionId={sessionId}
+              certId={certId}
+              taskformatted={taskformatted}
+            />
           </div>
         ) : (
           <div className="mt-12 flex w-full flex-col items-center justify-center space-y-6">
