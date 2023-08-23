@@ -148,7 +148,7 @@ const LoginForm = () => {
         </Button>
       )}
       <p className="mt-4">
-        Utilize user@email.com e password para ver a aplicação com dados.
+        Use user@email.com e password to see the application with data or create a new account.
       </p>
     </div>
   );
