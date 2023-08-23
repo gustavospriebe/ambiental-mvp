@@ -147,6 +147,9 @@ const LoginForm = () => {
           Entrar com Google
         </Button>
       )}
+      <p className="mt-4">
+        Utilize user@email.com e password para ver a aplicação com dados.
+      </p>
     </div>
   );
 };
