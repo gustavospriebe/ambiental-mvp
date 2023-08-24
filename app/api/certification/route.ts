@@ -68,7 +68,6 @@ export async function POST(req: Request, res: Response) {
     },
   });
 
-  console.log(newTask);
   return NextResponse.json({ newTask });
 }
 
@@ -124,6 +123,7 @@ export async function DELETE(req: Request, res: Response) {
   const deleteTaskData = await db.task.delete({
     where: {
       id: taskId,
+      companyId: sessionId, 
     },
   });
 

@@ -116,6 +116,7 @@ export async function DELETE(req: Request, res: Response) {
   const deleteTaskData = await db.task.deleteMany({
     where: {
       certificationId: certificationId,
+      companyId: sessionId,
     },
   });
 
