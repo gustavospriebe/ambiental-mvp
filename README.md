@@ -1,34 +1,124 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ambiental MVP
 
-## Getting Started
+<!--- https://shields.io --->
 
-First, run the development server:
+![GitHub repo size](https://img.shields.io/github/repo-size/gustavospriebe/ambiental-mvp?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/gustavospriebe/ambiental-mvp?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/gustavospriebe/ambiental-mvp?style=for-the-badge)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/gustavospriebe/ambiental-mvp?style=for-the-badge)
+![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/gustavospriebe/ambiental-mvp?style=for-the-badge)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+___
+<!--- #################### mudar badges #################### --->
+
+https://user-images.githubusercontent.com/75763403/151466227-8aa38f60-b098-4dea-aab7-a14c3ed4d296.mp4
+
+<!--- #################### mudar imagem exemplo #################### --->
+___
+> This project was created to practice how to implement an production application in Next 13. A lot of features has changed since the previous version and I have decided to build an project management solution that includes an implementation of Prisma using PostgreSQL and using the Api folder to make CRUD actions.
+___
+## 💻 Prerequisites
+
+- Install LTS Node version.
+- Create OAuth provider in Google Console
+- Create a database in postgres (can be done with Prisma + Railway) and point to it in .env file.
+
+<!--- #################### mudar pré-requisitos  ####################--->
+___
+## 🛠 Tools used
+
+- Typescript
+- <b>Nextjs</b>
+- Prisma ORM
+- Next-auth
+- Axios
+- Postgres
+- Tailwind CSS
+- Zustand
+- ShadCN
+- Zod
+- React Hook Form
+- Tremor
+- Dayjs
+
+<!--- #################### mudar ferramentas #################### --->
+
+___
+
+## 🚀 Installing ambiental-mvp
+
+#### Clone repository
+
+```powershell
+  git clone https://github.com/gustavospriebe/ambiental-mvp.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```powershell
+  npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### Seed the database with the ranking
 
-## Learn More
+```powershell
+  npx prisma db seed
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Run app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```powershell
+  npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Run unit/integration tests
 
-## Deploy on Vercel
+```powershell
+  npm run test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Open prisma studio to access and alter database
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```powershell
+npx prisma studio
+```
+
+#### Endpoints of the application
+
+```powershell
+GET (ranking DESC) -> /api/users
+PUT (edit user info) -> /api/users/edit/${id}
+GET (user info) -> /api/users/${id}
+GET (lit projects) -> /api/projects
+```
+
+___
+
+## 📫 Contribuiting with renovaih
+
+To contribue with renovaih, follow the steps:
+
+1. Fork this repository.
+2. Create a branch: `git checkout -b <name_branch>`.
+3. Make the changes and confirm: `git commit -m '<message_commit>'`
+4. Send to original repository: `git push origin <main_branch> / <local>`
+5. Send the pull request.
+
+Alternatively, see the GitHub documentation at [how to create a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
+___
+## 🤝 Contributors
+
+Made with ❤️ by:
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="#">
+        <img src="https://github.com/rodrigorvsn.png" width="100px;" alt="Foto do Rodrigo Victor no GitHub"/><br>
+        <sub>
+          <b>Rodrigo Victor</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
