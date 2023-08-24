@@ -7,11 +7,6 @@
 ![GitHub forks](https://img.shields.io/github/forks/gustavospriebe/ambiental-mvp?style=for-the-badge)
 ![Github open issues](https://img.shields.io/github/issues/gustavospriebe/ambiental-mvp?style=for-the-badge)
 
-___
-<!--- #################### mudar badges #################### --->
-
-https://user-images.githubusercontent.com/75763403/151466227-8aa38f60-b098-4dea-aab7-a14c3ed4d296.mp4
-
 <!--- #################### mudar imagem exemplo #################### --->
 ___
 ## Table of Contents
