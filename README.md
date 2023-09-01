@@ -1,5 +1,9 @@
 # Ambiental MVP
 
+### 🌍 Project Overview
+This project was initiated as a means to gain practical experience in developing a production-ready application using Next.js version 13. In this latest iteration, significant enhancements and changes have been introduced. The primary objective was to construct a comprehensive project management solution, leveraging Prisma as the database ORM (Object-Relational Mapping) tool with PostgreSQL as the underlying database engine. Additionally, the project uses the API folder to make CRUD (Create, Read, Update, Delete) operations.
+
+
 <!--- https://shields.io --->
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/gustavospriebe/ambiental-mvp?style=for-the-badge)
@@ -26,11 +30,6 @@ ___
     - [🔚 Endpoints of the application](#-endpoints-of-the-application)
     - [📫 Contributing with ambiental-mvp](#-contributing-with-ambiental-mvp)
     - [🤝 Contributors](#-contributors)
-
----
-### 🌍 Project Overview
-This project was initiated as a means to gain practical experience in developing a production-ready application using Next.js version 13. In this latest iteration, significant enhancements and changes have been introduced. The primary objective was to construct a comprehensive project management solution, leveraging Prisma as the database ORM (Object-Relational Mapping) tool with PostgreSQL as the underlying database engine. Additionally, the project uses the API folder to make CRUD (Create, Read, Update, Delete) operations.
-
 
 ___
 ### 💻 Prerequisites
